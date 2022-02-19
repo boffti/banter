@@ -1,0 +1,10 @@
+flask
+Flask-SQLAlchemy
+Flask-Cors
+python-dotenv
+gunicorn
+flask_admin
+pandas
+pymysql
+pytest
+pwt
