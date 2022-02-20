@@ -2,8 +2,10 @@ from flask import (Flask, flash, jsonify, redirect, render_template, request,
                     session, url_for, send_file)
 import json
 from models import Student, School, Admin, db_init
+from passlib.hash import pbkdf2_sha256 as sha256
 
 app = Flask(__name__)
+app.secret_key = 'super secret key'
 db = db_init(app)
 
 @app.route('/')
@@ -25,7 +27,17 @@ def login_page():
 @app.route('/login', methods=['POST'])
 def login_user():
     login_creds = request.form.to_dict()
-    return login_creds
+    if login_creds['id'] == '' or login_creds['pass'] == '':
+        flash('Please enter a username and password')
+        return redirect(url_for('login_page'))
+    else:
+        user = Student.query.filter_by(id=login_creds['id']).first()
+        if user and sha256.verify(login_creds['pass'], user.password):
+            session['user'] = user.format()
+            return redirect(url_for('home'))
+        else:
+            flash('Incorrect username or password')
+            return redirect(url_for('login_page'))
 
 # Logout Route
 @app.route('/logout')
@@ -33,7 +45,7 @@ def logout():
     # Remove the user from session
     if 'user' in session:
         session.pop('user')
-    return redirect(url_for('user_login'))
+    return redirect(url_for('login_page'))
 
 # Schools dropdown route
 @app.route('/schools')
