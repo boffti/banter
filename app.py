@@ -1,3 +1,4 @@
+from unicodedata import name
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
                     session, url_for, send_file)
 import json
@@ -14,6 +15,46 @@ def home():
         return render_template('login/login.html')
     else:
         return render_template('index.html')
+
+# Register Route GET
+@app.route('/register')
+def register():
+    if 'user' not in session:
+        schools = [school.format() for school in School.query.all()]
+        return render_template('login/register.html', schools=schools)
+    else:
+        return redirect(url_for('home'))
+
+# Register Route POST
+@app.route('/register', methods=['POST'])
+def register_user():
+    if 'user' not in session:
+        print(request.form)
+        name = request.form['name']
+        school_id = request.form['id']
+        school = request.form['school']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+        if password != confirm_password:
+            flash('Passwords do not match!')
+            return redirect(url_for('register'))
+        else:
+            try:
+                school = School.query.filter_by(id=school).first()
+                if school is None:
+                    flash('Invalid School ID!')
+                    return redirect(url_for('register'))
+                else:
+                    new_user = Student(id=school_id, name=name, password=sha256.hash(password), bio='', dob='', school_id=school.id)
+                    new_user.insert()
+                    session['user'] = new_user.format()
+                    return redirect(url_for('login_page'))
+            except Exception as e:
+                print(f'Error ==> {e}')
+                flash('Something went wrong!')
+                return redirect(url_for('register'))
+    else:
+        return redirect(url_for('home'))
 
 # Login Route GET
 @app.route('/login')
@@ -49,7 +90,7 @@ def logout():
 
 # Schools dropdown route
 @app.route('/schools')
-def getRegions():
+def getSchools():
     schools = School.query.all()
     schoolsResponse = [school.format() for school in schools]
     return json.dumps(schoolsResponse)

@@ -5,47 +5,60 @@ Banter : Login
 {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 {% endblock %}
 
 {% block content %}
-<div class="limiter">
-    <div class="container-login100">
-        <div class="wrap-login100">
-            <form class="login100-form validate-form" action="/login" method="post">
-                <span class="login100-form-title p-b-43">
-                    Welcome to Banter
-                </span>
-                {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                {% for message in messages %}
+
+<div class="signup-page">
+    <div class="grid grid-2">
+        <a href="#">
+            <img class="signup-img" src="{{ url_for('static', filename='images/login_bg.jpg') }}" alt="">
+        </a>
+        <div class="signup-form flex-vertical">
+            <img src="" alt="" style="width: 100px;" class="">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="container">
                 <div class="alert alert-primary alert-dismissible fade show" role="alert">
                     <strong>{{ message }}</strong>
                 </div>
-                {% endfor %}
-                {% endif %}
-                {% endwith %}
-                <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                    <input class="input100" type="text" name="id">
-                    <span class="focus-input100"></span>
-                    <span class="label-input100">School ID</span>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <div class="card">
+                <div class="flex-vertical">
+                    <h2 class="login-heading">Welcome to Banter</h2>
+                    <!-- <div id="typed">
+                        <p>Welcome to Banter</p>
+                        <p>Welcome to your best campus life</p>
+                    </div> -->
+                    <p class="login-heading">Login to continue</p>
                 </div>
+                <form role="form" action="/login" method="post">
+                    <div class="form-label-group">
+                        <input name="id" type="text" id="school_id" class="form-control"
+                            placeholder="School ID" required>
+                        <!-- <label for="email">E-Mail</label> -->
+                    </div>
+                    <div class="form-label-group">
+                        <input name="pass" type="password" id="inputPassword" class="form-control"
+                            placeholder="Password" required>
+                        <!-- <label for="inputPassword">Password</label> -->
+                    </div>
+                    <br>
+                    <button class="btn btn-lg btn-primary-w btn-block btn-login text-uppercase font-weight-bold mb-2"
+                        type="submit">Sign In</button>
+                    <br>
 
-                <div class="wrap-input100 validate-input" data-validate="Password is required">
-                    <input class="input100" type="password" name="pass">
-                    <span class="focus-input100"></span>
-                    <span class="label-input100">Password</span>
-                </div>
-
-                <div class="container-login100-form-btn">
-                    <button type="submit" class="login100-form-btn">
-                        Login
-                    </button>
-                </div>
-
-            </form>
-
-            <div class="login100-more" style="background-image: url('static/images/login_bg.jpg');">
+                    <div class="flex flex-vertical">
+                        <p>Not registered yet? No problem! Let's get you started.</p>
+                        <a class="text-accent"
+                            href="/register">Create Account</a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
