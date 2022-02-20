@@ -1268,6 +1268,84 @@ textarea::placeholder {
     border-bottom: #ee6c4d 3px solid;
 }
 
+.bb-post-card {
+    border-radius: 10px;
+    border: 1px #ddd solid;
+    padding: 20px;
+}
+
+.bb-title {
+    font-size: 1.5rem;
+    font-family: 'Panton';
+    margin-bottom: 20px;
+}
+
+.bb-content {
+    font-size: 1.2rem;
+    font-family: 'Panton';
+    margin-bottom: 20px;
+}
+
+.bb-author {
+    font-size: 0.8rem;
+    font-family: 'Panton';
+    color: #adb5bd;
+}
+
+.bb-date {
+    font-size: 0.8rem;
+    font-family: 'Panton';
+    color: #adb5bd;
+}
+
+.bb-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.event-card {
+    border-radius: 10px;
+    border: 1px #ddd solid;
+    padding: 20px;
+}
+
+.event-title {
+    font-size: 1.5rem;
+    font-family: 'Panton';
+    margin-bottom: 20px;
+}
+
+.event-desc {
+    font-size: 1.2rem;
+    font-family: 'Panton';
+    margin-bottom: 20px;
+}
+
+.event-datetime {
+    font-size: 0.8rem;
+    font-family: 'Panton';
+    color: #adb5bd;
+}
+
+.event-location {
+    font-size: 0.8rem;
+    font-family: 'Panton';
+    color: #adb5bd;
+}
+
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.club-card {
+    border-radius: 10px;
+    border: 1px #ddd solid;
+    padding: 20px;
+}
+
 /* @supports (display: grid) {
 	.gallery {
 		display: grid;

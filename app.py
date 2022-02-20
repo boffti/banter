@@ -4,6 +4,7 @@ from flask import (Flask, flash, jsonify, redirect, render_template, request,
 import json
 from models import Student, School, Admin, db_init
 from passlib.hash import pbkdf2_sha256 as sha256
+from mock_data import billboard, events, clubs
 
 app = Flask(__name__)
 app.secret_key = 'super secret key'
@@ -14,7 +15,7 @@ def home():
     if 'user' not in session:
         return render_template('login/login.html')
     else:
-        return render_template('index.html')
+        return render_template('index.html', billboard=billboard, events=events, clubs=clubs)
 
 # Register Route GET
 @app.route('/register')

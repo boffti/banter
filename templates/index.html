@@ -27,11 +27,60 @@ Banter | Home
     </div>
 </section>
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>coming soon</h1>
-            <a href="/logout">Logout</a>
-        </div>
+    <div class="content">
+
+        <section style="margin-bottom:16px">
+            <h2>Billboard</h2>
+            <div class="flex" style="gap:12px; flex-wrap: wrap;">
+                {% for post in billboard %}
+                <div class="bb-post-card" style="width:330px; height:200px">
+                    <div class="">
+                        <p class="bb-title">{{ post.title }}</p>
+                        <p class="bb-content">{{ post.content }}</p>
+                        <div class="bb-footer">
+                            <p class="bb-author">{{ post.author }}</p>
+                            <p class="bb-date">{{ post.date_posted }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {% endfor %}
+            </div>
+        </section>
+
+        <section style="margin-bottom:16px; margin-top:30px">
+            <h2>Events around you</h2>
+            <div class="flex" style="gap:12px; flex-wrap: wrap;">
+                {% for event in events %}
+                <div class="event-card" style="width:500px">
+                    <div class="card-text">
+                        <div class="event-header">
+                            <p class="event-title">{{ event.title }}</p>
+                            <p class="event-location">{{ event.location }}</p>
+                        </div>
+                        <p class="event-desc">{{ event.description }}</p>
+                        <p class="event-datetime">{{ event.date_time }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section style="margin-bottom:16px; margin-top:30px">
+            <h2>Cool clubs on campus</h2>
+            <div style="gap:12px; display:flex; flex-wrap: wrap; align-items:flex-start">
+                {% for club in clubs %}
+                <div class="club-card">
+                    <div class="card-text">
+                        <p>{{ club.name }}</p>
+                        <p>{{ club.description }}</p>
+                    </div>
+                </div>
+
+                {% endfor %}
+            </div>
+        </section>
+
     </div>
 </div>
 {% endblock %}
