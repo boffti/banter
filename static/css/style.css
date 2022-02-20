@@ -12,7 +12,7 @@ References listed at the end of file
 }
 
 :root {
-    --primary-color: #f4f1de;
+    --primary-color: #daeafc;
     --secondary-color: #3D405B;
     --accent-color: #4895ef;
     --other-color-1: #3282a7;
@@ -351,10 +351,11 @@ img {
 }
 
 .hero-form {
-    position: relative;
+    display: flex;
+    justify-self: center;
+    /* position: relative; */
     padding: 60px;
     z-index: 100;
-    justify-self: flex-end;
 }
 
 .flex-vertical {
@@ -418,7 +419,7 @@ img {
 
 .hero-form input[type='text'] {
     border: 0;
-    width: 400px;
+    width: 500px;
     padding: 5px;
     font-size: 16px;
 }

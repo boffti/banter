@@ -1,10 +1,31 @@
-{% extends 'base.html' %}
+{% extends 'base_w_header.html' %}
 
 {% block title %}
-Banter
+Banter | Home
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 {% endblock %}
 
 {% block content %}
+<section class="hero flex">
+    <div class="container">
+        <div class="hero-text flex-vertical">
+            <h1 id="welcome-string">Welcome to Banter</h1><span style="visibility:hidden;">|</span>
+        </div>
+        <p class="flex-vertical">Find your space on campus.</p>
+        <form class="hero-form card" action="#" method="post" style="width:100%;">
+            <div class="flex-left flex-wrap" style="justify-content: space-between;">
+                <div class="">
+                    <input type="text" name="search_term" id="search_term"
+                        placeholder="Search: study table, movie night, etc.">
+                </div>
+                <button id="btnSearchNow" type="submit" href="#" class="btn">Search Now</button>
+            </div>
+        </form>
+    </div>
+</section>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
