@@ -89,6 +89,13 @@ def logout():
         session.pop('user')
     return redirect(url_for('login_page'))
 
+@app.route('/profile')
+def profile():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    else:
+        return render_template('user/profile.html')
+
 # Schools dropdown route
 @app.route('/schools')
 def getSchools():

@@ -1,0 +1,56 @@
+{% extends 'base_w_header.html' %}
+
+{% block title %}
+Banter | Profile
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="content">
+        <div class="flex-left">
+            <div class="flex-center">
+                <div class="card" style="height: fit-content; width:100%; border-top: 4px var(--accent-color) solid;">
+                    <div class="flex-center">
+                        <div class="profile-img-container">
+                            <img id="profileIMG" src=""
+                                alt="profile" class="" style="width: 200px; border-radius: 100px;">
+                            <div class="icon-change-image">
+                                <a id="changeDP" href="#">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <h2 id="" class="">{{ session['user']['name'] }}</h2>
+                        <input type="file" name="dp" id="inputChangeDP" style="display: none;">
+                    </div>
+                </div>
+                <div class="card" style="width: 100%;">
+                    <div class="flex-left space-between">
+                        <h3>Your Details</h3>
+                        <a id="btnEditProfile" href="#"><i class="fas fa-edit"></i></a>
+                    </div>
+                    <br>
+                    <div class="flex-column" style="align-items: flex-start;">
+                        <span class="flex"><i class="fas fa-user" style="margin-right: 12px;"></i>
+                            <p class="strong">{{ session['user']['name'] }}</p>
+                        </span>
+                        <span class="flex"><i class="fas fa-map-marker-alt" style="margin-right: 12px;"></i>
+                            <p class=" strong">{{ session['user']['bio'] }}</p>
+                        </span>
+                        <span class="flex"><i class="fas fa-birthday-cake" style="margin-right: 12px;"></i>
+                            <p class="strong">{{ session['user']['dob'] }}</p>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                Right content TODO
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
