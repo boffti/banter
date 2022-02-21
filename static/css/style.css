@@ -54,9 +54,9 @@ h2 {
     margin: 10px 0;
 }
 
-p {
+/* p {
     margin: 10px 0;
-}
+} */
 
 img {
     width: 100%;
@@ -368,7 +368,7 @@ img {
 .card {
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     padding: 20px;
     margin: 10px;
 }
@@ -1272,6 +1272,7 @@ textarea::placeholder {
     border-radius: 10px;
     border: 1px #ddd solid;
     padding: 20px;
+    border-bottom: 4px var(--secondary-color) solid;
 }
 
 .bb-title {
@@ -1290,12 +1291,14 @@ textarea::placeholder {
     font-size: 0.8rem;
     font-family: 'Panton';
     color: #adb5bd;
+    margin-bottom: 0;
 }
 
 .bb-date {
     font-size: 0.8rem;
     font-family: 'Panton';
     color: #adb5bd;
+    margin-bottom: 0;
 }
 
 .bb-footer {
@@ -1308,6 +1311,7 @@ textarea::placeholder {
     border-radius: 10px;
     border: 1px #ddd solid;
     padding: 20px;
+    border-left: 6px var(--other-color-2) solid;
 }
 
 .event-title {
@@ -1326,12 +1330,14 @@ textarea::placeholder {
     font-size: 0.8rem;
     font-family: 'Panton';
     color: #adb5bd;
+    margin-bottom: 0;
 }
 
 .event-location {
-    font-size: 0.8rem;
+    font-size: 1rem;
     font-family: 'Panton';
     color: #adb5bd;
+    margin-bottom: 0;
 }
 
 .event-header {
@@ -1342,8 +1348,44 @@ textarea::placeholder {
 
 .club-card {
     border-radius: 10px;
+    flex: 0 0 100%;
     border: 1px #ddd solid;
     padding: 20px;
+    /* border-bottom: 4px var(--other-color-4) solid; */
+}
+
+.card-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 24px;
+}
+
+.event-date {
+    font-size: 2.2rem;
+    font-family: 'Panton';
+    font-weight: 'bold';
+    margin-bottom: 0;
+}
+
+.event-time {
+    font-size: 1.2rem;
+    font-family: 'Panton';
+    color: #adb5bd;
+    margin-bottom: 0;
+}
+
+.club-title {
+    font-size: 1.5rem;
+    font-family: 'Panton';
+    margin-bottom: 20px;
+}
+
+.club-desc {
+    font-size: 1.2rem;
+    font-family: 'Panton';
+    margin-bottom: 0;
 }
 
 /* @supports (display: grid) {

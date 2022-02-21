@@ -33,7 +33,7 @@ Banter | Home
             <h2>Billboard</h2>
             <div class="flex" style="gap:12px; flex-wrap: wrap;">
                 {% for post in billboard %}
-                <div class="bb-post-card" style="width:330px; height:200px">
+                <div class="bb-post-card" style="width:330px;">
                     <div class="">
                         <p class="bb-title">{{ post.title }}</p>
                         <p class="bb-content">{{ post.content }}</p>
@@ -53,13 +53,18 @@ Banter | Home
             <div class="flex" style="gap:12px; flex-wrap: wrap;">
                 {% for event in events %}
                 <div class="event-card" style="width:500px">
-                    <div class="card-text">
-                        <div class="event-header">
-                            <p class="event-title">{{ event.title }}</p>
+                    <div class="flex space-between">
+                        <div class="card-left">
+                            <div class="event-header">
+                                <p class="event-title">{{ event.title }}</p>
+                            </div>
+                            <p class="event-desc">{{ event.description }}</p>
                             <p class="event-location">{{ event.location }}</p>
                         </div>
-                        <p class="event-desc">{{ event.description }}</p>
-                        <p class="event-datetime">{{ event.date_time }}</p>
+                        <div class="card-right">
+                            <p class="event-date">Mar 23</p>
+                            <p class="event-time">10:00 AM</p>
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -72,8 +77,8 @@ Banter | Home
                 {% for club in clubs %}
                 <div class="club-card">
                     <div class="card-text">
-                        <p>{{ club.name }}</p>
-                        <p>{{ club.description }}</p>
+                        <p class="club-title">{{ club.name }}</p>
+                        <p class="club-desc">{{ club.description }}</p>
                     </div>
                 </div>
 
