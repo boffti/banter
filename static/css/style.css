@@ -1388,6 +1388,10 @@ textarea::placeholder {
     margin-bottom: 0;
 }
 
+.user-detail {
+    margin-bottom: 8px;
+}
+
 /* @supports (display: grid) {
 	.gallery {
 		display: grid;

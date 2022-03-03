@@ -109,5 +109,12 @@ def test():
     studentResponse = [student.format() for student in students]
     return json.dumps(studentResponse)
 
+@app.route('/session')
+def get_session():
+    if 'user' in session:
+        return session.get('user')
+    else:
+        'nothing in session'
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000, debug=True)

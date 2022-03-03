@@ -16,8 +16,8 @@ Banter | Profile
                 <div class="card" style="height: fit-content; width:100%; border-top: 4px var(--accent-color) solid;">
                     <div class="flex-center">
                         <div class="profile-img-container">
-                            <img id="profileIMG" src=""
-                                alt="profile" class="" style="width: 200px; border-radius: 100px;">
+                            <img id="profileIMG" src="static/images/dp/{{ session['user']['dp'] }}" alt="profile"
+                                class="" style="width: 200px; border-radius: 100px;">
                             <div class="icon-change-image">
                                 <a id="changeDP" href="#">
                                     <i class="fas fa-pen"></i>
@@ -30,26 +30,76 @@ Banter | Profile
                 </div>
                 <div class="card" style="width: 100%;">
                     <div class="flex-left space-between">
-                        <h3>Your Details</h3>
-                        <a id="btnEditProfile" href="#"><i class="fas fa-edit"></i></a>
+                        <h4>Your Details</h3>
+                            <a id="btnEditProfile" href="#"><i class="fas fa-edit"></i></a>
                     </div>
                     <br>
                     <div class="flex-column" style="align-items: flex-start;">
-                        <span class="flex"><i class="fas fa-user" style="margin-right: 12px;"></i>
-                            <p class="strong">{{ session['user']['name'] }}</p>
+                        <span class="flex user-detail"><i class="fas fa-user" style="margin-right: 12px;"></i>
+                            <span class="strong">{{ session['user']['name'] }}</span>
                         </span>
-                        <span class="flex"><i class="fas fa-map-marker-alt" style="margin-right: 12px;"></i>
-                            <p class=" strong">{{ session['user']['bio'] }}</p>
+                        <span class="flex user-detail"><i class="fas fa-pen-nib" style="margin-right: 12px;"></i>
+                            <span class=" strong">{{ session['user']['bio'] }}</span>
                         </span>
-                        <span class="flex"><i class="fas fa-birthday-cake" style="margin-right: 12px;"></i>
-                            <p class="strong">{{ session['user']['dob'] }}</p>
+                        <span class="flex user-detail"><i class="fas fa-birthday-cake" style="margin-right: 12px;"></i>
+                            <span class="strong">{{ session['user']['dob'] }}</span>
                         </span>
                     </div>
                 </div>
             </div>
-            <div>
-                Right content TODO
-            </div>
+            <section>
+                <h2>Posts</h3>
+                    <div class="posts">
+                        <div class="card post">
+                            <div class="flex-left">
+                                <div class="full-width">
+                                    <div class="flex-left space-between align-items-center">
+                                        <p class="post-date">12/12/2020</p>
+                                    </div>
+                                    <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                        Expedita laboriosam dolores a ipsum obcaecati cum amet, architecto repellendus
+                                        at tenetur labore aspernatur enim veritatis, cumque perspiciatis ab in? Nobis,
+                                        unde.</p>
+                                </div>
+                                <div class="flex tip-footer" style="gap: 10px; ">
+                                    <a href="#" style="margin: 0;"><i class="fas fa-trash-alt"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card post">
+                            <div class="flex-left">
+                                <div class="full-width">
+                                    <div class="flex-left space-between align-items-center">
+                                        <p class="post-date">12/12/2020</p>
+                                    </div>
+                                    <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                        Expedita laboriosam dolores a ipsum obcaecati cum amet, architecto repellendus
+                                        at tenetur labore aspernatur enim veritatis, cumque perspiciatis ab in? Nobis,
+                                        unde.</p>
+                                </div>
+                                <div class="flex tip-footer" style="gap: 10px; ">
+                                    <a href="#" style="margin: 0;"><i class="fas fa-trash-alt"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card post">
+                            <div class="flex-left">
+                                <div class="full-width">
+                                    <div class="flex-left space-between align-items-center">
+                                        <p class="post-date">12/12/2020</p>
+                                    </div>
+                                    <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                        Expedita laboriosam dolores a ipsum obcaecati cum amet, architecto repellendus
+                                        at tenetur labore aspernatur enim veritatis, cumque perspiciatis ab in? Nobis,
+                                        unde.</p>
+                                </div>
+                                <div class="flex tip-footer" style="gap: 10px; ">
+                                    <a href="#" style="margin: 0;"><i class="fas fa-trash-alt"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </section>
         </div>
     </div>
 </div>
