@@ -31,7 +31,8 @@ Banter | Profile
                 <div class="card" style="width: 100%;">
                     <div class="flex-left space-between">
                         <h4>Your Details</h3>
-                            <a id="btnEditProfile" href="#"><i class="fas fa-edit"></i></a>
+                            <a id="btnEditProfile" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
+                                    class="fas fa-edit"></i></a>
                     </div>
                     <br>
                     <div class="flex-column" style="align-items: flex-start;">
@@ -103,4 +104,66 @@ Banter | Profile
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="profile-edit-modal">
+    <div class="modal-header flex-left space-between" style="align-items: center;">
+        <p style="margin-left: 12px;">Edit your deets</p>
+        <a href="#" class="cancel" style="float: right;">x</a>
+    </div>
+    <div class="modal-content" style="align-items:center;">
+        <form action="#" method="post" class="flex-center" style="gap: 12px;">
+            <div class="flex-left">
+                <input type="text" name="name" placeholder="Name" value="{{ session['user']['name'] }}">
+            </div>
+            <div class="flex-left">
+            </div>
+            <div class="flex-left">
+                <input type="text" name="bio" placeholder="Bio" value="{{ session['user']['bio'] }}">
+            </div>
+            <div>
+                <button class="cancel btn btn-outline-secondary text-secondary">Cancel</button>
+                <button class="btn" type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit your deets</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="post" style="gap: 12px;">
+                    <div class="mb-3">
+                        <label for="name-input" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name-input"
+                            placeholder="Aneesh Melkot"
+                            value="{{ session['user']['name'] }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="bio-input" class="form-label">Biography</label>
+                        <input type="text" class="form-control" id="bio-input"
+                            placeholder="I am awesome"
+                            value="{{ session['user']['bio'] }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="dob-input" class="form-label">Date of Birth</label>
+                        <input type="text" class="form-control" id="dob-input"
+                            placeholder="12/12/2000"
+                            value="{{ session['user']['dob'] }}">
+                    </div>
+                    <div>
+                        <button class="cancel btn btn-outline-secondary text-secondary">Cancel</button>
+                        <button class="btn" type="submit">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

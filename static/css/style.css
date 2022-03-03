@@ -1041,7 +1041,7 @@ table {
     border-spacing: 20px 0;
 }
 
-.modal {
+/* .modal {
     display: none;
     top: 100px;
     left: 30%;
@@ -1094,7 +1094,7 @@ table {
 
 .modal-content {
     padding: 20px;
-}
+} */
 
 @keyframes fadeIn_Modal {
     from {
@@ -1206,14 +1206,14 @@ textarea::placeholder {
     border-top: 4px var(--secondary-color) solid;
 }
 
-.modal input {
+/* .modal input {
     border: 2px #e7e7e7 solid;
     border-radius: 50px;
     padding: 15px 15px;
     margin: 10px 5px;
     display: block;
     width: 100%;
-}
+} */
 
 .modal input:focus {
     outline: none;
