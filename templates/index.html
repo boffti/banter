@@ -1,91 +1,15 @@
-{% extends 'base_w_header.html' %}
+{% extends 'base.html' %}
 
 {% block title %}
-Banter | Home
-{% endblock %}
-
-{% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+Banter
 {% endblock %}
 
 {% block content %}
-<section class="hero flex">
-    <div class="container">
-        <div class="hero-text flex-vertical">
-            <h1 id="welcome-string">Welcome to Banter</h1><span style="visibility:hidden;">|</span>
-        </div>
-        <p class="flex-vertical">Find your space on campus.</p>
-        <form class="hero-form card" action="#" method="post" style="width:100%;">
-            <div class="flex-left flex-wrap" style="justify-content: space-between;">
-                <div class="">
-                    <input type="text" name="search_term" id="search_term"
-                        placeholder="Search: study table, movie night, etc.">
-                </div>
-                <button id="btnSearchNow" type="submit" href="#" class="btn">Search Now</button>
-            </div>
-        </form>
-    </div>
-</section>
 <div class="container">
-    <div class="content">
-
-        <section style="margin-bottom:16px">
-            <h2>Billboard</h2>
-            <div class="flex" style="gap:12px; flex-wrap: wrap;">
-                {% for post in billboard %}
-                <div class="bb-post-card" style="width:330px;">
-                    <div class="">
-                        <p class="bb-title">{{ post.title }}</p>
-                        <p class="bb-content">{{ post.content }}</p>
-                        <div class="bb-footer">
-                            <p class="bb-author">{{ post.author }}</p>
-                            <p class="bb-date">{{ post.date_posted }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                {% endfor %}
-            </div>
-        </section>
-
-        <section style="margin-bottom:16px; margin-top:30px">
-            <h2>Events around you</h2>
-            <div class="flex" style="gap:12px; flex-wrap: wrap;">
-                {% for event in events %}
-                <div class="event-card" style="width:500px">
-                    <div class="flex space-between">
-                        <div class="card-left">
-                            <div class="event-header">
-                                <p class="event-title">{{ event.title }}</p>
-                            </div>
-                            <p class="event-desc">{{ event.description }}</p>
-                            <p class="event-location">{{ event.location }}</p>
-                        </div>
-                        <div class="card-right">
-                            <p class="event-date">Mar 23</p>
-                            <p class="event-time">10:00 AM</p>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </section>
-
-        <section style="margin-bottom:16px; margin-top:30px">
-            <h2>Cool clubs on campus</h2>
-            <div style="gap:12px; display:flex; flex-wrap: wrap; align-items:flex-start">
-                {% for club in clubs %}
-                <div class="club-card">
-                    <div class="card-text">
-                        <p class="club-title">{{ club.name }}</p>
-                        <p class="club-desc">{{ club.description }}</p>
-                    </div>
-                </div>
-
-                {% endfor %}
-            </div>
-        </section>
-
+    <div class="row">
+        <div class="col-md-12">
+            <h1>coming soon</h1>
+        </div>
     </div>
 </div>
 {% endblock %}
