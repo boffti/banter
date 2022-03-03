@@ -1217,7 +1217,7 @@ textarea::placeholder {
 
 .modal input:focus {
     outline: none;
-    border: 3px #E07A5F solid;
+    /* border: 3px #E07A5F solid; */
     border-radius: 50px;
 }
 
