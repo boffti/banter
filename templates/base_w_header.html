@@ -26,7 +26,7 @@
         <![endif]-->
     <div id="navbar" class="navbar navbar-primary flex-wrap" style="height:fit-content">
         <div class="container flex mobile-nav">
-                <h2>&nbsp;Banter</h2>
+            <h2>&nbsp;Banter</h2>
             <nav>
                 <ul class="">
                     <li class=""><a href="/">Home</a></li>
@@ -44,26 +44,26 @@
                     <a href="#" class="profile flex">
                         <!-- <img id="avatarIMG" src=""
                             alt="profile" class="avatarIMG"> -->
-                        <p id="profileName" class="profileName">{{session['user']['name'] }}</p>
+                        <span id="profileName" class="profileName">{{session['user']['name'] }}</span>
                         <i class="fas fa-angle-down" style="margin-left: 8px;"></i>
                     </a>
                     <ul class="dropdown-content" style="top:50px">
                         <li class="dropdown-item">
+                            <i class="fas fa-user" style="margin-right: 8px;"></i>
                             <a href="/profile">
-                                <i class="fas fa-user" style="margin-right: 8px;"></i>
                                 My Profile
                             </a>
                         </li>
                         <li class="dropdown-item">
+                            <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i>
                             <a href="/logout">
-                                <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i>
                                 Logout
                             </a>
                         </li>
                     </ul>
                 </li>
             </ul>
-            
+
             <a id="btnMenu" href="#" class="menu-icon"><i class="fas fa-bars"></i></a>
         </div>
     </div>
