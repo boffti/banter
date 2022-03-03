@@ -23,6 +23,7 @@ Banter | Profile
                                     <i class="fas fa-pen"></i>
                                 </a>
                             </div>
+                            <input type="file" name="dp" id="inputChangeDP" style="display: none;">
                         </div>
                         <h2 id="" class="">{{ session['user']['name'] }}</h2>
                         <input type="file" name="dp" id="inputChangeDP" style="display: none;">
@@ -166,4 +167,9 @@ Banter | Profile
     </div>
 </div>
 
+{% endblock %}
+
+    
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
 {% endblock %}

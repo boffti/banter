@@ -96,6 +96,25 @@ def profile():
     else:
         return render_template('user/profile.html')
 
+@app.route('/update-dp', methods=['POST'])
+def update_dp():
+    dp = request.files['file']
+    if dp.filename != '':
+        file_name = f'{session["user"]["id"]}.jpg'
+        user_id = session['user']['id']
+        user = Student.query.filter_by(id=user_id).first()
+        user.dp = file_name
+        user.update()
+        dp.save(f'static/images/dp/{file_name}')
+        session['user'] = user.format()
+        return '1'
+    else:
+        return '0'
+
+@app.route('/update-profile')
+def update_profile():
+    return 'pass'
+
 # Schools dropdown route
 @app.route('/schools')
 def getSchools():
