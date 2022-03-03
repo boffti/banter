@@ -1,5 +1,6 @@
 flask
 Flask-SQLAlchemy
+SQLAlchemy
 Flask-Cors
 python-dotenv
 gunicorn
@@ -7,4 +8,4 @@ flask_admin
 pandas
 pymysql
 pytest
-pwt
+passlib

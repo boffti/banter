@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Banter : Register
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="signup-page">
+    <div class="grid grid-2">
+        <a href="#">
+            <img class="signup-img" src="{{url_for('static', filename='images/register_bg.jpg')}}" alt="">
+        </a>
+        <div class="signup-form flex-vertical">
+            <img src="" alt="" style="width: 100px;" class="">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="container">
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}</strong>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <div class="card">
+                <div class="flex-vertical">
+                    <h2 class="login-heading">Welcome to Banter</h2>
+                    <p class="login-heading mb-4">Create an account to get started.</p>
+                </div>
+                <form role="form" action="/register" method="post">
+                    <div class="">
+                        <input name="name" type="name" id="name" class="" placeholder="Full Name" required autofocus>
+                        <!-- <label for="name">Full Name</label> -->
+                    </div>
+                    <div class="">
+                        <input name="id" type="text" id="school_id" class="" placeholder="School ID" required>
+                        <!-- <label for="email">E-Mail</label> -->
+                    </div>
+                    <div class=""> <select name="school" id="school" required>
+                            <option value="choose" disabled selected>Where do you study?</option>
+                            {% if schools %}
+                            {% for school in schools %}
+                            <option value="{{ school.id }}">{{ school.name }}</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="">
+                        <input name="password" type="password" id="inputPassword" class="" placeholder="Password"
+                            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$"
+                            title="8-12 letters, Atleast 1 uppercase, lowercase, symbol and number." required>
+                        <!-- <label for="inputPassword">Password</label> -->
+                    </div>
+                    <div class="">
+                        <input name="confirm_password" type="password" id="inputPasswordReenter" class=""
+                            placeholder="Re-Enter Password" required>
+                        <!-- <label for="inputPasswordReenter">Re-enter Password</label> -->
+                    </div>
+                    <br>
+                    <button class="btn btn-lg" type="submit">Sign Up</button>
+                    <br>
+                    <div class="flex flex-vertical">
+                        <p>Already have an account?</p>
+                        <a class="text-accent" href="/login">Sign In</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
