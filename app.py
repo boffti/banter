@@ -5,9 +5,13 @@ import json
 from models import Student, School, Admin, db_init
 from passlib.hash import pbkdf2_sha256 as sha256
 from mock_data import billboard, events, clubs
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'super secret key'
+app.secret_key = os.getenv('SECRET_KEY')
 db = db_init(app)
 
 @app.route('/')
@@ -46,7 +50,7 @@ def register_user():
                     flash('Invalid School ID!')
                     return redirect(url_for('register'))
                 else:
-                    new_user = Student(id=school_id, name=name, password=sha256.hash(password), bio='', dob='', school_id=school.id)
+                    new_user = Student(id=school_id, name=name, password=sha256.hash(password), bio='', dob='', school_id=school.id, dp='user.png')
                     new_user.insert()
                     session['user'] = new_user.format()
                     return redirect(url_for('login_page'))
