@@ -5,38 +5,100 @@ Banter | Home
 {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
 {% endblock %}
 
 {% block content %}
 <section class="hero flex">
     <div class="container">
-        <div class="hero-text flex-vertical">
+        <!-- <div class="hero-text flex-vertical">
             <h1 id="welcome-string">Welcome to Banter</h1><span style="visibility:hidden;">|</span>
         </div>
-        <p class="flex-vertical">Find your space on campus.</p>
-        <form class="hero-form card" action="#" method="post" style="width:100%;">
-            <div class="flex-left flex-wrap" style="justify-content: space-between;">
-                <div class="">
-                    <input type="text" name="search_term" id="search_term"
-                        placeholder="Search: study table, movie night, etc.">
+        <p class="flex-vertical">Find your space on campus.</p> -->
+        <br>
+        <form class="" action="#" method="post" style="width:100%;">
+            <div class="row offset-lg-2">
+                <div class="col-lg-8"><div class="input-icon mb-3">
+                    <input type="text" value="" class="form-control" placeholder="Search…">
+                    <span class="input-icon-addon">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <circle cx="10" cy="10" r="7"></circle>
+                            <line x1="21" y1="21" x2="15" y2="15"></line>
+                        </svg>
+                    </span>
+                </div></div>
+                <div class="col-lg-4">
+                    <input type="submit" class="btn btn-primary" value="Search Now" />
                 </div>
-                <button id="btnSearchNow" type="submit" href="#" class="btn">Search Now</button>
             </div>
+            
+            
         </form>
+
     </div>
 </section>
-<div class="container-xxl p-5">
+<div class="container">
     <div class="content">
 
         <section style="margin-bottom:16px">
-            <div class="flex-left justify-content-between align-items-center">
-                <h2>Billboard</h2>
-                <a href="#">See More</a>
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h2 class="page-title">
+                            Billboard
+                        </h2>
+                    </div>
+                    <div class="col-auto ms-auto">
+                        <div class="btn-list">
+                            <span class="d-none d-sm-inline">
+                            </span>
+                            <a href="#" class="btn btn-outline-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                                data-bs-target="#modal-report">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                <!-- SVG icon code -->
+                                Create new post
+                            </a>
+                            <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal"
+                                data-bs-target="#modal-report" aria-label="Create new report">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                <!-- SVG icon code -->
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="grid">
                 {% for post in billboard %}
-                <div class="grid-item">
+                <div class="col-lg-4 grid-item px-2 py-2">
+                    <div class="card d-flex flex-column">
+                        <a href="#">
+                            <img class="card-img-top" src="{{ post.img_url }}" alt="img">
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h3 class="card-title"><a href="#">{{ post.title }}</a></h3>
+                            <div class="text-muted">{{ post.content }}</div>
+                            <div class="d-flex align-items-center pt-4 mt-auto">
+                                <span class="avatar"
+                                    style="background-image: url(../static/images/dp/1001750503.jpg)"></span>
+                                <div class="ms-3">
+                                    <a href="#" class="text-body">Aneesh Melkot</a>
+                                    <div class="text-muted">3 days ago</div>
+                                </div>
+                                <div class="ms-auto">
+                                    <a href="#" class="icon d-none d-md-inline-block ms-3 text-muted">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
+                                        <!-- SVG icon code -->
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="grid-item">
                     <div id="billboard-card" class="card" style="padding: 0;">
                         <img src="{{ post.img_url }}" class="card-img-top" alt="..." style="border-radius: 10px;">
                         <div style="padding: 20px;">
@@ -48,7 +110,7 @@ Banter | Home
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 {% endfor %}
             </div>
         </section>
@@ -57,7 +119,7 @@ Banter | Home
             <h2>Events around you</h2>
             <div class="d-flex" style="gap:12px; flex-wrap: wrap;">
                 {% for event in events %}
-                <a class="event-card" style="width: fit-content;">
+                <a class="card" style="width: fit-content;">
                     <div class="d-flex justify-space-between">
                         <div class="card-left">
                             <div class="event-header">

@@ -40,7 +40,7 @@ jQuery(function ($) {
         // options
         itemSelector: '.grid-item',
         // columnWidth: 50,
-        // gutter: 8
+        // gutter: 12
     });
 
 });

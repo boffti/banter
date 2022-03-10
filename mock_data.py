@@ -31,20 +31,22 @@ billboard = [
     #     "img_url":"https://res.cloudinary.com/dtvhyzofv/image/upload/v1646943323/banter/billboard/baohong-yuan-portrait-new_gwnezy.jpg",
     #     "date_posted": "2019-01-04"
     # },
-    # {
-    #     "id": 5,
-    #     "title": "UTA to test Dallas roads, evaluate the remaining service life",
-    #     "content": "A University of Texas at Arlington civil engineering professor is leading a $949,000 project with the city of Dallas to evaluate its roads and determine remaining service life. Ali Abolmaali, chair of the Civil Engineering Department and the Tseng Huang Endowed Professor of structural and applied mechanics, said he and his team will evaluate three test pavement strips in the city of Dallas.",
-    #     "author": "Herb Booth",
-    #     "date_posted": "2019-01-05"
-    # },
-    # {
-    #     "id": 6,
-    #     "title": "Malware research will create more secure online environment",
-    #     "content": "A University of Texas at Arlington computer scientist is using a three-year grant worth nearly $500,000 from the National Science Foundation to create virtual “sandbox” environments that allow computer security professionals to analyze Android malware without being detected by the code or its creators.",
-    #     "author": "Herb Booth",
-    #     "date_posted": "2019-01-06"
-    # },
+    {
+        "id": 5,
+        "title": "UTA to test Dallas roads, evaluate the remaining service life",
+        "content": "A University of Texas at Arlington civil engineering professor is leading a $949,000 project with the city of Dallas to evaluate its roads and determine remaining service life. Ali Abolmaali, chair of the Civil Engineering Department and the Tseng Huang Endowed Professor of structural and applied mechanics, said he and his team will evaluate three test pavement strips in the city of Dallas.",
+        "author": "Herb Booth",
+        "img_url":"https://res.cloudinary.com/dtvhyzofv/image/upload/v1646954123/banter/billboard/apf-old-img1_e8nwgt.jpg",
+        "date_posted": "2019-01-05"
+    },
+    {
+        "id": 6,
+        "title": "Malware research will create more secure online environment",
+        "content": "A University of Texas at Arlington computer scientist is using a three-year grant worth nearly $500,000 from the National Science Foundation to create virtual “sandbox” environments that allow computer security professionals to analyze Android malware without being detected by the code or its creators.",
+        "author": "Herb Booth",
+        "img_url": "https://res.cloudinary.com/dtvhyzofv/image/upload/v1646954224/banter/billboard/jiang-ming_otgmsr.jpg",
+        "date_posted": "2019-01-06"
+    },
     # {
     #     "id": 7,
     #     "title": "UTA recognized for composting, reducing food waste",
