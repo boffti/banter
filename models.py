@@ -33,6 +33,7 @@ class Student(db.Model):
     password = db.Column(db.String)
     bio = db.Column(db.String)
     dob = db.Column(db.String)
+    dp = db.Column(db.String)
     school_id = db.Column(db.String, db.ForeignKey('school.id'))
 
     school = db.relationship('School', back_populates='student')
@@ -54,6 +55,7 @@ class Student(db.Model):
             'name': self.name,
             'bio': self.bio,
             'dob': self.dob,
+            'dp': self.dp,
             'school_id': self.school_id,
             'school': self.school.format()
         }

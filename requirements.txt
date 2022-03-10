@@ -8,3 +8,5 @@ flask_admin
 pandas
 pymysql
 pytest
+passlib
+cloudinary

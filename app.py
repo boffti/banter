@@ -6,9 +6,13 @@ import json
 from models import Student, School, Admin, db_init, Event
 from passlib.hash import pbkdf2_sha256 as sha256
 from mock_data import billboard, events, clubs
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'super secret key'
+app.secret_key = os.getenv('SECRET_KEY')
 db = db_init(app)
 
 @app.route('/')
@@ -48,7 +52,7 @@ def register_user():
                     flash('Invalid School ID!')
                     return redirect(url_for('register'))
                 else:
-                    new_user = Student(id=school_id, name=name, password=sha256.hash(password), bio='', dob='', school_id=school.id)
+                    new_user = Student(id=school_id, name=name, password=sha256.hash(password), bio='Awesome Student', dob='Made in China', school_id=school.id, dp='user.png')
                     new_user.insert()
                     session['user'] = new_user.format()
                     return redirect(url_for('login_page'))
@@ -98,6 +102,27 @@ def profile():
     else:
         return render_template('user/profile.html')
 
+@app.route('/update-dp', methods=['POST'])
+def update_dp():
+    dp = request.files['file']
+    if dp.filename != '':
+        file_name = f'{session["user"]["id"]}.jpg'
+        user_id = session['user']['id']
+        user = Student.query.filter_by(id=user_id).first()
+        user.dp = file_name
+        user.update()
+        dp.save(f'static/images/dp/{file_name}')
+        session['user'] = user.format()
+        return '1'
+    else:
+        return '0'
+
+@app.route('/update-profile', methods=['POST'])
+def update_profile():
+    data = request.form.to_dict()
+    print(data)
+    return 'pass'
+
 # Schools dropdown route
 @app.route('/schools')
 def getSchools():
@@ -110,6 +135,7 @@ def test():
     students = Student.query.all()
     studentResponse = [student.format() for student in students]
     return json.dumps(studentResponse)
+
 
 @app.route('/events')
 def getEvents():
@@ -138,6 +164,14 @@ def insertEvent():
     new_event=Event(name=name,description=description,location=location,date_time=date_time,school_id=school,student_id=student)
     new_event.insert()
     return redirect(url_for('getEvents'))
+
+@app.route('/session')
+def get_session():
+    if 'user' in session:
+        return session.get('user')
+    else:
+        'nothing in session'
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000, debug=True)

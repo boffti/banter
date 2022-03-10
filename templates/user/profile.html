@@ -16,13 +16,14 @@ Banter | Profile
                 <div class="card" style="height: fit-content; width:100%; border-top: 4px var(--accent-color) solid;">
                     <div class="flex-center">
                         <div class="profile-img-container">
-                            <img id="profileIMG" src=""
-                                alt="profile" class="" style="width: 200px; border-radius: 100px;">
+                            <img id="profileIMG" src="static/images/dp/{{ session['user']['dp'] }}" alt="profile"
+                                class="" style="width: 200px; border-radius: 100px;">
                             <div class="icon-change-image">
                                 <a id="changeDP" href="#">
                                     <i class="fas fa-pen"></i>
                                 </a>
                             </div>
+                            <input type="file" name="dp" id="inputChangeDP" style="display: none;">
                         </div>
                         <h2 id="" class="">{{ session['user']['name'] }}</h2>
                         <input type="file" name="dp" id="inputChangeDP" style="display: none;">
@@ -30,27 +31,145 @@ Banter | Profile
                 </div>
                 <div class="card" style="width: 100%;">
                     <div class="flex-left space-between">
-                        <h3>Your Details</h3>
-                        <a id="btnEditProfile" href="#"><i class="fas fa-edit"></i></a>
+                        <h4>Your Details</h3>
+                            <a id="btnEditProfile" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
+                                    class="fas fa-edit"></i></a>
                     </div>
                     <br>
                     <div class="flex-column" style="align-items: flex-start;">
-                        <span class="flex"><i class="fas fa-user" style="margin-right: 12px;"></i>
-                            <p class="strong">{{ session['user']['name'] }}</p>
+                        <span class="flex user-detail"><i class="fas fa-user" style="margin-right: 12px;"></i>
+                            <span class="strong">{{ session['user']['name'] }}</span>
                         </span>
-                        <span class="flex"><i class="fas fa-map-marker-alt" style="margin-right: 12px;"></i>
-                            <p class=" strong">{{ session['user']['bio'] }}</p>
+                        <span class="flex user-detail"><i class="fas fa-pen-nib" style="margin-right: 12px;"></i>
+                            <span class=" strong">{{ session['user']['bio'] }}</span>
                         </span>
-                        <span class="flex"><i class="fas fa-birthday-cake" style="margin-right: 12px;"></i>
-                            <p class="strong">{{ session['user']['dob'] }}</p>
+                        <span class="flex user-detail"><i class="fas fa-birthday-cake" style="margin-right: 12px;"></i>
+                            <span class="strong">{{ session['user']['dob'] }}</span>
                         </span>
                     </div>
                 </div>
             </div>
+            <section>
+                <h2>Posts</h3>
+                    <div class="posts">
+                        <div class="card post">
+                            <div class="flex-left">
+                                <div class="full-width">
+                                    <div class="flex-left space-between align-items-center">
+                                        <p class="post-date">12/12/2020</p>
+                                    </div>
+                                    <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                        Expedita laboriosam dolores a ipsum obcaecati cum amet, architecto repellendus
+                                        at tenetur labore aspernatur enim veritatis, cumque perspiciatis ab in? Nobis,
+                                        unde.</p>
+                                </div>
+                                <div class="flex tip-footer" style="gap: 10px; ">
+                                    <a href="#" style="margin: 0;"><i class="fas fa-trash-alt"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card post">
+                            <div class="flex-left">
+                                <div class="full-width">
+                                    <div class="flex-left space-between align-items-center">
+                                        <p class="post-date">12/12/2020</p>
+                                    </div>
+                                    <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                        Expedita laboriosam dolores a ipsum obcaecati cum amet, architecto repellendus
+                                        at tenetur labore aspernatur enim veritatis, cumque perspiciatis ab in? Nobis,
+                                        unde.</p>
+                                </div>
+                                <div class="flex tip-footer" style="gap: 10px; ">
+                                    <a href="#" style="margin: 0;"><i class="fas fa-trash-alt"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card post">
+                            <div class="flex-left">
+                                <div class="full-width">
+                                    <div class="flex-left space-between align-items-center">
+                                        <p class="post-date">12/12/2020</p>
+                                    </div>
+                                    <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                        Expedita laboriosam dolores a ipsum obcaecati cum amet, architecto repellendus
+                                        at tenetur labore aspernatur enim veritatis, cumque perspiciatis ab in? Nobis,
+                                        unde.</p>
+                                </div>
+                                <div class="flex tip-footer" style="gap: 10px; ">
+                                    <a href="#" style="margin: 0;"><i class="fas fa-trash-alt"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="profile-edit-modal">
+    <div class="modal-header flex-left space-between" style="align-items: center;">
+        <p style="margin-left: 12px;">Edit your deets</p>
+        <a href="#" class="cancel" style="float: right;">x</a>
+    </div>
+    <div class="modal-content" style="align-items:center;">
+        <form action="#" method="post" class="flex-center" style="gap: 12px;">
+            <div class="flex-left">
+                <input type="text" name="name" placeholder="Name" value="{{ session['user']['name'] }}">
+            </div>
+            <div class="flex-left">
+            </div>
+            <div class="flex-left">
+                <input type="text" name="bio" placeholder="Bio" value="{{ session['user']['bio'] }}">
+            </div>
             <div>
-                Right content TODO
+                <button class="cancel btn btn-outline-secondary text-secondary">Cancel</button>
+                <button class="btn" type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit your deets</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/update-profile" method="post" style="gap: 12px;">
+                    <div class="mb-3">
+                        <label for="name-input" class="form-label">Name</label>
+                        <input name="name" type="text" class="form-control" id="name-input"
+                            placeholder="Aneesh Melkot"
+                            value="{{ session['user']['name'] }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="bio-input" class="form-label">Biography</label>
+                        <input name="bio" type="text" class="form-control" id="bio-input"
+                            placeholder="I am awesome"
+                            value="{{ session['user']['bio'] }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="dob-input" class="form-label">Date of Birth</label>
+                        <input name="dob" type="text" class="form-control" id="dob-input"
+                            placeholder="12/12/2000"
+                            value="{{ session['user']['dob'] }}">
+                    </div>
+                    <div>
+                        <button class="cancel btn btn-outline-secondary text-secondary">Cancel</button>
+                        <button class="btn" type="submit">Update</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+{% endblock %}
+
+    
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
 {% endblock %}

@@ -121,12 +121,12 @@ img {
     margin-right: 5px
 }
 
-.container {
+/* .container {
     margin-right: auto;
     margin-left: auto;
     overflow: auto;
     padding: 0 40px;
-}
+} */
 
 @media (max-width: 1200px) {
     .navbar {
@@ -1041,7 +1041,7 @@ table {
     border-spacing: 20px 0;
 }
 
-.modal {
+/* .modal {
     display: none;
     top: 100px;
     left: 30%;
@@ -1094,7 +1094,7 @@ table {
 
 .modal-content {
     padding: 20px;
-}
+} */
 
 @keyframes fadeIn_Modal {
     from {
@@ -1206,18 +1206,18 @@ textarea::placeholder {
     border-top: 4px var(--secondary-color) solid;
 }
 
-.modal input {
+/* .modal input {
     border: 2px #e7e7e7 solid;
     border-radius: 50px;
     padding: 15px 15px;
     margin: 10px 5px;
     display: block;
     width: 100%;
-}
+} */
 
 .modal input:focus {
     outline: none;
-    border: 3px #E07A5F solid;
+    /* border: 3px #E07A5F solid; */
     border-radius: 50px;
 }
 
@@ -1273,6 +1273,8 @@ textarea::placeholder {
     border: 1px #ddd solid;
     padding: 20px;
     border-bottom: 4px var(--secondary-color) solid;
+    width: 500px;
+    margin-bottom: 25px;
 }
 
 .bb-title {
@@ -1357,7 +1359,7 @@ textarea::placeholder {
 .card-right {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding-right: 24px;
 }
@@ -1386,6 +1388,25 @@ textarea::placeholder {
     font-size: 1.2rem;
     font-family: 'Panton';
     margin-bottom: 0;
+}
+
+.user-detail {
+    margin-bottom: 8px;
+}
+.grid-item { width: 50%; }
+
+.card-left {
+    width: 70%;
+}
+
+.event-card:hover {
+    box-shadow: 1px 1px 10px 1px grey;
+    cursor: pointer;
+}
+
+#billboard-card:hover {
+    box-shadow: 1px 1px 10px 1px grey;
+    cursor: pointer;
 }
 
 /* @supports (display: grid) {
