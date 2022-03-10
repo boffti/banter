@@ -1400,9 +1400,14 @@ textarea::placeholder {
 }
 
 .event-card:hover {
-    box-shadow: 1px 1px 5px 1px blue;
+    box-shadow: 1px 1px 10px 1px grey;
     cursor: pointer;
 }
+
+#billboard-card:hover {
+    box-shadow: 1px 1px 10px 1px grey;
+    cursor: pointer;
+} 
 
 /* @supports (display: grid) {
 	.gallery {
