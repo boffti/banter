@@ -38,8 +38,7 @@ Banter | Home
                 {% for post in billboard %}
                 <div class="grid-item">
                     <div class="card" style="padding: 0;">
-                        <img src="https://ww2.kqed.org/app/uploads/sites/23/2015/05/Beard-Algorithm-1440x811.jpg"
-                            class="card-img-top" alt="..." style="border-radius: 10px;">
+                        <img src="{{ post.img_url }}" class="card-img-top" alt="..." style="border-radius: 10px;">
                         <div style="padding: 20px;">
                             <p class="bb-title">{{ post.title }}</p>
                             <p class="bb-content">{{ post.content }}</p>
