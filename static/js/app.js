@@ -36,4 +36,11 @@ jQuery(function ($) {
         }
     });
 
+    $('.grid').masonry({
+        // options
+        itemSelector: '.grid-item',
+        // columnWidth: 50,
+        // gutter: 8
+    });
+
 });

@@ -50,7 +50,7 @@ def register_user():
                     flash('Invalid School ID!')
                     return redirect(url_for('register'))
                 else:
-                    new_user = Student(id=school_id, name=name, password=sha256.hash(password), bio='', dob='', school_id=school.id, dp='user.png')
+                    new_user = Student(id=school_id, name=name, password=sha256.hash(password), bio='Awesome Student', dob='Made in China', school_id=school.id, dp='user.png')
                     new_user.insert()
                     session['user'] = new_user.format()
                     return redirect(url_for('login_page'))
@@ -115,8 +115,10 @@ def update_dp():
     else:
         return '0'
 
-@app.route('/update-profile')
+@app.route('/update-profile', methods=['POST'])
 def update_profile():
+    data = request.form.to_dict()
+    print(data)
     return 'pass'
 
 # Schools dropdown route

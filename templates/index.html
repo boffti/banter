@@ -26,39 +26,45 @@ Banter | Home
         </form>
     </div>
 </section>
-<div class="container">
+<div class="container-xxl p-5">
     <div class="content">
 
         <section style="margin-bottom:16px">
-            <h2>Billboard</h2>
-            <div class="flex" style="gap:12px; flex-wrap: wrap;">
+            <div class="flex-left justify-content-between align-items-center">
+                <h2>Billboard</h2>
+                <a href="#">See More</a>
+            </div>
+            <div class="grid">
                 {% for post in billboard %}
-                <div class="bb-post-card" style="width:330px;">
-                    <div class="">
-                        <p class="bb-title">{{ post.title }}</p>
-                        <p class="bb-content">{{ post.content }}</p>
-                        <div class="bb-footer">
-                            <p class="bb-author">{{ post.author }}</p>
-                            <p class="bb-date">{{ post.date_posted }}</p>
+                <div class="grid-item">
+                    <div class="card" style="padding: 0;">
+                        <img src="https://ww2.kqed.org/app/uploads/sites/23/2015/05/Beard-Algorithm-1440x811.jpg"
+                            class="card-img-top" alt="..." style="border-radius: 10px;">
+                        <div style="padding: 20px;">
+                            <p class="bb-title">{{ post.title }}</p>
+                            <p class="bb-content">{{ post.content }}</p>
+                            <div class="bb-footer">
+                                <p class="bb-author">{{ post.author }}</p>
+                                <p class="bb-date">{{ post.date_posted }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-
                 {% endfor %}
             </div>
         </section>
 
         <section style="margin-bottom:16px; margin-top:30px">
             <h2>Events around you</h2>
-            <div class="flex" style="gap:12px; flex-wrap: wrap;">
+            <div class="d-flex" style="gap:12px; flex-wrap: wrap;">
                 {% for event in events %}
-                <div class="event-card" style="width:500px">
-                    <div class="flex space-between">
+                <a class="event-card" style="width: fit-content;">
+                    <div class="d-flex justify-space-between">
                         <div class="card-left">
                             <div class="event-header">
                                 <p class="event-title">{{ event.title }}</p>
                             </div>
-                            <p class="event-desc">{{ event.description }}</p>
+                            <!-- <p class="event-desc">{{ event.description }}</p> -->
                             <p class="event-location">{{ event.location }}</p>
                         </div>
                         <div class="card-right">
@@ -66,7 +72,7 @@ Banter | Home
                             <p class="event-time">10:00 AM</p>
                         </div>
                     </div>
-                </div>
+                </a>
                 {% endfor %}
             </div>
         </section>
@@ -88,4 +94,8 @@ Banter | Home
 
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
 {% endblock %}

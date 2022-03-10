@@ -121,12 +121,12 @@ img {
     margin-right: 5px
 }
 
-.container {
+/* .container {
     margin-right: auto;
     margin-left: auto;
     overflow: auto;
     padding: 0 40px;
-}
+} */
 
 @media (max-width: 1200px) {
     .navbar {
@@ -1273,6 +1273,8 @@ textarea::placeholder {
     border: 1px #ddd solid;
     padding: 20px;
     border-bottom: 4px var(--secondary-color) solid;
+    width: 500px;
+    margin-bottom: 25px;
 }
 
 .bb-title {
@@ -1357,7 +1359,7 @@ textarea::placeholder {
 .card-right {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding-right: 24px;
 }
@@ -1390,6 +1392,16 @@ textarea::placeholder {
 
 .user-detail {
     margin-bottom: 8px;
+}
+.grid-item { width: 50%; }
+
+.card-left {
+    width: 70%;
+}
+
+.event-card:hover {
+    box-shadow: 1px 1px 5px 1px blue;
+    cursor: pointer;
 }
 
 /* @supports (display: grid) {

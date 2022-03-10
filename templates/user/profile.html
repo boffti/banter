@@ -138,22 +138,22 @@ Banter | Profile
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="#" method="post" style="gap: 12px;">
+                <form action="/update-profile" method="post" style="gap: 12px;">
                     <div class="mb-3">
                         <label for="name-input" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name-input"
+                        <input name="name" type="text" class="form-control" id="name-input"
                             placeholder="Aneesh Melkot"
                             value="{{ session['user']['name'] }}">
                     </div>
                     <div class="mb-3">
                         <label for="bio-input" class="form-label">Biography</label>
-                        <input type="text" class="form-control" id="bio-input"
+                        <input name="bio" type="text" class="form-control" id="bio-input"
                             placeholder="I am awesome"
                             value="{{ session['user']['bio'] }}">
                     </div>
                     <div class="mb-3">
                         <label for="dob-input" class="form-label">Date of Birth</label>
-                        <input type="text" class="form-control" id="dob-input"
+                        <input name="dob" type="text" class="form-control" id="dob-input"
                             placeholder="12/12/2000"
                             value="{{ session['user']['dob'] }}">
                     </div>
