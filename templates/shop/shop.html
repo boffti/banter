@@ -1,0 +1,138 @@
+{% extends 'base_w_header.html' %}
+
+{% block title %}
+Banter | Home
+{% endblock %}
+
+{% block styles %}
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/new_styles.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="container-xl">
+        <!-- Page title -->
+        <div class="page-header d-print-none">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Shop
+                    </h2>
+                    <div class="text-muted mt-1">1-12 of 241 products</div>
+                </div>
+                <!-- Page title actions -->
+                <div class="col-12 col-md-auto ms-auto d-print-none">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <div class="input-icon">
+                                <input type="text" value="" class="form-control" placeholder="Search…">
+                                <span class="input-icon-addon">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <circle cx="10" cy="10" r="7"></circle>
+                                        <line x1="21" y1="21" x2="15" y2="15"></line>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-primary">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add product
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                {% for _ in range(20) %}
+                <div class="col-sm-6 col-lg-4">
+                    <div class="card card-sm">
+                        <a href="#" class="d-block"><img src="../../static/images/products/product.jpg"
+                                class="card-img-top"></a>
+                        <div class="card-body">
+                            <h3 class="card-title">Product Name</h3>
+                            <div class="d-flex align-items-center">
+                                <h1>$30</h2>
+                                <div class="ms-auto">
+                                    <a href="#" class="ms-3 text-muted">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-shopping-cart-plus" width="24"
+                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <circle cx="6" cy="19" r="2"></circle>
+                                            <circle cx="17" cy="19" r="2"></circle>
+                                            <path d="M17 17h-11v-14h-2"></path>
+                                            <path d="M6 5l6.005 .429m7.138 6.573l-.143 .998h-13"></path>
+                                            <path d="M15 6h6m-3 -3v6"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex flex-row">
+                            <span class="avatar me-3 rounded"
+                                style="background-image: url(./static/avatars/000m.jpg)"></span>
+                            <div>
+                                <div>Paweł Kuna</div>
+                                <div class="text-muted">3 days ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="d-flex">
+                    <ul class="pagination ms-auto">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <polyline points="15 6 9 12 15 18"></polyline>
+                                </svg>
+                                prev
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                next
+                                <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <polyline points="9 6 15 12 9 18"></polyline>
+                                </svg>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
+
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% endblock %}

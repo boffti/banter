@@ -121,6 +121,10 @@ def update_profile():
     print(data)
     return 'pass'
 
+@app.route('/shop')
+def get_shop_page():
+    return render_template('shop/shop.html')
+
 # Schools dropdown route
 @app.route('/schools')
 def getSchools():
