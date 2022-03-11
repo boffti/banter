@@ -1,12 +1,5 @@
-.event-date-wrapper {
-    display: 'flex';
-    flex-direction: 'column';
-    justify-content: 'center';
-    align-items: 'center';
-}
-
 .event-date {
-    font-size: 1.8em;
+    font-size: 1.5em;
     font-weight: bold;
     color: #000;
 }
