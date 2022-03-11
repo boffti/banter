@@ -140,7 +140,9 @@ def test():
 @app.route('/events')
 def getEvents():
     events = Event.query.all()
-    
+    for e in events:
+        e.date_time=e.date_time.strftime("%b %d")
+        
     return render_template('event.html',events=events)
 
 @app.route('/addevent')
