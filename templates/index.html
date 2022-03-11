@@ -6,6 +6,7 @@ Banter | Home
 
 {% block styles %}
 <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/new_styles.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -114,39 +115,93 @@ Banter | Home
         </section>
 
         <section style="margin-bottom:16px; margin-top:30px">
-            <h2>Events around you</h2>
-            <div class="d-flex" style="gap:12px; flex-wrap: wrap;">
-                {% for event in events %}
-                <a class="card" style="width: fit-content;">
-                    <div class="d-flex justify-space-between">
-                        <div class="card-left">
-                            <div class="event-header">
-                                <p class="event-title">{{ event.title }}</p>
-                            </div>
-                            <!-- <p class="event-desc">{{ event.description }}</p> -->
-                            <p class="event-location">{{ event.location }}</p>
-                        </div>
-                        <div class="card-right">
-                            <p class="event-date">Mar 23</p>
-                            <p class="event-time">10:00 AM</p>
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h2 class="page-title">
+                            Events around you
+                        </h2>
+                    </div>
+                    <div class="col-auto ms-auto">
+                        <div class="btn-list">
+                            <span class="d-none d-sm-inline">
+                            </span>
+                            <button class="btn btn-outline-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                                data-bs-target="#modal-report">
+                                Create new event
+                            </button>
                         </div>
                     </div>
-                </a>
+                </div>
+            </div>
+            <div class="grid">
+                {% for event in events %}
+                <div class="col-lg-4 grid-item px-2 py-2">
+                    <div class="card card-link d-flex flex-column">
+                        <div class="card-status-bottom bg-blue"></div>
+                        <div class="row row-0 flex-fill">
+                            <div class="col-md-3 d-flex flex-column justify-content-center align-items-center">
+                                <p class="event-date">Mar 23</p>
+                                <p class="event-time">10:00 AM</p>
+                            </div>
+                            <div class="col">
+                                <div class="card-body">
+                                    <h3 class="card-title"><a href="#">{{ event.title }}</a></h3>
+                                    <div class="text-muted">{{ event.description }}</div>
+                                    <div class="d-flex align-items-center pt-4 mt-auto">
+                                        <span class="avatar" style="background-image: url(...)"></span>
+                                        <div class="ms-3">
+                                            <a href="#" class="text-body">Egan Poetz</a>
+                                            <div class="text-muted">3 days ago</div>
+                                        </div>
+                                        <div class="ms-auto">
+                                            <a href="#" class="icon d-none d-md-inline-block ms-3 text-red">
+                                                <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
+                                                <!-- SVG icon code -->
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {% endfor %}
             </div>
         </section>
 
         <section style="margin-bottom:16px; margin-top:30px">
-            <h2>Cool clubs on campus</h2>
-            <div style="gap:12px; display:flex; flex-wrap: wrap; align-items:flex-start">
-                {% for club in clubs %}
-                <div class="club-card">
-                    <div class="card-text">
-                        <p class="club-title">{{ club.name }}</p>
-                        <p class="club-desc">{{ club.description }}</p>
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h2 class="page-title">
+                            Cool clubs on Campus
+                        </h2>
+                    </div>
+                    <div class="col-auto ms-auto">
+                        <div class="btn-list">
+                            <span class="d-none d-sm-inline">
+                            </span>
+                            <button class="btn btn-outline-primary d-none d-sm-inline-block" data-bs-toggle="modal"
+                                data-bs-target="#modal-report">
+                                Create new club
+                            </button>
+                        </div>
                     </div>
                 </div>
-
+            </div>
+            <div class="grid">
+                {% for club in clubs %}
+                <div class="col-lg-4 grid-item px-2 py-2">
+                    <div class="card">
+                        <div class="card-img-top img-responsive img-responsive-21x9" style="background-image: url({{ club.img_url }})">
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">{{ club.name }}</h3>
+                            <p class="text-muted">{{ club.description }}</p>
+                        </div>
+                    </div>
+                </div>
                 {% endfor %}
             </div>
         </section>

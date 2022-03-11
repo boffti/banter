@@ -1,0 +1,17 @@
+.event-date-wrapper {
+    display: 'flex';
+    flex-direction: 'column';
+    justify-content: 'center';
+    align-items: 'center';
+}
+
+.event-date {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #000;
+}
+
+.event-time {
+    font-size: 1.2em;
+    color: #000;
+}
