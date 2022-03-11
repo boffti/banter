@@ -38,27 +38,25 @@ Banter | Home
                                 <h3>You are at The University of Texas at Arlington.</h3>
                             </div>
                             <div class="mt-3">
-                                <form class="" action="#" method="post" style="width:100%;">
-                                    <div class="row">
-                                        <div class="col-lg-8">
-                                            <div class="input-icon mb-3">
-                                                <input type="text" value="" class="form-control" placeholder="Search…">
-                                                <span class="input-icon-addon">
-                                                    <!-- Download SVG icon from http://tabler-icons.io/i/search -->
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                        height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                        stroke="currentColor" fill="none" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <circle cx="10" cy="10" r="7"></circle>
-                                                        <line x1="21" y1="21" x2="15" y2="15"></line>
-                                                    </svg>
-                                                </span>
-                                            </div>
+                                <form action="#" method="post">
+                                    <div class="d-flex flex-row justify-content-center align-items-center"
+                                        style="gap: 12px;">
+                                        <div class="input-icon">
+                                            <input style="width: 500px" type="text" value="" class="form-control"
+                                                placeholder="Search…">
+                                            <span class="input-icon-addon">
+                                                <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <circle cx="10" cy="10" r="7"></circle>
+                                                    <line x1="21" y1="21" x2="15" y2="15"></line>
+                                                </svg>
+                                            </span>
                                         </div>
-                                        <div class="col-lg-4">
-                                            <input type="submit" class="btn btn-primary" value="Search Now" />
-                                        </div>
+                                        <input type="submit" class="btn btn-primary" value="Search Now" />
                                     </div>
                                 </form>
                             </div>
@@ -67,33 +65,6 @@ Banter | Home
                 </div>
             </div>
         </div>
-        <!-- <div class="d-flex flex-column justify-content-center align-items-center">
-            <h1>Welcome to Banter.</h1>
-            <h2>You are at The University of Texas at Arlington.</h2>
-        </div>
-        <br>
-        <form class="" action="#" method="post" style="width:100%;">
-            <div class="row offset-lg-2">
-                <div class="col-lg-8">
-                    <div class="input-icon mb-3">
-                        <input type="text" value="" class="form-control" placeholder="Search…">
-                        <span class="input-icon-addon">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <circle cx="10" cy="10" r="7"></circle>
-                                <line x1="21" y1="21" x2="15" y2="15"></line>
-                            </svg>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <input type="submit" class="btn btn-primary" value="Search Now" />
-                </div>
-            </div>
-        </form> -->
-
     </div>
 </section>
 <br>
@@ -147,19 +118,6 @@ Banter | Home
                         </div>
                     </div>
                 </div>
-                <!-- <div class="grid-item">
-                    <div id="billboard-card" class="card" style="padding: 0;">
-                        <img src="{{ post.img_url }}" class="card-img-top" alt="..." style="border-radius: 10px;">
-                        <div style="padding: 20px;">
-                            <p class="bb-title">{{ post.title }}</p>
-                            <p class="bb-content">{{ post.content }}</p>
-                            <div class="bb-footer">
-                                <p class="bb-author">{{ post.author }}</p>
-                                <p class="bb-date">{{ post.date_posted }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
                 {% endfor %}
             </div>
         </section>
@@ -199,9 +157,10 @@ Banter | Home
                                     <h3 class="card-title"><a href="#">{{ event.title }}</a></h3>
                                     <div class="text-muted">{{ event.description }}</div>
                                     <div class="d-flex align-items-center pt-4 mt-auto">
-                                        <span class="avatar" style="background-image: url(...)"></span>
+                                        <span class="avatar"
+                                            style="background-image: url(../static/images/dp/1001750503.jpg)"></span>
                                         <div class="ms-3">
-                                            <a href="#" class="text-body">Egan Poetz</a>
+                                            <a href="#" class="text-body">Aneesh Melkot</a>
                                             <div class="text-muted">3 days ago</div>
                                         </div>
                                         <div class="ms-auto">
