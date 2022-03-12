@@ -40,7 +40,7 @@ Banter | Home
                                 </span>
                             </div>
                         </div>
-                        <a href="#" class="btn btn-primary">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-product">
                             <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -50,7 +50,7 @@ Banter | Home
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                             </svg>
                             Add product
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -62,27 +62,28 @@ Banter | Home
                 {% for _ in range(20) %}
                 <div class="col-sm-6 col-lg-4">
                     <div class="card card-sm">
-                        <a href="#" class="d-block"><img src="https://m.media-amazon.com/images/I/71vM54GzJ1L._AC_SL1000_.jpg"
+                        <a href="#" class="d-block"><img
+                                src="https://m.media-amazon.com/images/I/71vM54GzJ1L._AC_SL1000_.jpg"
                                 class="card-img-top"></a>
                         <div class="card-body">
                             <h3 class="card-title">Laptop Table</h3>
                             <div class="d-flex align-items-center">
                                 <h1>$30</h2>
-                                <div class="ms-auto">
-                                    <a href="#" class="ms-3 text-muted">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-shopping-cart-plus" width="24"
-                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <circle cx="6" cy="19" r="2"></circle>
-                                            <circle cx="17" cy="19" r="2"></circle>
-                                            <path d="M17 17h-11v-14h-2"></path>
-                                            <path d="M6 5l6.005 .429m7.138 6.573l-.143 .998h-13"></path>
-                                            <path d="M15 6h6m-3 -3v6"></path>
-                                        </svg>
-                                    </a>
-                                </div>
+                                    <div class="ms-auto">
+                                        <a href="#" class="ms-3 text-muted">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="icon icon-tabler icon-tabler-shopping-cart-plus" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <circle cx="6" cy="19" r="2"></circle>
+                                                <circle cx="17" cy="19" r="2"></circle>
+                                                <path d="M17 17h-11v-14h-2"></path>
+                                                <path d="M6 5l6.005 .429m7.138 6.573l-.143 .998h-13"></path>
+                                                <path d="M15 6h6m-3 -3v6"></path>
+                                            </svg>
+                                        </a>
+                                    </div>
                             </div>
                         </div>
                         <div class="card-footer d-flex flex-row">
@@ -132,6 +133,61 @@ Banter | Home
             </div>
         </div>
     </div>
+
+    <!-- Create Club Modal -->
+    <div class="modal modal-blur fade" id="modal-product" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <form class="modal-content" action="/create-club" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add new Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" name="name" placeholder="Type here...">
+                    </div>
+                    <div class="col-lg-12">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" rows="3"
+                            placeholder="Type here..."></textarea>
+                    </div>
+                    <div class="col-lg-12 mt-3">
+                        <label class="form-label">Price</label>
+                        <div class="input-group mb-2">
+                            <span class="input-group-text">
+                                $
+                            </span>
+                            <input type="text" class="form-control" placeholder="price" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-label">Product Image</div>
+                        <input name="file" type="file" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Product
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     {% endblock content %}
 
     {% block scripts %}
