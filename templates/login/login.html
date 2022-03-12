@@ -5,12 +5,91 @@ Banter : Login
 {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+<style>
+    body {
+        background: url("../../static/images/register_bg.jpg") no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 
-<div class="signup-page">
+<div class="page page-center">
+    <div class="container-tight py-4">
+        <div class="text-center mb-4">
+            <a href="." class="navbar-brand navbar-brand-autodark">
+                <h1>Banter</h1>
+            </a>
+        </div>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="container">
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                <strong>{{ message }}</strong>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <form class="card card-md" action="/login" method="post" autocomplete="off">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">Login to your account</h2>
+                <div class="mb-3">
+                    <label class="form-label">School ID</label>
+                    <input name="id" type="text" class="form-control" placeholder="100XXXXXXX">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">
+                        Password
+                        <span class="form-label-description">
+                            <a href="./forgot-password.html">I forgot password</a>
+                        </span>
+                    </label>
+                    <div class="input-group input-group-flat">
+                        <input name="pass" type="password" class="form-control" placeholder="Password"
+                            autocomplete="off">
+                        <span class="input-group-text">
+                            <a href="#" class="link-secondary" title="" data-bs-toggle="tooltip"
+                                data-bs-original-title="Show password">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <circle cx="12" cy="12" r="2"></circle>
+                                    <path
+                                        d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7">
+                                    </path>
+                                </svg>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label class="form-check">
+                        <input type="checkbox" class="form-check-input">
+                        <span class="form-check-label">Remember me on this device</span>
+                    </label>
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                </div>
+                <div class="text-center text-muted mt-4">
+                    Don't have account yet? <a href="/register" tabindex="-1">Sign up</a>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!-- <div class="signup-page">
     <div class="grid grid-2">
         <a href="#">
             <img class="signup-img" src="{{ url_for('static', filename='images/login_bg.jpg') }}" alt="">
@@ -31,22 +110,16 @@ Banter : Login
             <div class="card">
                 <div class="flex-vertical">
                     <h2 class="login-heading">Welcome to Banter</h2>
-                    <!-- <div id="typed">
-                        <p>Welcome to Banter</p>
-                        <p>Welcome to your best campus life</p>
-                    </div> -->
                     <p class="login-heading">Login to continue</p>
                 </div>
                 <form role="form" action="/login" method="post">
                     <div class="form-label-group">
-                        <input name="id" type="text" id="school_id" class="form-control"
-                            placeholder="School ID" required>
-                        <!-- <label for="email">E-Mail</label> -->
+                        <input name="id" type="text" id="school_id" class="form-control" placeholder="School ID"
+                            required>
                     </div>
                     <div class="form-label-group">
                         <input name="pass" type="password" id="inputPassword" class="form-control"
                             placeholder="Password" required>
-                        <!-- <label for="inputPassword">Password</label> -->
                     </div>
                     <br>
                     <button class="btn btn-lg btn-primary-w btn-block btn-login text-uppercase font-weight-bold mb-2"
@@ -55,13 +128,12 @@ Banter : Login
 
                     <div class="flex flex-vertical">
                         <p>Not registered yet? No problem! Let's get you started.</p>
-                        <a class="text-accent"
-                            href="/register">Create Account</a>
+                        <a class="text-accent" href="/register">Create Account</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 {% endblock %}
