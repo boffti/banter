@@ -136,6 +136,16 @@ def update_profile():
     print(data)
     return 'pass'
 
+# BillBoard Routes ------------------------------------------------------------
+@app.route('/billboard')
+def billboard_page():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    else:
+        return render_template('billboard/billboard.html', billboard=billboard)
+
+
+# Club Routes ---------------------------------------------------------------
 @app.route('/clubs')
 def club():
     return render_template('club/clubs.html', clubs=get_clubs())
@@ -166,6 +176,7 @@ def create_club():
         print(e)
         flash('Something went wrong!')
         return redirect(url_for('home'))
+# ----------------------------------------------------------------------------
 
 @app.route('/shop')
 def get_shop_page():
