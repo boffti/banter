@@ -5,33 +5,120 @@ Banter | Profile
 {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
 {% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="content">
-        <div class="flex-left">
-            <div class="flex-center">
-                <div class="card" style="height: fit-content; width:100%; border-top: 4px var(--accent-color) solid;">
-                    <div class="flex-center">
-                        <div class="profile-img-container">
-                            <img id="profileIMG" src="static/images/dp/{{ session['user']['dp'] }}" alt="profile"
-                                class="" style="width: 200px; border-radius: 100px;">
-                            <div class="icon-change-image">
-                                <a id="changeDP" href="#">
-                                    <i class="fas fa-pen"></i>
-                                </a>
-                            </div>
-                            <input type="file" name="dp" id="inputChangeDP" style="display: none;">
+        <br>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body p-4 text-center">
+                        <img id="profileIMG" src="static/images/dp/{{ session['user']['dp'] }}" alt="profile" class=""
+                            style="width: 200px; border-radius: 100px;">
+                        <h3 class="m-0 mb-1 mt-2"><a href="#">{{ session['user']['name'] }}</a></h3>
+                        <div class="mt-3">
+                            <span class="badge bg-purple-lt">Change DP</span>
                         </div>
-                        <h2 id="" class="">{{ session['user']['name'] }}</h2>
-                        <input type="file" name="dp" id="inputChangeDP" style="display: none;">
+                    </div>
+                    <!-- <div class="d-flex">
+                        <a href="#" class="card-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                                <polyline points="3 7 12 13 21 7"></polyline>
+                            </svg>
+                            Email</a>
+                        <a href="#" class="card-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path
+                                    d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2">
+                                </path>
+                            </svg>
+                            Call</a>
+                    </div> -->
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header d-flex flex-row justify-content-between">
+                        <h3 class="card-title">My Deets</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24"
+                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
+                            <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3"></path>
+                            <line x1="16" y1="5" x2="19" y2="8"></line>
+                        </svg>
+                    </div>
+                    <div class="list-group list-group-flush list-group-hoverable">
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user"
+                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                                    </svg>
+                                </div>
+                                <div class="col text-truncate">
+                                    <a href="#" class="text-reset d-block">{{ session['user']['name'] }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil"
+                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
+                                        <line x1="13.5" y1="6.5" x2="17.5" y2="10.5"></line>
+                                    </svg>
+                                </div>
+                                <div class="col">
+                                    <div class="d-block text-muted mt-n1">Lorem ipsum dolor sit amet
+                                        consectetur adipisicing elit. Porro dolorem nihil aperiam nesciunt cumque
+                                        blanditiis ducimus, libero accusantium, quasi eligendi esse ipsa, asperiores
+                                        similique voluptatum amet? Amet iure quod ipsum!</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-candle"
+                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M9 21h6v-9a1 1 0 0 0 -1 -1h-4a1 1 0 0 0 -1 1v9z"></path>
+                                        <path d="M12 3l1.465 1.638a2 2 0 1 1 -3.015 .099l1.55 -1.737z"></path>
+                                    </svg>
+                                </div>
+                                <div class="col text-truncate">
+                                    <a href="#" class="text-reset d-block">{{ session['user']['dob'] }}</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <!-- <br>
                 <div class="card" style="width: 100%;">
                     <div class="flex-left space-between">
-                        <h4>Your Details</h3>
+                        <h4>My Deets</h3>
                             <a id="btnEditProfile" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
                                     class="fas fa-edit"></i></a>
                     </div>
@@ -47,61 +134,205 @@ Banter | Profile
                             <span class="strong">{{ session['user']['dob'] }}</span>
                         </span>
                     </div>
-                </div>
+                </div> -->
             </div>
-            <section>
-                <h2>Posts</h3>
-                    <div class="posts">
-                        <div class="card post">
-                            <div class="flex-left">
-                                <div class="full-width">
-                                    <div class="flex-left space-between align-items-center">
-                                        <p class="post-date">12/12/2020</p>
-                                    </div>
-                                    <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                        Expedita laboriosam dolores a ipsum obcaecati cum amet, architecto repellendus
-                                        at tenetur labore aspernatur enim veritatis, cumque perspiciatis ab in? Nobis,
-                                        unde.</p>
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Billboard Posts</h3>
+                    </div>
+                    <div class="list-group list-group-flush list-group-hoverable">
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <a href="#" class="text-reset d-block">Post Title 1</a>
+                                    <div class="d-block text-muted mt-n1">Lorem ipsum dolor sit amet consectetur
+                                        adipisicing elit. Dolor aperiam omnis ex sint, nostrum nesciunt impedit
+                                        accusantium labore officiis non magnam officia voluptate provident, quibusdam
+                                        magni ducimus fuga dolore eum.</div>
                                 </div>
-                                <div class="flex tip-footer" style="gap: 10px; ">
-                                    <a href="#" style="margin: 0;"><i class="fas fa-trash-alt"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card post">
-                            <div class="flex-left">
-                                <div class="full-width">
-                                    <div class="flex-left space-between align-items-center">
-                                        <p class="post-date">12/12/2020</p>
-                                    </div>
-                                    <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                        Expedita laboriosam dolores a ipsum obcaecati cum amet, architecto repellendus
-                                        at tenetur labore aspernatur enim veritatis, cumque perspiciatis ab in? Nobis,
-                                        unde.</p>
-                                </div>
-                                <div class="flex tip-footer" style="gap: 10px; ">
-                                    <a href="#" style="margin: 0;"><i class="fas fa-trash-alt"></i></a>
+                                <div class="col-auto">
+                                    <a href="#" class="list-group-item-actions">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-trash" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <line x1="4" y1="7" x2="20" y2="7"></line>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                        </svg>
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                        <div class="card post">
-                            <div class="flex-left">
-                                <div class="full-width">
-                                    <div class="flex-left space-between align-items-center">
-                                        <p class="post-date">12/12/2020</p>
-                                    </div>
-                                    <p class="post-content">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                        Expedita laboriosam dolores a ipsum obcaecati cum amet, architecto repellendus
-                                        at tenetur labore aspernatur enim veritatis, cumque perspiciatis ab in? Nobis,
-                                        unde.</p>
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <a href="#" class="text-reset d-block">Post Title 2</a>
+                                    <div class="d-block text-muted mt-n1">Lorem ipsum dolor sit amet consectetur
+                                        adipisicing elit. Deleniti nostrum perspiciatis eaque esse consectetur quos
+                                        dolorem minima recusandae ex expedita, itaque temporibus repellendus assumenda,
+                                        nisi dicta vitae, eveniet tempora. Amet.</div>
                                 </div>
-                                <div class="flex tip-footer" style="gap: 10px; ">
-                                    <a href="#" style="margin: 0;"><i class="fas fa-trash-alt"></i></a>
+                                <div class="col-auto">
+                                    <a href="#" class="list-group-item-actions">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-trash" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <line x1="4" y1="7" x2="20" y2="7"></line>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <a href="#" class="text-reset d-block">Post Title 3</a>
+                                    <div class="d-block text-muted mt-n1">Lorem ipsum dolor, sit amet consectetur
+                                        adipisicing elit. Esse officia nam in deleniti, at animi possimus voluptas
+                                        aspernatur facilis explicabo consequuntur unde, non laboriosam asperiores. Id
+                                        dolor perspiciatis quisquam architecto.</div>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="#" class="list-group-item-actions">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-trash" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <line x1="4" y1="7" x2="20" y2="7"></line>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                        </svg>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-            </section>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Club Posts</h3>
+                    </div>
+                    <div class="list-group list-group-flush list-group-hoverable">
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <a href="#">
+                                        <span class="avatar"
+                                            style="background-image: url(./static/avatars/000m.jpg)"></span>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a href="#" class="text-reset d-block">Post Title 1</a>
+                                    <div class="d-block text-muted mt-n1">Lorem ipsum dolor sit amet
+                                        consectetur adipisicing elit. Eius laudantium quibusdam porro libero tenetur
+                                        temporibus, sed, natus hic odio eum at saepe debitis, autem vel dicta! Minima
+                                        illum itaque fuga?</div>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="#" class="list-group-item-actions">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-trash" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <line x1="4" y1="7" x2="20" y2="7"></line>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <a href="#">
+                                        <span class="avatar"
+                                            style="background-image: url(./static/avatars/000m.jpg)"></span>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a href="#" class="text-reset d-block">Post Title 2</a>
+                                    <div class="d-block text-muted mt-n1">Lorem ipsum, dolor sit amet consectetur
+                                        adipisicing elit. Facilis quo dolorem placeat blanditiis nesciunt minima nulla
+                                        repellat inventore, magni amet deleniti, voluptatum ipsam adipisci tempora
+                                        quidem odit aperiam. Similique, corrupti!</div>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="#" class="list-group-item-actions">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-trash" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <line x1="4" y1="7" x2="20" y2="7"></line>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <a href="#">
+                                        <span class="avatar"
+                                            style="background-image: url(./static/avatars/000m.jpg)"></span>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <a href="#" class="text-reset d-block">Post Title 3</a>
+                                    <div class="d-block text-muted mt-n1">Lorem ipsum dolor sit amet consectetur
+                                        adipisicing elit. Officia veniam nisi illum tempore in facilis voluptatibus sunt
+                                        culpa, nam sequi dolore, et ex pariatur aperiam nemo numquam beatae, ea magnam.
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="#" class="list-group-item-actions">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-trash" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <line x1="4" y1="7" x2="20" y2="7"></line>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -141,20 +372,17 @@ Banter | Profile
                 <form action="/update-profile" method="post" style="gap: 12px;">
                     <div class="mb-3">
                         <label for="name-input" class="form-label">Name</label>
-                        <input name="name" type="text" class="form-control" id="name-input"
-                            placeholder="Aneesh Melkot"
+                        <input name="name" type="text" class="form-control" id="name-input" placeholder="Aneesh Melkot"
                             value="{{ session['user']['name'] }}">
                     </div>
                     <div class="mb-3">
                         <label for="bio-input" class="form-label">Biography</label>
-                        <input name="bio" type="text" class="form-control" id="bio-input"
-                            placeholder="I am awesome"
+                        <input name="bio" type="text" class="form-control" id="bio-input" placeholder="I am awesome"
                             value="{{ session['user']['bio'] }}">
                     </div>
                     <div class="mb-3">
                         <label for="dob-input" class="form-label">Date of Birth</label>
-                        <input name="dob" type="text" class="form-control" id="dob-input"
-                            placeholder="12/12/2000"
+                        <input name="dob" type="text" class="form-control" id="dob-input" placeholder="12/12/2000"
                             value="{{ session['user']['dob'] }}">
                     </div>
                     <div>
@@ -169,7 +397,7 @@ Banter | Profile
 
 {% endblock %}
 
-    
+
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 {% endblock %}
