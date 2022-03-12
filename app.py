@@ -136,6 +136,18 @@ def update_profile():
     print(data)
     return 'pass'
 
+@app.route('/clubs')
+def club():
+    return render_template('club/clubs.html', clubs=get_clubs())
+
+@app.route('/clubs/<club_id>')
+def club_details(club_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    else:
+        club = Club.query.filter_by(id=club_id).first()
+        return render_template('club/club_detail.html', club=club)
+
 @app.route('/create-club', methods=['POST'])
 def create_club():
     data = request.form.to_dict()
@@ -154,14 +166,6 @@ def create_club():
         print(e)
         flash('Something went wrong!')
         return redirect(url_for('home'))
-
-@app.route('/clubs/<club_id>')
-def club_details(club_id):
-    if 'user' not in session:
-        return redirect(url_for('login_page'))
-    else:
-        club = Club.query.filter_by(id=club_id).first()
-        return render_template('club/club_detail.html', club=club)
 
 @app.route('/shop')
 def get_shop_page():
