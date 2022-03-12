@@ -1,0 +1,80 @@
+{% extends 'base_w_header.html' %}
+
+{% block title %}
+Banter | Home
+{% endblock %}
+
+{% block styles %}
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/new_styles.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <br>
+    <div class="card">
+        <div class="card-img-top img-responsive img-responsive-21x9" style="background-image: url({{ club.img_url }})">
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">{{ club.name }}</h3>
+            <p class="text-muted">{{ club.description }}</p>
+        </div>
+    </div>
+    <br>
+    
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Club Posts</h3>
+        </div>
+        <div class="list-group list-group-flush list-group-hoverable">
+            <!-- Template this -->
+            <div class="list-group-item">
+                <div class="row align-items-start">
+                    <div class="col-auto">
+                        <a href="#">
+                            <span class="avatar" style="background-image: url(./static/avatars/000m.jpg)"></span>
+                        </a>
+                    </div>
+                    <div class="col">
+                        <a href="#" class="text-reset d-block">Aneesh Melkot</a>
+                        <div class="d-block fw-bold text-truncate mt-n1">This club is super duper cool</div>
+                        <div>
+                            <p class="m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore obcaecati
+                                possimus iusto culpa voluptates fugit rerum quasi, ipsa, deserunt maiores aperiam ut.
+                                Quis veniam, dolor possimus blanditiis impedit cum.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Post Something</h3>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <div class="form-label">Title</div>
+                <input type="text" name="title" class="form-control">
+            </div>
+            <div class="mb-3">
+                <div class="form-label">Content</div>
+                <textarea name="content" class="form-control" rows="3" placeholder="Type here..."></textarea>
+            </div>
+            <div class="mt-2">
+                <a href="#" class="btn btn-primary w-100">
+                    Post
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

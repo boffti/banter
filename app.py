@@ -2,9 +2,11 @@ from unicodedata import name
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
                     session, url_for, send_file)
 import json
-from models import Student, School, Admin, db_init
+from models import Student, School, Admin, Club, db_init
 from passlib.hash import pbkdf2_sha256 as sha256
-from mock_data import billboard, events, clubs
+from mock_data import billboard, events
+import cloudinary
+import cloudinary.uploader as _cu
 from dotenv import load_dotenv
 import os
 
@@ -14,12 +16,25 @@ app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 db = db_init(app)
 
+CLUB_IMG_PATH = 'banter/club/'
+ALLOWED_TYPES = ['image/jpeg', 'image/png']
+
+cloudinary.config(
+    cloud_name = os.getenv('CLOUD_NAME'),
+    api_key = os.getenv('CLOUD_API_KEY'),
+    api_secret = os.getenv('CLOUD_API_SECRET')
+)
+
+def get_clubs():
+    clubs = Club.query.filter_by(school_id=session['user']['school_id']).all()
+    return clubs
+
 @app.route('/')
 def home():
     if 'user' not in session:
         return render_template('login/login.html')
     else:
-        return render_template('index.html', billboard=billboard, events=events, clubs=clubs)
+        return render_template('index.html', billboard=billboard, events=events, clubs=get_clubs())
 
 # Register Route GET
 @app.route('/register')
@@ -120,6 +135,33 @@ def update_profile():
     data = request.form.to_dict()
     print(data)
     return 'pass'
+
+@app.route('/create-club', methods=['POST'])
+def create_club():
+    data = request.form.to_dict()
+    file = request.files['file']
+    try:
+        # Uploading to cloudinary
+        if file.content_type not in ALLOWED_TYPES:
+            flash("Invalid image type. Please upload a jpeg or png image.")
+            return redirect(request.url)
+        res = _cu.upload(file.file, folder=CLUB_IMG_PATH)
+        club = Club(name=data['name'], description=data['description'], school_id=session['user']['school_id'], img_url=res['secure_url'])
+        club.insert()
+        flash('Club created successfully!')
+        return redirect(url_for('home'))
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(url_for('home'))
+
+@app.route('/clubs/<club_id>')
+def club_details(club_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    else:
+        club = Club.query.filter_by(id=club_id).first()
+        return render_template('club/club_detail.html', club=club)
 
 @app.route('/shop')
 def get_shop_page():

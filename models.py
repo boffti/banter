@@ -69,6 +69,7 @@ class School(db.Model):
     country = db.Column(db.String)
 
     student = db.relationship('Student', back_populates='school', uselist=False)
+    club = db.relationship('Club', back_populates='school', uselist=False)
 
     def insert(self):
         db.session.add(self)
@@ -107,3 +108,34 @@ class Admin(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+class Club(db.Model):
+    __tablename__ = 'club'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    description = db.Column(db.String)
+    img_url = db.Column(db.String)
+    school_id = db.Column(db.String, db.ForeignKey('school.id'))
+
+    school = db.relationship('School', back_populates='club')
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'img_url': self.img_url,
+            'school_id': self.school_id,
+            'school': self.school.format()
+        }
