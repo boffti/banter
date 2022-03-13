@@ -81,7 +81,6 @@ def register_user():
                 return redirect(url_for('register'))
     else:
         return redirect(url_for('home'))
-
 # Login Route GET
 @app.route('/login')
 def login_page():
@@ -114,6 +113,7 @@ def logout():
         session.pop('user')
     return redirect(url_for('login_page'))
 
+# Profile Routes ---------------------------------------------------------------
 @app.route('/profile')
 def profile():
     if 'user' not in session:
@@ -151,6 +151,7 @@ def update_profile():
     data = request.form.to_dict()
     print(data)
     return 'pass'
+# ------------------------------------------------------------------------------
 
 # BillBoard Routes ------------------------------------------------------------
 @app.route('/billboard')
@@ -159,7 +160,7 @@ def billboard_page():
         return redirect(url_for('login_page'))
     else:
         return render_template('billboard/billboard.html', billboard=get_billboard_posts())
-
+# ------------------------------------------------------------------------------
 
 # Club Routes ---------------------------------------------------------------
 @app.route('/clubs')
@@ -204,24 +205,13 @@ def add_club_post(club_id):
     return redirect(request.referrer)
 # ----------------------------------------------------------------------------
 
+# Shop Routes ---------------------------------------------------------------
 @app.route('/shop')
 def get_shop_page():
     return render_template('shop/shop.html')
+# ----------------------------------------------------------------------------
 
-# Schools dropdown route
-@app.route('/schools')
-def getSchools():
-    schools = School.query.all()
-    schoolsResponse = [school.format() for school in schools]
-    return json.dumps(schoolsResponse)
-
-@app.route('/test')
-def test():
-    students = Student.query.all()
-    studentResponse = [student.format() for student in students]
-    return json.dumps(studentResponse)
-
-
+# Event routes ---------------------------------------------------------------
 @app.route('/events')
 def getEvents():
     events = Event.query.all()
@@ -237,8 +227,6 @@ def addEvent():
     
     return render_template('addEvent.html',schools=schools,students=students)
 
-    
-
 @app.route('/insertevent' ,methods=['POST'])
 def insertEvent():
     name = request.form['name']
@@ -251,14 +239,27 @@ def insertEvent():
     new_event=Event(name=name,description=description,location=location,date_time=date_time,school_id=school,student_id=student)
     new_event.insert()
     return redirect(url_for('getEvents'))
+# ----------------------------------------------------------------------------
 
+# Schools dropdown route
+@app.route('/schools')
+def getSchools():
+    schools = School.query.all()
+    schoolsResponse = [school.format() for school in schools]
+    return json.dumps(schoolsResponse)
+
+@app.route('/test')
+def test():
+    students = Student.query.all()
+    studentResponse = [student.format() for student in students]
+    return json.dumps(studentResponse)
+    
 @app.route('/session')
 def get_session():
     if 'user' in session:
         return session.get('user')
     else:
         'nothing in session'
-
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000, debug=True)
