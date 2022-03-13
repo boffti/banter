@@ -17,6 +17,16 @@ Banter | Home
             <h1 id="welcome-string">Welcome to Banter</h1><span style="visibility:hidden;">|</span>
         </div>
         <p class="flex-vertical">Find your space on campus.</p> -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <br>
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
         <br>
         <div class="card card-md bg-primary-lt">
             <div class="card-stamp card-stamp-lg">
@@ -103,8 +113,7 @@ Banter | Home
                             <h3 class="card-title"><a href="#">{{ post.title }}</a></h3>
                             <div class="text-muted">{{ post.content }}</div>
                             <div class="d-flex align-items-center pt-4 mt-auto">
-                                <span class="avatar"
-                                    style="background-image: url({{ post.student.dp }})"></span>
+                                <span class="avatar" style="background-image: url({{ post.student.dp }})"></span>
                                 <div class="ms-3">
                                     <a href="#" class="text-body">{{ post.student.name }}</a>
                                     <div class="text-muted">3 days ago</div>
@@ -182,9 +191,10 @@ Banter | Home
                                             </div>
                                             <div class="d-flex flex-row align-items-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="icon icon-tabler icon-tabler-clock text-muted" width="24" height="24"
-                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    class="icon icon-tabler icon-tabler-clock text-muted" width="24"
+                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                                    stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                     <circle cx="12" cy="12" r="9"></circle>
                                                     <polyline points="12 7 12 12 15 15"></polyline>
