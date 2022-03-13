@@ -4,6 +4,7 @@ from flask import (Flask, flash, jsonify, redirect, render_template, request,
                     session, url_for, send_file)
 import json
 from models import Student, School, Admin, Club, BillboardPost, ClubPost, Event, db_init
+from random import sample
 from passlib.hash import pbkdf2_sha256 as sha256
 from mock_data import events
 import cloudinary
@@ -40,7 +41,7 @@ def home():
     if 'user' not in session:
         return render_template('login/login.html')
     else:
-        return render_template('index.html', billboard=get_billboard_posts(), events=events, clubs=get_clubs())
+        return render_template('index.html', billboard=get_billboard_posts(), events=events, clubs=sample(get_clubs(), 6))
 
 # Register Route GET
 @app.route('/register')
