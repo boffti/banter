@@ -21,33 +21,46 @@ Banter | {{ club.name }}
         </div>
     </div>
     <br>
-    
+
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Club Posts</h3>
         </div>
         <div class="list-group list-group-flush list-group-hoverable">
             <!-- Template this -->
+            {% if club_posts|length > 0 %}
+            {% for post in club_posts %}
             <div class="list-group-item">
                 <div class="row align-items-start">
                     <div class="col-auto">
                         <a href="#">
-                            <span class="avatar" style="background-image: url(./static/avatars/000m.jpg)"></span>
+                            <span class="avatar" style="background-image: url({{ post.student.dp }})"></span>
                         </a>
                     </div>
                     <div class="col">
-                        <a href="#" class="text-reset d-block">Aneesh Melkot</a>
-                        <div class="d-block fw-bold text-truncate mt-n1">This club is super duper cool</div>
+                        <a href="#" class="text-reset d-block">{{ post.student.name }}</a>
+                        <div class="d-block fw-bold text-truncate mt-n1">{{ post.title }}</div>
                         <div>
-                            <p class="m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi inventore obcaecati
-                                possimus iusto culpa voluptates fugit rerum quasi, ipsa, deserunt maiores aperiam ut.
-                                Quis veniam, dolor possimus blanditiis impedit cum.</p>
+                            <p class="m-0">{{ post.content }}</p>
                         </div>
                     </div>
-
                 </div>
             </div>
-
+            {% endfor %}
+            {% else %}
+            <div class="list-group-item">
+                <div class="row align-items-center">
+                    <div class="empty p-0">
+                        <div class="empty-img"><img src="{{ url_for('static', filename='images/empty.svg') }}" height="128" alt="">
+                        </div>
+                        <p class="empty-title">No messaages yet</p>
+                        <p class="empty-subtitle text-muted">
+                            Check back later or feel free to leave a message.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
     <br>

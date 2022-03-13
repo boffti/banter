@@ -38,7 +38,7 @@ class Student(db.Model):
 
     school = db.relationship('School', back_populates='student')
     billboard_post = db.relationship('BillboardPost', back_populates='student')
-    # club_posts = db.relationship('ClubPost', back_populates='student')
+    club_post = db.relationship('ClubPost', back_populates='student')
 
     def insert(self):
         db.session.add(self)
@@ -121,6 +121,7 @@ class Club(db.Model):
     school_id = db.Column(db.String, db.ForeignKey('school.id'))
 
     school = db.relationship('School', back_populates='club')
+    club_post = db.relationship('ClubPost', back_populates='club')
 
     def insert(self):
         db.session.add(self)
@@ -143,38 +144,38 @@ class Club(db.Model):
             'school': self.school.format()
         }
 
-# class ClubPost(db.Model):
-#     __tablename__ = 'club_post'
-#     id = db.Column(db.Integer, primary_key=True)
-#     title = db.Column(db.String)
-#     content = db.Column(db.String)
-#     club_id = db.Column(db.String, db.ForeignKey('club.id'))
-#     student_id = db.Column(db.String, db.ForeignKey('student.id'))
+class ClubPost(db.Model):
+    __tablename__ = 'club_post'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String)
+    content = db.Column(db.String)
+    club_id = db.Column(db.String, db.ForeignKey('club.id'))
+    student_id = db.Column(db.String, db.ForeignKey('student.id'))
 
-#     club = db.relationship('Club', back_populates='club_post')
-#     student = db.relationship('Student', back_populates='club_post')
+    club = db.relationship('Club', back_populates='club_post')
+    student = db.relationship('Student', back_populates='club_post')
 
-#     def insert(self):
-#         db.session.add(self)
-#         db.session.commit()
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
 
-#     def update(self):
-#         db.session.commit()
+    def update(self):
+        db.session.commit()
 
-#     def delete(self):
-#         db.session.delete(self)
-#         db.session.commit()
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
-#     def format(self):
-#         return {
-#             'id': self.id,
-#             'title': self.title,
-#             'content': self.content,
-#             'club_id': self.club_id,
-#             'club': self.club.format(),
-#             'student_id': self.student_id,
-#             'student': self.student.format()
-#         }
+    def format(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'content': self.content,
+            'club_id': self.club_id,
+            'club': self.club.format(),
+            'student_id': self.student_id,
+            'student': self.student.format()
+        }
 
 class BillboardPost(db.Model):
     __tablename__ = 'billboard_post'

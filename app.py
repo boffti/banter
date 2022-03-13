@@ -2,7 +2,7 @@ from unicodedata import name
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
                     session, url_for, send_file)
 import json
-from models import Student, School, Admin, Club, BillboardPost, db_init
+from models import Student, School, Admin, Club, BillboardPost, ClubPost, db_init
 from passlib.hash import pbkdf2_sha256 as sha256
 from mock_data import events
 import cloudinary
@@ -54,7 +54,6 @@ def register():
 @app.route('/register', methods=['POST'])
 def register_user():
     if 'user' not in session:
-        print(request.form)
         name = request.form['name']
         school_id = request.form['id']
         school = request.form['school']
@@ -120,7 +119,9 @@ def profile():
     else:
         billboard_posts = BillboardPost.query.filter_by(student_id=session['user']['id']).all()
         billboard_posts = [post.format() for post in billboard_posts]
-        return render_template('user/profile.html', billboard_posts=billboard_posts)
+        club_posts = ClubPost.query.filter_by(student_id=session['user']['id']).all()
+        club_posts = [post.format() for post in club_posts]
+        return render_template('user/profile.html', billboard_posts=billboard_posts, club_posts=club_posts)
 
 @app.route('/update-dp', methods=['POST'])
 def update_dp():
@@ -169,7 +170,9 @@ def club_details(club_id):
         return redirect(url_for('login_page'))
     else:
         club = Club.query.filter_by(id=club_id).first()
-        return render_template('club/club_detail.html', club=club)
+        club_posts = ClubPost.query.filter_by(club_id=club_id).all()
+        club_posts = [post.format() for post in club_posts]
+        return render_template('club/club_detail.html', club=club, club_posts=club_posts)
 
 @app.route('/create-club', methods=['POST'])
 def create_club():
@@ -189,6 +192,14 @@ def create_club():
         print(e)
         flash('Something went wrong!')
         return redirect(url_for('home'))
+
+@app.route('/club-post/<club_id>', methods=['POST'])
+def add_club_post(club_id):
+    data = request.form.to_dict()
+    club_post = ClubPost(title=data['title'], content=data['content'], club_id=club_id, student_id=session['user']['id'])
+    club_post.insert()
+    flash('Club post created successfully!')
+    return redirect(request.referrer)
 # ----------------------------------------------------------------------------
 
 @app.route('/shop')
