@@ -31,6 +31,7 @@ cloudinary.config(
     api_secret = os.getenv('CLOUD_API_SECRET')
 )
 
+# UTIL Functions --------------------------------------------------------------
 def get_clubs():
     clubs = Club.query.filter_by(school_id=session['user']['school_id']).all()
     return clubs
@@ -46,14 +47,18 @@ def get_events():
         e["date"] = e.get('date_time').strftime("%b %d")
         e["time"] = e.get('date_time').strftime("%I:%M %p")
     return events
+# -----------------------------------------------------------------------------
 
+# Home Route --------------------------------------------------------------
 @app.route('/')
 def home():
     if 'user' not in session:
         return render_template('login/login.html')
     else:
         return render_template('index.html', billboard=get_billboard_posts(), events=get_events(), clubs=sample(get_clubs(), 6))
+# -----------------------------------------------------------------------------
 
+# Login & Register Routes --------------------------------------------------------------
 # Register Route GET
 @app.route('/register')
 def register():
@@ -125,6 +130,7 @@ def logout():
     if 'user' in session:
         session.pop('user')
     return redirect(url_for('login_page'))
+# -----------------------------------------------------------------------------------
 
 # Profile Routes ---------------------------------------------------------------
 @app.route('/profile')
@@ -178,6 +184,16 @@ def billboard_page():
         return redirect(url_for('login_page'))
     else:
         return render_template('billboard/billboard.html', billboard=get_billboard_posts())
+
+@app.route('/billboard/post', methods=['POST'])
+def add_billboard_post():
+    # TODO - Create a billboard post
+    return redirect(request.referrer)
+
+@app.route('/billboard/post/<post_id>', methods=['DELETE'])
+def delete_billboard_post(post_id):
+    # TODO - Delete billboard post
+    return redirect(request.referrer)
 # ------------------------------------------------------------------------------
 
 # Club Routes ---------------------------------------------------------------
@@ -221,6 +237,11 @@ def add_club_post(club_id):
     club_post.insert()
     flash('Club post created successfully!')
     return redirect(request.referrer)
+
+@app.route('/club-post/<club_id>', methods=['DELETE'])
+def delete_club_post(club_id):
+    # TODO - Delete club post
+    return 'pass'
 # ----------------------------------------------------------------------------
 
 # Shop Routes ---------------------------------------------------------------
@@ -238,12 +259,17 @@ def events():
 @app.route('/events' ,methods=['POST'])
 def insertEvent():
     data = request.form.to_dict()
-    # 2022-03-17 05:30 pm
+    # Example - 2022-03-17 05:30 pm
     date_time = datetime.strptime(data['date'] + ' ' + data['time'] + ' ' + data['ampm'], '%Y-%m-%d %I:%M %p')
     event = Event(name=data['name'], description=data['description'], date_time=date_time, location=data['location'], student_id=session['user']['id'], school_id=session['user']['school_id'])
     event.insert()
     flash('Event created successfully!')
     return redirect(request.referrer)
+
+@app.route('/events/<event_id>', methods=['DELETE'])
+def delete_event(event_id):
+    # TODO - Delete event from database
+    return 'pass'
 # ----------------------------------------------------------------------------
 
 # Schools dropdown route
