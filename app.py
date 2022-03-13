@@ -20,6 +20,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 db = db_init(app)
 
+INIT_DP = "https://res.cloudinary.com/dtvhyzofv/image/upload/v1647144583/banter/dp/user_awjxuf.png"
 CLUB_IMG_PATH = 'banter/clubs/'
 DP_IMG_PATH = 'banter/dp/'
 ALLOWED_TYPES = ['image/jpeg', 'image/png']
@@ -68,7 +69,7 @@ def register_user():
     if 'user' not in session:
         name = request.form['name']
         school_id = request.form['id']
-        school = "UTA"
+        school = request.form['school']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
         if password != confirm_password:
@@ -81,10 +82,11 @@ def register_user():
                     flash('Invalid School ID!')
                     return redirect(url_for('register'))
                 else:
-                    new_user = Student(id=school_id, name=name, password=sha256.hash(password), bio='Awesome Student', dob='Made in China', school_id=school.id, dp='user.png')
+                    new_user = Student(id=school_id, name=name, password=sha256.hash(password), bio='Awesome Student', dob='Made in China', school_id=school.id, dp=INIT_DP)
                     new_user.insert()
                     session['user'] = new_user.format()
-                    return redirect(url_for('login_page'))
+                    flash("Welcome to your best campus life, {}!".format(session['user']['name']))
+                    return redirect(url_for('home'))
             except Exception as e:
                 print(f'Error ==> {e}')
                 flash('Something went wrong!')

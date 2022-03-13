@@ -8,7 +8,7 @@ Banter : Register
 <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
 <style>
     body {
-        background: url("../../static/images/login_bg.jpg") no-repeat center center fixed; 
+        background: url("../../static/images/login_bg.jpg") no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -26,19 +26,20 @@ Banter : Register
                 <h1>Banter</h1>
             </a>
         </div>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="container">
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                <strong>{{ message }}</strong>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
         <form class="card card-md" action="/register" method="post">
             <div class="card-body">
-                {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                {% for message in messages %}
-                <div class="container">
-                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                        <strong>{{ message }}</strong>
-                    </div>
-                </div>
-                {% endfor %}
-                {% endif %}
-                {% endwith %}
+
                 <h2 class="card-title text-center mb-4">Create new account</h2>
                 <div class="mb-3">
                     <label class="form-label">Name</label>
@@ -62,7 +63,8 @@ Banter : Register
                 <div class="mb-3">
                     <label class="form-label">Password</label>
                     <div class="input-group input-group-flat">
-                        <input name="password" type="password" class="form-control" placeholder="Password" autocomplete="off">
+                        <input name="password" type="password" class="form-control" placeholder="Password"
+                            autocomplete="off">
                         <span class="input-group-text">
                             <a href="#" class="link-secondary" title="" data-bs-toggle="tooltip"
                                 data-bs-original-title="Show password">
@@ -83,7 +85,8 @@ Banter : Register
                 <div class="mb-3">
                     <label class="form-label">Confirm Password</label>
                     <div class="input-group input-group-flat">
-                        <input name="confirm_password" type="password" class="form-control" placeholder="Re-Enter Password" autocomplete="off">
+                        <input name="confirm_password" type="password" class="form-control"
+                            placeholder="Re-Enter Password" autocomplete="off">
                         <span class="input-group-text">
                             <a href="#" class="link-secondary" title="" data-bs-toggle="tooltip"
                                 data-bs-original-title="Show password">
@@ -109,4 +112,8 @@ Banter : Register
     </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
 {% endblock %}
