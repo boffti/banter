@@ -272,6 +272,10 @@ def delete_event(event_id):
     return 'pass'
 # ----------------------------------------------------------------------------
 
+@app.route('/about')
+def about_page():
+    return render_template('other/about.html')
+
 # Schools dropdown route
 @app.route('/schools')
 def getSchools():
