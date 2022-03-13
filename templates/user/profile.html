@@ -139,9 +139,10 @@ Banter | Profile
                 <br>
                 <div class="card">
                     <div class="card-header d-flex flex-row justify-content-between">
-                        <h3 class="card-title">My Created Events</h3>
+                        <h3 class="card-title">Events</h3>
                     </div>
                     <div class="list-group list-group-flush list-group-hoverable">
+                        {% if events|length > 0 %}
                         {% for event in events %}
                         <div class="list-group-item">
                             <div class="row align-items-center">
@@ -203,6 +204,27 @@ Banter | Profile
                             </div>
                         </div>
                         {% endfor %}
+                        {% else %}
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="empty p-0">
+                                    <div class="empty-img"><img
+                                            src="{{ url_for('static', filename='images/empty_3.svg') }}" height="128"
+                                            alt="">
+                                    </div>
+                                    <p class="empty-title">You haven't created any events yet</p>
+                                    <p class="empty-subtitle text-muted">
+                                        Head to the Events page to create a new Event!
+                                    </p>
+                                    <div class="empty-action">
+                                        <a href="/events" class="btn btn-primary">
+                                            Events
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 <!-- <br>
@@ -263,7 +285,7 @@ Banter | Profile
                         {% else %}
                         <div class="list-group-item">
                             <div class="row align-items-center">
-                                <div class="empty p-0">
+                                <div class="empty p-4">
                                     <div class="empty-img"><img
                                             src="{{ url_for('static', filename='images/empty_2.svg') }}" height="128"
                                             alt="">
@@ -325,7 +347,7 @@ Banter | Profile
                         {% else %}
                         <div class="list-group-item">
                             <div class="row align-items-center">
-                                <div class="empty p-0">
+                                <div class="empty p-4">
                                     <div class="empty-img"><img
                                             src="{{ url_for('static', filename='images/empty.svg') }}" height="128"
                                             alt="">
