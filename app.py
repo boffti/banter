@@ -217,11 +217,10 @@ def get_shop_page():
 # Event routes ---------------------------------------------------------------
 @app.route('/events')
 def getEvents():
-    events = Event.query.all()
-    for e in events:
-        e.date_time=e.date_time.strftime("%b %d")
-        
-    return render_template('event.html',events=events)
+    # events = Event.query.all()
+    # for e in events:
+    #     e.date_time=e.date_time.strftime("%b %d")
+    return render_template('events/events.html',events=events)
 
 @app.route('/addevent')
 def addEvent():
