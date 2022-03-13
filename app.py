@@ -1,16 +1,19 @@
-from multiprocessing import Event
-from unicodedata import name
-from flask import (Flask, flash, jsonify, redirect, render_template, request,
-                    session, url_for, send_file)
 import json
-from models import Student, School, Admin, Club, BillboardPost, ClubPost, Event, db_init
+import os
+from multiprocessing import Event
 from random import sample
-from passlib.hash import pbkdf2_sha256 as sha256
-from mock_data import events
+from unicodedata import name
+
 import cloudinary
 import cloudinary.uploader as _cu
 from dotenv import load_dotenv
-import os
+from flask import (Flask, flash, jsonify, redirect, render_template, request,
+                   send_file, session, url_for)
+from passlib.hash import pbkdf2_sha256 as sha256
+
+from mock_data import events
+from models import (Admin, BillboardPost, Club, ClubPost, Event, School,
+                    Student, db_init)
 
 load_dotenv()
 
@@ -253,7 +256,7 @@ def test():
     students = Student.query.all()
     studentResponse = [student.format() for student in students]
     return json.dumps(studentResponse)
-    
+
 @app.route('/session')
 def get_session():
     if 'user' in session:
