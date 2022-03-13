@@ -49,8 +49,8 @@ Banter : Register
                     <input name="id" type="text" class="form-control" placeholder="Enter your School ID">
                 </div>
                 <div class="mb-3">
-                    <label name="school" class="form-label">School</label>
-                    <select class="form-select">
+                    <label class="form-label">School</label>
+                    <select name="school" class="form-select">
                         <option value="choose" disabled selected>Where do you study?</option>
                         {% if schools %}
                         {% for school in schools %}
