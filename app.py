@@ -1,8 +1,9 @@
+from multiprocessing import Event
 from unicodedata import name
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
                     session, url_for, send_file)
 import json
-from models import Student, School, Admin, Club, BillboardPost, ClubPost, db_init
+from models import Student, School, Admin, Club, BillboardPost, ClubPost, Event, db_init
 from passlib.hash import pbkdf2_sha256 as sha256
 from mock_data import events
 import cloudinary
@@ -56,7 +57,7 @@ def register_user():
     if 'user' not in session:
         name = request.form['name']
         school_id = request.form['id']
-        school = request.form['school']
+        school = "UTA"
         password = request.form['password']
         confirm_password = request.form['confirm_password']
         if password != confirm_password:
@@ -219,12 +220,44 @@ def test():
     studentResponse = [student.format() for student in students]
     return json.dumps(studentResponse)
 
+
+@app.route('/events')
+def getEvents():
+    events = Event.query.all()
+    for e in events:
+        e.date_time=e.date_time.strftime("%b %d")
+        
+    return render_template('event.html',events=events)
+
+@app.route('/addevent')
+def addEvent():
+    schools = [school.format() for school in School.query.all()]
+    students = [student.format() for student in Student.query.all()]
+    
+    return render_template('addEvent.html',schools=schools,students=students)
+
+    
+
+@app.route('/insertevent' ,methods=['POST'])
+def insertEvent():
+    name = request.form['name']
+    description = request.form['description']
+    location= request.form['location']
+    date_time=request.form['date_time']
+    school = request.form['school']
+    student = request.form['student']
+
+    new_event=Event(name=name,description=description,location=location,date_time=date_time,school_id=school,student_id=student)
+    new_event.insert()
+    return redirect(url_for('getEvents'))
+
 @app.route('/session')
 def get_session():
     if 'user' in session:
         return session.get('user')
     else:
         'nothing in session'
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000, debug=True)

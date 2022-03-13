@@ -1,0 +1,2 @@
+#DATABASE_PATH = 'mysql+pymysql://root@localhost/ase'
+#DATABASE_PATH = 'mysql+pymysql://dslgj06x844j7ruk:aarqeli6c7ifup4f@uyu7j8yohcwo35j3.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/n6ct589g7c4vkocu'

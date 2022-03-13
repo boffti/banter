@@ -143,6 +143,37 @@ class Club(db.Model):
             'school_id': self.school_id,
             'school': self.school.format()
         }
+class Event(db.Model):
+    __tablename__ = 'event'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    description = db.Column(db.String)
+    date_time = db.Column(db.DateTime)
+    location = db.Column(db.String)
+    school_id = db.Column(db.String, db.ForeignKey('school.id'))
+    student_id  = db.Column(db.String, db.ForeignKey('student.id'))
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'date_time': self.date_time,
+            'location': self.location,
+            'school_id': self.school_id,
+            'student_id': self.student_id
+        }
 
 class ClubPost(db.Model):
     __tablename__ = 'club_post'
