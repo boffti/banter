@@ -2,9 +2,9 @@ from unicodedata import name
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
                     session, url_for, send_file)
 import json
-from models import Student, School, Admin, Club, db_init
+from models import Student, School, Admin, Club, BillboardPost, db_init
 from passlib.hash import pbkdf2_sha256 as sha256
-from mock_data import billboard, events
+from mock_data import events
 import cloudinary
 import cloudinary.uploader as _cu
 from dotenv import load_dotenv
@@ -29,12 +29,16 @@ def get_clubs():
     clubs = Club.query.filter_by(school_id=session['user']['school_id']).all()
     return clubs
 
+def get_billboard_posts():
+    posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).all()
+    return posts
+
 @app.route('/')
 def home():
     if 'user' not in session:
         return render_template('login/login.html')
     else:
-        return render_template('index.html', billboard=billboard, events=events, clubs=get_clubs())
+        return render_template('index.html', billboard=get_billboard_posts(), events=events, clubs=get_clubs())
 
 # Register Route GET
 @app.route('/register')
@@ -113,7 +117,10 @@ def profile():
     if 'user' not in session:
         return redirect(url_for('login_page'))
     else:
-        return render_template('user/profile.html')
+        billboard_posts = BillboardPost.query.filter_by(student_id=session['user']['id']).all()
+        billboard_posts = [post.format() for post in billboard_posts]
+        print(billboard_posts)
+        return render_template('user/profile.html', billboard_posts=billboard_posts)
 
 @app.route('/update-dp', methods=['POST'])
 def update_dp():
@@ -142,7 +149,7 @@ def billboard_page():
     if 'user' not in session:
         return redirect(url_for('login_page'))
     else:
-        return render_template('billboard/billboard.html', billboard=billboard)
+        return render_template('billboard/billboard.html', billboard=get_billboard_posts())
 
 
 # Club Routes ---------------------------------------------------------------

@@ -37,6 +37,8 @@ class Student(db.Model):
     school_id = db.Column(db.String, db.ForeignKey('school.id'))
 
     school = db.relationship('School', back_populates='student')
+    billboard_post = db.relationship('BillboardPost', back_populates='student')
+    # club_posts = db.relationship('ClubPost', back_populates='student')
 
     def insert(self):
         db.session.add(self)
@@ -70,6 +72,7 @@ class School(db.Model):
 
     student = db.relationship('Student', back_populates='school', uselist=False)
     club = db.relationship('Club', back_populates='school', uselist=False)
+    billboard_post = db.relationship('BillboardPost', back_populates='school')
 
     def insert(self):
         db.session.add(self)
@@ -138,4 +141,71 @@ class Club(db.Model):
             'img_url': self.img_url,
             'school_id': self.school_id,
             'school': self.school.format()
+        }
+
+# class ClubPost(db.Model):
+#     __tablename__ = 'club_post'
+#     id = db.Column(db.Integer, primary_key=True)
+#     title = db.Column(db.String)
+#     content = db.Column(db.String)
+#     club_id = db.Column(db.String, db.ForeignKey('club.id'))
+#     student_id = db.Column(db.String, db.ForeignKey('student.id'))
+
+#     club = db.relationship('Club', back_populates='club_post')
+#     student = db.relationship('Student', back_populates='club_post')
+
+#     def insert(self):
+#         db.session.add(self)
+#         db.session.commit()
+
+#     def update(self):
+#         db.session.commit()
+
+#     def delete(self):
+#         db.session.delete(self)
+#         db.session.commit()
+
+#     def format(self):
+#         return {
+#             'id': self.id,
+#             'title': self.title,
+#             'content': self.content,
+#             'club_id': self.club_id,
+#             'club': self.club.format(),
+#             'student_id': self.student_id,
+#             'student': self.student.format()
+#         }
+
+class BillboardPost(db.Model):
+    __tablename__ = 'billboard_post'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String)
+    content = db.Column(db.String)
+    img_url = db.Column(db.String)
+    school_id = db.Column(db.String, db.ForeignKey('school.id'))
+    student_id = db.Column(db.String, db.ForeignKey('student.id'))
+
+    school = db.relationship('School', back_populates='billboard_post')
+    student = db.relationship('Student', back_populates='billboard_post')
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'content': self.content,
+            'img_url': self.img_url,
+            'school_id': self.school_id,
+            'student_id': self.student_id,
+            'student': self.student.format()
         }
