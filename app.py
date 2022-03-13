@@ -82,7 +82,7 @@ def register_user():
                     flash('Invalid School ID!')
                     return redirect(url_for('register'))
                 else:
-                    new_user = Student(id=school_id, name=name, password=sha256.hash(password), bio='Awesome Student', dob='Made in China', school_id=school.id, dp=INIT_DP)
+                    new_user = Student(id=school_id, name=name, password=sha256.hash(password), bio='Awesome Student', dob='', school_id=school.id, dp=INIT_DP)
                     new_user.insert()
                     session['user'] = new_user.format()
                     flash("Welcome to your best campus life, {}!".format(session['user']['name']))
