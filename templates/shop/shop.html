@@ -88,9 +88,9 @@ Banter | Shop
                         </div>
                         <div class="card-footer d-flex flex-row">
                             <span class="avatar me-3 rounded"
-                                style="background-image: url(../../static/images/dp/1001750503.jpg)"></span>
+                                style="background-image: url({{ session['user']['dp'] }})"></span>
                             <div>
-                                <div>Aneesh Melkot</div>
+                                <div>{{ session['user']['name'] }}</div>
                                 <div class="text-muted">3 days ago</div>
                             </div>
                         </div>
