@@ -16,7 +16,8 @@ app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 db = db_init(app)
 
-CLUB_IMG_PATH = 'banter/club/'
+CLUB_IMG_PATH = 'banter/clubs/'
+DP_IMG_PATH = 'banter/dp/'
 ALLOWED_TYPES = ['image/jpeg', 'image/png']
 
 cloudinary.config(
@@ -119,21 +120,26 @@ def profile():
     else:
         billboard_posts = BillboardPost.query.filter_by(student_id=session['user']['id']).all()
         billboard_posts = [post.format() for post in billboard_posts]
-        print(billboard_posts)
         return render_template('user/profile.html', billboard_posts=billboard_posts)
 
 @app.route('/update-dp', methods=['POST'])
 def update_dp():
     dp = request.files['file']
     if dp.filename != '':
-        file_name = f'{session["user"]["id"]}.jpg'
-        user_id = session['user']['id']
-        user = Student.query.filter_by(id=user_id).first()
-        user.dp = file_name
-        user.update()
-        dp.save(f'static/images/dp/{file_name}')
-        session['user'] = user.format()
-        return '1'
+        try:
+            # Uploading to cloudinary
+            if dp.content_type not in ALLOWED_TYPES:
+                flash("Invalid image type. Please upload a jpeg or png image.")
+                return redirect(request.url)
+            res = _cu.upload(dp, folder=DP_IMG_PATH)
+            user_id = session['user']['id']
+            user = Student.query.filter_by(id=user_id).first()
+            user.dp = res['secure_url']
+            user.update()
+            session['user'] = user.format()
+            return '1'
+        except Exception as e:
+            print(f'Error ==> {e}')
     else:
         return '0'
 
@@ -174,11 +180,11 @@ def create_club():
         if file.content_type not in ALLOWED_TYPES:
             flash("Invalid image type. Please upload a jpeg or png image.")
             return redirect(request.url)
-        res = _cu.upload(file.file, folder=CLUB_IMG_PATH)
+        res = _cu.upload(file, folder=CLUB_IMG_PATH)
         club = Club(name=data['name'], description=data['description'], school_id=session['user']['school_id'], img_url=res['secure_url'])
         club.insert()
         flash('Club created successfully!')
-        return redirect(url_for('home'))
+        return redirect(request.referrer)
     except Exception as e:
         print(e)
         flash('Something went wrong!')

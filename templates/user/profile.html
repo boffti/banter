@@ -16,11 +16,12 @@ Banter | Profile
             <div class="col-4">
                 <div class="card">
                     <div class="card-body p-4 text-center">
-                        <img id="profileIMG" src="static/images/dp/{{ session['user']['dp'] }}" alt="profile" class=""
+                        <img id="profileIMG" src="{{ session['user']['dp'] }}" alt="profile" class=""
                             style="width: 200px; border-radius: 100px;">
                         <h1 class="m-0 mb-1 mt-2">{{ session['user']['name'] }}</h3>
                             <div class="mt-3">
-                                <span class="badge bg-blue-lt"><a href="#">Change Profile Image</a></span>
+                                <span class="badge bg-blue-lt"><a id="changeDP" href="#">Change Profile Image</a></span>
+                                <input type="file" name="dp" id="inputChangeDP" style="display: none;">
                             </div>
                     </div>
                     <!-- <div class="d-flex">
@@ -292,7 +293,7 @@ Banter | Profile
                         <div class="list-group-item">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <a href="#" class="text-reset d-block">{{ post.title }}</a>
+                                    <a href="#" class="text-title text-reset d-block"><strong>{{ post.title }}</strong></a>
                                     <div class="d-block text-muted mt-n1">{{ post.content }}</div>
                                 </div>
                                 <div class="col-auto">
