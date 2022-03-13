@@ -1,6 +1,11 @@
 $.noConflict();
 jQuery(function ($) {
 
+    // Timeout for auto closing Alerts
+    setTimeout(function () {
+        $(".alert").alert('close');
+    }, 3000);
+
     $("#changeDP").on('click', function () {
         $("#inputChangeDP").click();
     });
