@@ -168,9 +168,9 @@ Banter | Home
                                     <div class="text-muted">{{ event.description }}</div>
                                     <div class="d-flex align-items-center pt-4 mt-auto">
                                         <span class="avatar"
-                                            style="background-image: url(../static/images/dp/1001750503.jpg)"></span>
+                                            style="background-image: url({{ session['user']['dp'] }})"></span>
                                         <div class="ms-3">
-                                            <a href="#" class="text-body">Aneesh Melkot</a>
+                                            <a href="#" class="text-body">{{ session['user']['name'] }}</a>
                                             <!-- <div class="text-muted">3 days ago</div> -->
                                         </div>
                                         <div class="ms-auto">
