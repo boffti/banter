@@ -1,7 +1,7 @@
 {% extends 'base_w_header.html' %}
 {% set page = "events" %}
 {% block title %}
-Banter | Clubs
+Banter | Events
 {% endblock %}
 
 {% block styles %}
@@ -12,6 +12,16 @@ Banter | Clubs
 {% block content %}
 <div class="page-wrapper">
     <div class="container-xl">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <br>
+        <div class="alert alert-primary alert-dismissible mb-0 fade show" role="alert">
+            <strong>{{ message }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
         <!-- Page title -->
         <div class="page-header d-print-none">
             <div class="row g-2 align-items-center">
@@ -19,7 +29,7 @@ Banter | Clubs
                     <h2 class="page-title">
                         Events
                     </h2>
-                    <!-- <div class="text-muted mt-1">1-12 of 241 clubs</div> -->
+                    <div class="text-muted mt-1">Here are all the cool events happening around you!</div>
                 </div>
                 <!-- Page title actions -->
                 <div class="col-12 col-md-auto ms-auto d-print-none">
@@ -69,7 +79,7 @@ Banter | Clubs
                             </div> -->
                             <div class="col">
                                 <div class="card-body">
-                                    <h3 class="card-title"><a href="#">{{ event.title }}</a></h3>
+                                    <h3 class="card-title"><a href="#">{{ event.name }}</a></h3>
                                     <div class="text-muted">{{ event.description }}</div>
                                     <div class="mt-3">
                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -85,9 +95,9 @@ Banter | Clubs
                                         {{ event.location }}</div>
                                     <div class="d-flex align-items-center pt-3 mt-auto">
                                         <span class="avatar"
-                                            style="background-image: url({{ session['user']['dp'] }})"></span>
+                                            style="background-image: url({{ event.student.dp }})"></span>
                                         <div class="ms-3">
-                                            <a href="#" class="text-body">{{ session['user']['name'] }}</a>
+                                            <a href="#" class="text-body">{{ event.student.name }}</a>
                                             <!-- <div class="text-muted">3 days ago</div> -->
                                         </div>
 
@@ -105,7 +115,7 @@ Banter | Clubs
                                                     <line x1="11" y1="15" x2="12" y2="15"></line>
                                                     <line x1="12" y1="15" x2="12" y2="18"></line>
                                                 </svg>
-                                                <p class="event-date m-0 mx-1">Mar 23</p>
+                                                <p class="event-date m-0 mx-1">{{ event.date }}</p>
                                             </div>
                                             <div class="d-flex flex-row align-items-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +127,7 @@ Banter | Clubs
                                                     <circle cx="12" cy="12" r="9"></circle>
                                                     <polyline points="12 7 12 12 15 15"></polyline>
                                                 </svg>
-                                                <p class="event-time m-0 mx-1 text-muted">10:00 AM</p>
+                                                <p class="event-time m-0 mx-1 text-muted">{{ event.time }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -165,7 +175,7 @@ Banter | Clubs
     <!-- Create Event Modal -->
     <div class="modal modal-blur fade" id="modal-event" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <form action="/events" method="post" class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">New Event</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -190,8 +200,8 @@ Banter | Clubs
                                             <rect x="8" y="15" width="2" height="2"></rect>
                                         </svg>
                                     </span>
-                                    <input class="form-control" placeholder="Select a date" id="datepicker-icon-prepend"
-                                        value="2020-06-20" />
+                                    <input name="date" class="form-control" placeholder="Select a date"
+                                        id="datepicker-icon-prepend" value="2022-03-20" />
                                 </div>
                             </div>
                         </div>
@@ -217,12 +227,13 @@ Banter | Clubs
                                                 <path d="M18 16.496v1.504l1 1"></path>
                                             </svg>
                                         </span>
-                                        <input type="text" name="input-mask" class="form-control" data-mask="00:00"
-                                            data-mask-visible="true" placeholder="MM:HH" autocomplete="off">
+                                        <input name="time" type="text" name="input-mask" class="form-control"
+                                            data-mask="00:00" data-mask-visible="true" placeholder="MM:HH"
+                                            autocomplete="off">
                                     </div>
-                                    <select class="form-select">
-                                        <option value="1">AM</option>
-                                        <option value="2">PM</option>
+                                    <select name="ampm" class="form-select">
+                                        <option value="AM">AM</option>
+                                        <option value="PM">PM</option>
                                     </select>
                                 </div>
                             </div>
@@ -230,12 +241,13 @@ Banter | Clubs
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Name</label>
-                        <input type="text" class="form-control" name="example-text-input" placeholder="Type here...">
+                        <input type="text" class="form-control" name="name" placeholder="Type here...">
                     </div>
                     <div class="col-lg-12">
                         <div>
                             <label class="form-label">Description</label>
-                            <textarea class="form-control" rows="3" placeholder="Type here..."></textarea>
+                            <textarea name="description" class="form-control" rows="3"
+                                placeholder="Type here..."></textarea>
                         </div>
                     </div>
 
@@ -243,14 +255,14 @@ Banter | Clubs
                 <div class="modal-body">
                     <div class="row">
                         <label class="form-label">Event Location</label>
-                        <input type="text" class="form-control" name="example-text-input" placeholder="Type here...">
+                        <input type="text" class="form-control" name="location" placeholder="Type here...">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
                         Cancel
                     </a>
-                    <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                    <button type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
                         <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
                             stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
@@ -260,9 +272,9 @@ Banter | Clubs
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                         </svg>
                         Create event
-                    </a>
+                    </button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
     {% endblock %}
@@ -270,4 +282,19 @@ Banter | Clubs
     {% block scripts %}
     <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script>
+        // @formatter:off
+        document.addEventListener("DOMContentLoaded", function () {
+            window.Litepicker && (new Litepicker({
+                element: document.getElementById('datepicker-icon-prepend'),
+                buttonText: {
+                    previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>`,
+                    nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>`,
+                },
+            }));
+        });
+        // @formatter:on
+    </script>
     {% endblock %}

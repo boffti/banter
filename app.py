@@ -1,6 +1,5 @@
 import json
 import os
-from multiprocessing import Event
 from random import sample
 from unicodedata import name
 
@@ -10,8 +9,8 @@ from dotenv import load_dotenv
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
                    send_file, session, url_for)
 from passlib.hash import pbkdf2_sha256 as sha256
+from datetime import datetime
 
-from mock_data import events
 from models import (Admin, BillboardPost, Club, ClubPost, Event, School,
                     Student, db_init)
 
@@ -39,12 +38,20 @@ def get_billboard_posts():
     posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).all()
     return posts
 
+def get_events():
+    events = Event.query.filter_by(school_id=session['user']['school_id']).all()
+    events = [e.format() for e in events]
+    for e in events:
+        e["date"] = e.get('date_time').strftime("%b %d")
+        e["time"] = e.get('date_time').strftime("%I:%M %p")
+    return events
+
 @app.route('/')
 def home():
     if 'user' not in session:
         return render_template('login/login.html')
     else:
-        return render_template('index.html', billboard=get_billboard_posts(), events=events, clubs=sample(get_clubs(), 6))
+        return render_template('index.html', billboard=get_billboard_posts(), events=get_events(), clubs=sample(get_clubs(), 6))
 
 # Register Route GET
 @app.route('/register')
@@ -103,6 +110,7 @@ def login_user():
         user = Student.query.filter_by(id=login_creds['id']).first()
         if user and sha256.verify(login_creds['pass'], user.password):
             session['user'] = user.format()
+            flash('Welcome back, {}!'.format(session['user']['name']))
             return redirect(url_for('home'))
         else:
             flash('Incorrect username or password')
@@ -126,7 +134,12 @@ def profile():
         billboard_posts = [post.format() for post in billboard_posts]
         club_posts = ClubPost.query.filter_by(student_id=session['user']['id']).all()
         club_posts = [post.format() for post in club_posts]
-        return render_template('user/profile.html', billboard_posts=billboard_posts, club_posts=club_posts)
+        events = Event.query.filter_by(student_id=session['user']['id']).all()
+        events = [e.format() for e in events]
+        for e in events:
+            e["date"] = e.get('date_time').strftime("%b %d")
+            e["time"] = e.get('date_time').strftime("%I:%M %p")
+        return render_template('user/profile.html', billboard_posts=billboard_posts, club_posts=club_posts, events=events)
 
 @app.route('/update-dp', methods=['POST'])
 def update_dp():
@@ -216,31 +229,19 @@ def get_shop_page():
 
 # Event routes ---------------------------------------------------------------
 @app.route('/events')
-def getEvents():
-    # events = Event.query.all()
-    # for e in events:
-    #     e.date_time=e.date_time.strftime("%b %d")
+def events():
+    events = get_events()
     return render_template('events/events.html',events=events)
 
-@app.route('/addevent')
-def addEvent():
-    schools = [school.format() for school in School.query.all()]
-    students = [student.format() for student in Student.query.all()]
-    
-    return render_template('addEvent.html',schools=schools,students=students)
-
-@app.route('/insertevent' ,methods=['POST'])
+@app.route('/events' ,methods=['POST'])
 def insertEvent():
-    name = request.form['name']
-    description = request.form['description']
-    location= request.form['location']
-    date_time=request.form['date_time']
-    school = request.form['school']
-    student = request.form['student']
-
-    new_event=Event(name=name,description=description,location=location,date_time=date_time,school_id=school,student_id=student)
-    new_event.insert()
-    return redirect(url_for('getEvents'))
+    data = request.form.to_dict()
+    # 2022-03-17 05:30 pm
+    date_time = datetime.strptime(data['date'] + ' ' + data['time'] + ' ' + data['ampm'], '%Y-%m-%d %I:%M %p')
+    event = Event(name=data['name'], description=data['description'], date_time=date_time, location=data['location'], student_id=session['user']['id'], school_id=session['user']['school_id'])
+    event.insert()
+    flash('Event created successfully!')
+    return redirect(request.referrer)
 # ----------------------------------------------------------------------------
 
 # Schools dropdown route

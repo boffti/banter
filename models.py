@@ -39,6 +39,7 @@ class Student(db.Model):
     school = db.relationship('School', back_populates='student')
     billboard_post = db.relationship('BillboardPost', back_populates='student')
     club_post = db.relationship('ClubPost', back_populates='student')
+    event = db.relationship('Event', back_populates='student')
 
     def insert(self):
         db.session.add(self)
@@ -73,6 +74,7 @@ class School(db.Model):
     student = db.relationship('Student', back_populates='school', uselist=False)
     club = db.relationship('Club', back_populates='school', uselist=False)
     billboard_post = db.relationship('BillboardPost', back_populates='school')
+    event = db.relationship('Event', back_populates='school', uselist=False)
 
     def insert(self):
         db.session.add(self)
@@ -153,6 +155,9 @@ class Event(db.Model):
     school_id = db.Column(db.String, db.ForeignKey('school.id'))
     student_id  = db.Column(db.String, db.ForeignKey('student.id'))
 
+    student = db.relationship('Student', back_populates='event')
+    school = db.relationship('School', back_populates='event')
+
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -172,7 +177,8 @@ class Event(db.Model):
             'date_time': self.date_time,
             'location': self.location,
             'school_id': self.school_id,
-            'student_id': self.student_id
+            'student_id': self.student_id,
+            'student': self.student.format(),
         }
 
 class ClubPost(db.Model):
