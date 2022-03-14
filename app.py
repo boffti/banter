@@ -65,7 +65,9 @@ def home():
     if 'user' not in session:
         return render_template('login/login.html')
     else:
-        clubs = sample(get_clubs(), 6) if len(get_clubs()) > 0 else []
+        clubs = get_clubs()
+        sample_size = min(len(clubs), 6)
+        clubs = sample(clubs, sample_size) if len(clubs) > 0 else []
         return render_template('index.html', billboard=get_billboard_posts(), events=get_events(), clubs=clubs)
 # -----------------------------------------------------------------------------
 
