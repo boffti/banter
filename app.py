@@ -143,7 +143,8 @@ def logout():
     # Remove the user from session
     if 'user' in session:
         session.pop('user')
-        # session.pop('user_roles')
+        if 'user_roles' in session:
+            session.pop('user_roles')
     return redirect(url_for('login_page'))
 # -----------------------------------------------------------------------------------
 
