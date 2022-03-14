@@ -12,6 +12,15 @@ Banter | Clubs
 {% block content %}
 <div class="page-wrapper">
     <div class="container-xl">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary mt-3 alert-dismissible mb-0 fade show" role="alert">
+            <strong>{{ message }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
         <!-- Page title -->
         <div class="page-header d-print-none">
             <div class="row g-2 align-items-center">

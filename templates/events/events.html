@@ -15,8 +15,7 @@ Banter | Events
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for message in messages %}
-        <br>
-        <div class="alert alert-primary alert-dismissible mb-0 fade show" role="alert">
+        <div class="alert alert-primary mt-3 alert-dismissible mb-0 fade show" role="alert">
             <strong>{{ message }}</strong>
         </div>
         {% endfor %}
