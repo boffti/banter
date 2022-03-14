@@ -103,6 +103,7 @@ Banter | Home
                 </div>
             </div>
             <div class="grid">
+                {% if billboard|length > 0 %}
                 {% for post in billboard %}
                 <div class="col-lg-4 grid-item px-2 py-2">
                     <div class="card d-flex flex-column">
@@ -129,9 +130,23 @@ Banter | Home
                     </div>
                 </div>
                 {% endfor %}
+                {% else %}
+                <div class="col-lg-12 grid-item px-2 py-2">
+                    <div class="row align-items-center">
+                        <div class="empty p-4">
+                            <div class="empty-img"><img src="{{ url_for('static', filename='images/empty.svg') }}"
+                                    height="128" alt="">
+                            </div>
+                            <p class="empty-title">Nothing on the Billboard yet</p>
+                            <p class="empty-subtitle text-muted">
+                                Create a post to let others know what you are up to.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </section>
-
         <section style="margin-bottom:16px; margin-top:30px">
             <div class="page-header">
                 <div class="row align-items-center">
@@ -153,6 +168,7 @@ Banter | Home
                 </div>
             </div>
             <div class="grid">
+                {% if events|length > 0 %}
                 {% for event in events %}
                 <div class="col-lg-4 grid-item px-2 py-2">
                     <div class="card card-link d-flex flex-column">
@@ -222,6 +238,21 @@ Banter | Home
                     </div>
                 </div>
                 {% endfor %}
+                {% else %}
+                <div class="col-lg-12 grid-item px-2 py-2">
+                    <div class="row align-items-center">
+                        <div class="empty p-4">
+                            <div class="empty-img"><img src="{{ url_for('static', filename='images/empty_2.svg') }}"
+                                    height="128" alt="">
+                            </div>
+                            <p class="empty-title">No events around you yet</p>
+                            <p class="empty-subtitle text-muted">
+                                Plan and create an event today!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </section>
 
@@ -246,6 +277,7 @@ Banter | Home
                 </div>
             </div>
             <div class="grid">
+                {% if clubs|length > 0 %}
                 {% for club in clubs %}
                 <div class="col-lg-4 grid-item px-2 py-2">
                     <div class="card card-link">
@@ -259,6 +291,21 @@ Banter | Home
                     </div>
                 </div>
                 {% endfor %}
+                {% else %}
+                <div class="col-lg-12 grid-item px-2 py-2">
+                    <div class="row align-items-center">
+                        <div class="empty p-4">
+                            <div class="empty-img"><img src="{{ url_for('static', filename='images/empty_3.svg') }}"
+                                    height="128" alt="">
+                            </div>
+                            <p class="empty-title">No clubs have been added yet</p>
+                            <p class="empty-subtitle text-muted">
+                                Start your own club today!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </section>
 

@@ -65,7 +65,8 @@ def home():
     if 'user' not in session:
         return render_template('login/login.html')
     else:
-        return render_template('index.html', billboard=get_billboard_posts(), events=get_events(), clubs=sample(get_clubs(), 6))
+        clubs = sample(get_clubs(), 6) if len(get_clubs()) > 0 else []
+        return render_template('index.html', billboard=get_billboard_posts(), events=get_events(), clubs=clubs)
 # -----------------------------------------------------------------------------
 
 # Login & Register Routes --------------------------------------------------------------
