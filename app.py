@@ -2,7 +2,7 @@ import json
 import os
 from random import sample
 from unicodedata import name
-
+from functools import wraps
 import cloudinary
 import cloudinary.uploader as _cu
 from dotenv import load_dotenv
@@ -12,7 +12,7 @@ from passlib.hash import pbkdf2_sha256 as sha256
 from datetime import datetime
 
 from models import (Admin, BillboardPost, Club, ClubPost, Event, School,
-                    Student, db_init)
+                    Student, UserRoles, db_init)
 
 load_dotenv()
 
@@ -48,6 +48,16 @@ def get_events():
         e["time"] = e.get('date_time').strftime("%I:%M %p")
     return events
 # -----------------------------------------------------------------------------
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        roles = session.get('user_roles')
+        if len(roles) == 0:
+            flash('Not Authorized')
+            return redirect(url_for('home'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 # Home Route --------------------------------------------------------------
 @app.route('/')
@@ -116,6 +126,10 @@ def login_user():
     else:
         user = Student.query.filter_by(id=login_creds['id']).first()
         if user and sha256.verify(login_creds['pass'], user.password):
+            user_roles = UserRoles.query.filter_by(student_id=user.id).all()
+            roles = [role.role_id for role in user_roles]
+            session['user_roles'] = roles
+            print(f'User Roles ==> {roles}')
             session['user'] = user.format()
             flash('Welcome back, {}!'.format(session['user']['name']))
             return redirect(url_for('home'))
@@ -129,6 +143,7 @@ def logout():
     # Remove the user from session
     if 'user' in session:
         session.pop('user')
+        session.pop('user_roles')
     return redirect(url_for('login_page'))
 # -----------------------------------------------------------------------------------
 
@@ -276,6 +291,19 @@ def delete_event(event_id):
 def about_page():
     return render_template('other/about.html')
 
+# Admin Routes ---------------------------------------------------------------
+@app.route('/admin')
+@requires_auth
+def admin_page():
+    return render_template('admin/admin.html')
+
+@app.route('/school_admin')
+@requires_auth
+def school_admin(foo=None):
+    return render_template('admin/school_admin.html')
+
+# ----------------------------------------------------------------------------
+
 # Schools dropdown route
 @app.route('/schools')
 def getSchools():
@@ -291,10 +319,7 @@ def test():
 
 @app.route('/session')
 def get_session():
-    if 'user' in session:
-        return session.get('user')
-    else:
-        'nothing in session'
+    return jsonify(session.get('user_roles'))
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000, debug=True)

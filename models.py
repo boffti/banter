@@ -40,6 +40,7 @@ class Student(db.Model):
     billboard_post = db.relationship('BillboardPost', back_populates='student')
     club_post = db.relationship('ClubPost', back_populates='student')
     event = db.relationship('Event', back_populates='student')
+    user_roles = db.relationship('UserRoles', back_populates='student')
 
     def insert(self):
         db.session.add(self)
@@ -246,4 +247,31 @@ class BillboardPost(db.Model):
             'school_id': self.school_id,
             'student_id': self.student_id,
             'student': self.student.format()
+        }
+
+class UserRoles(db.Model):
+    __tablename__ = 'user_roles'
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.String, db.ForeignKey('student.id'))
+    role_id = db.Column(db.Integer)
+
+    student = db.relationship('Student', back_populates='user_roles')
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'student_id': self.student_id,
+            'role_id': self.role_id,
+            'user': self.user.format(),
         }
