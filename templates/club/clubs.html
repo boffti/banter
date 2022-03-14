@@ -19,7 +19,7 @@ Banter | Clubs
                     <h2 class="page-title">
                         Clubs
                     </h2>
-                    <div class="text-muted mt-1">1-12 of 241 clubs</div>
+                    <div class="text-muted mt-1">{{ clubs|length }} clubs</div>
                 </div>
                 <!-- Page title actions -->
                 <div class="col-12 col-md-auto ms-auto d-print-none">
@@ -58,6 +58,7 @@ Banter | Clubs
     <div class="page-body">
         <div class="container-xl">
             <div class="grid">
+                {% if clubs|length > 0 %}
                 {% for club in clubs %}
                 <div class="col-4 grid-item p-2">
                     <div class="card">
@@ -75,6 +76,21 @@ Banter | Clubs
                     </div>
                 </div>
                 {% endfor %}
+                {% else %}
+                <div class="col-lg-12 grid-item px-2 py-2">
+                    <div class="row align-items-center">
+                        <div class="empty p-4">
+                            <div class="empty-img"><img src="{{ url_for('static', filename='images/empty_3.svg') }}"
+                                    height="128" alt="">
+                            </div>
+                            <p class="empty-title">No clubs have been added yet</p>
+                            <p class="empty-subtitle text-muted">
+                                Start your own club today!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
                 <!-- <div class="d-flex">
                     <ul class="pagination ms-auto">
                         <li class="page-item disabled">
