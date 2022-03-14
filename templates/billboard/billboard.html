@@ -58,6 +58,7 @@ Banter | Clubs
     <div class="page-body">
         <div class="container-xl">
             <div class="grid">
+                {% if billboard|length > 0 %}
                 {% for post in billboard %}
                 <div class="col-lg-4 grid-item px-2 py-2">
                     <div class="card d-flex flex-column">
@@ -85,6 +86,21 @@ Banter | Clubs
                     </div>
                 </div>
                 {% endfor %}
+                {% else %}
+                <div class="col-lg-12 grid-item px-2 py-2">
+                    <div class="row align-items-center">
+                        <div class="empty p-4">
+                            <div class="empty-img"><img src="{{ url_for('static', filename='images/empty.svg') }}"
+                                    height="128" alt="">
+                            </div>
+                            <p class="empty-title">Nothing on the Billboard yet</p>
+                            <p class="empty-subtitle text-muted">
+                                Create a post to let others know what you are up to.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
