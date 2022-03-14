@@ -251,11 +251,15 @@ def create_club():
 
 @app.route('/club-post/<club_id>', methods=['POST'])
 def add_club_post(club_id):
-    data = request.form.to_dict()
-    club_post = ClubPost(title=data['title'], content=data['content'], club_id=club_id, student_id=session['user']['id'])
-    club_post.insert()
-    flash('Club post created successfully!')
-    return redirect(request.referrer)
+    try:
+        data = request.form.to_dict()
+        club_post = ClubPost(title=data['title'], content=data['content'], club_id=club_id, student_id=session['user']['id'])
+        club_post.insert()
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 
 @app.route('/club-post/<club_id>', methods=['DELETE'])
 def delete_club_post(club_id):
