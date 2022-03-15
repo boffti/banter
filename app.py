@@ -170,6 +170,23 @@ def profile():
             e["time"] = e.get('date_time').strftime("%I:%M %p")
         return render_template('user/profile.html', billboard_posts=billboard_posts, club_posts=club_posts, events=events, owned_clubs=owned_clubs)
 
+@app.route('/student/<id>')
+def other_profile(id):
+    student = Student.query.filter_by(id=id).first()
+    student = student.format()
+    billboard_posts = BillboardPost.query.filter_by(student_id=id).all()
+    billboard_posts = [post.format() for post in billboard_posts]
+    club_posts = ClubPost.query.filter_by(student_id=id).all()
+    club_posts = [post.format() for post in club_posts]
+    events = Event.query.filter_by(student_id=id).all()
+    events = [e.format() for e in events]
+    owned_clubs = Club.query.filter_by(owner_id=id).all()
+    owned_clubs = [club.format() for club in owned_clubs]
+    for e in events:
+        e["date"] = e.get('date_time').strftime("%b %d")
+        e["time"] = e.get('date_time').strftime("%I:%M %p")
+    return render_template('user/other_user_profile.html', student=student, billboard_posts=billboard_posts, club_posts=club_posts, events=events, owned_clubs=owned_clubs)
+
 @app.route('/update-dp', methods=['POST'])
 def update_dp():
     dp = request.files['file']
