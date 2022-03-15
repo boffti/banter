@@ -170,15 +170,10 @@ Banter | Profile
                                             src="{{ url_for('static', filename='images/empty_3.svg') }}" height="128"
                                             alt="">
                                     </div>
-                                    <p class="empty-title">You haven't created any events yet</p>
+                                    <p class="empty-title">No Events yet</p>
                                     <p class="empty-subtitle text-muted">
-                                        Head to the Events page to create a new Event!
+                                        {{ student.name }} has not created any events yet.
                                     </p>
-                                    <div class="empty-action">
-                                        <a href="/events" class="btn btn-primary">
-                                            Events
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -214,13 +209,8 @@ Banter | Profile
                                     </div>
                                     <p class="empty-title">No Posts Yet</p>
                                     <p class="empty-subtitle text-muted">
-                                        Head to the Billboard page and speak your mind!
+                                        {{ student.name }} hasn't posted anything yet.
                                     </p>
-                                    <div class="empty-action">
-                                        <a href="/billboard" class="btn btn-primary">
-                                            Billboard
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -260,13 +250,8 @@ Banter | Profile
                                     </div>
                                     <p class="empty-title">No Posts Yet</p>
                                     <p class="empty-subtitle text-muted">
-                                        Head to the Clubs page and check out all the cool clubs on your campus!
+                                        {{ student.name }} hasn't posted anything in the clubs yet!
                                     </p>
-                                    <div class="empty-action">
-                                        <a href="/clubs" class="btn btn-primary">
-                                            Clubs
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -304,13 +289,8 @@ Banter | Profile
                                     </div>
                                     <p class="empty-title">No Clubs owned</p>
                                     <p class="empty-subtitle text-muted">
-                                        Head to the Clubs page and start your own club!
+                                        {{ student.name }} doesn't own any clubs yet.
                                     </p>
-                                    <div class="empty-action">
-                                        <a href="/clubs" class="btn btn-primary">
-                                            Clubs
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                             {% endif %}
