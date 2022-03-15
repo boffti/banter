@@ -309,8 +309,10 @@ def admin_page():
 
 @app.route('/school_admin')
 @requires_auth
-def school_admin(foo=None):
-    return render_template('admin/school_admin.html')
+def school_admin():
+    students = Student.query.filter_by(school_id=session['user']['school_id']).all()
+    students = [student.format() for student in students]
+    return render_template('admin/school_admin.html', students=students)
 
 # ----------------------------------------------------------------------------
 
