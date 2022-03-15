@@ -122,6 +122,7 @@ class Club(db.Model):
     description = db.Column(db.String)
     img_url = db.Column(db.String)
     school_id = db.Column(db.String, db.ForeignKey('school.id'))
+    owner_id = db.Column(db.String, db.ForeignKey('student.id'))
 
     school = db.relationship('School', back_populates='club')
     club_post = db.relationship('ClubPost', back_populates='club')

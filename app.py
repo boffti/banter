@@ -163,10 +163,12 @@ def profile():
         club_posts = [post.format() for post in club_posts]
         events = Event.query.filter_by(student_id=session['user']['id']).all()
         events = [e.format() for e in events]
+        owned_clubs = Club.query.filter_by(owner_id=session['user']['id']).all()
+        owned_clubs = [club.format() for club in owned_clubs]
         for e in events:
             e["date"] = e.get('date_time').strftime("%b %d")
             e["time"] = e.get('date_time').strftime("%I:%M %p")
-        return render_template('user/profile.html', billboard_posts=billboard_posts, club_posts=club_posts, events=events)
+        return render_template('user/profile.html', billboard_posts=billboard_posts, club_posts=club_posts, events=events, owned_clubs=owned_clubs)
 
 @app.route('/update-dp', methods=['POST'])
 def update_dp():

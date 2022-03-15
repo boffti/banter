@@ -8,3 +8,12 @@
     font-size: 1.2em;
     color: #000;
 }
+
+.delete-btn {
+    opacity: 0;
+    transition: opacity .3s;
+}
+
+.delete-btn:hover {
+    opacity: 1;
+}
