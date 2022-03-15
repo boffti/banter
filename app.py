@@ -12,7 +12,7 @@ from passlib.hash import pbkdf2_sha256 as sha256
 from datetime import datetime
 
 from models import (Admin, BillboardPost, Club, ClubPost, Event, School,
-                    Student, UserRoles, db_init)
+                    Student, UserRoles, ClubMembers, db_init)
 
 load_dotenv()
 
@@ -157,6 +157,7 @@ def profile():
     if 'user' not in session:
         return redirect(url_for('login_page'))
     else:
+        student = Student.query.filter_by(id=session['user']['id']).first()
         billboard_posts = BillboardPost.query.filter_by(student_id=session['user']['id']).all()
         billboard_posts = [post.format() for post in billboard_posts]
         club_posts = ClubPost.query.filter_by(student_id=session['user']['id']).all()
@@ -168,12 +169,11 @@ def profile():
         for e in events:
             e["date"] = e.get('date_time').strftime("%b %d")
             e["time"] = e.get('date_time').strftime("%I:%M %p")
-        return render_template('user/profile.html', billboard_posts=billboard_posts, club_posts=club_posts, events=events, owned_clubs=owned_clubs)
+        return render_template('user/profile.html', student=student, billboard_posts=billboard_posts, club_posts=club_posts, events=events, owned_clubs=owned_clubs)
 
 @app.route('/student/<id>')
 def other_profile(id):
     student = Student.query.filter_by(id=id).first()
-    student = student.format()
     billboard_posts = BillboardPost.query.filter_by(student_id=id).all()
     billboard_posts = [post.format() for post in billboard_posts]
     club_posts = ClubPost.query.filter_by(student_id=id).all()
