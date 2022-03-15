@@ -312,6 +312,12 @@ def school_admin(foo=None):
 
 # ----------------------------------------------------------------------------
 
+# Search Routes --------------------------------------------------------------
+@app.route('/search')
+def search_page():
+    return render_template('search/search_results.html')
+# ----------------------------------------------------------------------------
+
 # Schools dropdown route
 @app.route('/schools')
 def getSchools():
