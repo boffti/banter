@@ -34,6 +34,15 @@ Banter | Clubs
                 <div class="col-12 col-md-auto ms-auto d-print-none">
                     <div class="d-flex">
                         <div class="me-3">
+                            <select class="form-select">
+                                <option disabled selected>Categories</option>
+                                <option value="2">News</option>
+                                <option value="3">Job</option>
+                                <option value="3">Room-mate</option>
+                                <option value="3">General</option>
+                            </select>
+                        </div>
+                        <div class="me-3">
                             <div class="input-icon">
                                 <input type="text" value="" class="form-control" placeholder="Search…">
                                 <span class="input-icon-addon">
@@ -78,17 +87,14 @@ Banter | Clubs
                             <h3 class="card-title"><a href="#">{{ post.title }}</a></h3>
                             <div class="text-muted">{{ post.content }}</div>
                             <div class="d-flex align-items-center pt-4 mt-auto">
-                                <span class="avatar"
-                                    style="background-image: url({{ post.student.dp }})"></span>
+                                <span class="avatar" style="background-image: url({{ post.student.dp }})"></span>
                                 <div class="ms-3">
-                                    <a href="/student/{{ post.student.id }}" class="text-body">{{ post.student.name }}</a>
+                                    <a href="/student/{{ post.student.id }}"
+                                        class="text-body">{{ post.student.name }}</a>
                                     <div class="text-muted">3 days ago</div>
                                 </div>
                                 <div class="ms-auto">
-                                    <a href="#" class="icon d-none d-md-inline-block ms-3 text-muted">
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
-                                        <!-- SVG icon code -->
-                                    </a>
+                                    <span class="badge badge-outline text-blue">Post Topic</span>
                                 </div>
                             </div>
                         </div>
