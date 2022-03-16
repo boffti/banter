@@ -80,7 +80,6 @@ Banter | Home
 <br>
 <div class="container">
     <div class="content">
-
         <section style="margin-bottom:16px">
             <div class="page-header">
                 <div class="row align-items-center">
@@ -104,7 +103,7 @@ Banter | Home
             <div class="grid">
                 {% if billboard|length > 0 %}
                 {% for post in billboard %}
-                <div class="col-lg-4 grid-item px-2 py-2">
+                <div class="col-lg-4 col-sm-12 grid-item px-2 py-2">
                     <div class="card d-flex flex-column">
                         <a href="#">
                             <img class="card-img-top" src="{{ post.img_url }}" alt="img">
@@ -115,7 +114,8 @@ Banter | Home
                             <div class="d-flex align-items-center pt-4 mt-auto">
                                 <span class="avatar" style="background-image: url({{ post.student.dp }})"></span>
                                 <div class="ms-3">
-                                    <a href="/student/{{ post.student.id }}" class="text-body">{{ post.student.name }}</a>
+                                    <a href="/student/{{ post.student.id }}"
+                                        class="text-body">{{ post.student.name }}</a>
                                     <div class="text-muted">3 days ago</div>
                                 </div>
                                 <div class="ms-auto">
@@ -169,8 +169,8 @@ Banter | Home
             <div class="grid">
                 {% if events|length > 0 %}
                 {% for event in events %}
-                <div class="col-lg-4 grid-item px-2 py-2">
-                    <div class="card card-link d-flex flex-column">
+                <div class="col-lg-4 col-12 grid-item px-2 py-2">
+                    <div class="card card-link d-flex flex-column w-100">
                         <div class="card-status-bottom bg-blue"></div>
                         <div class="row row-0 flex-fill">
                             <!-- <div class="col-md-3 d-flex flex-column justify-content-center align-items-center">
@@ -197,7 +197,8 @@ Banter | Home
                                         <span class="avatar"
                                             style="background-image: url({{ event.student.dp }})"></span>
                                         <div class="ms-3">
-                                            <a href="/student/{{ event.student.id }}" class="text-body">{{ event.student.name }}</a>
+                                            <a href="/student/{{ event.student.id }}"
+                                                class="text-body">{{ event.student.name }}</a>
                                             <!-- <div class="text-muted">3 days ago</div> -->
                                         </div>
 
@@ -278,13 +279,28 @@ Banter | Home
             <div class="grid">
                 {% if clubs|length > 0 %}
                 {% for club in clubs %}
-                <div class="col-lg-4 grid-item px-2 py-2">
-                    <div class="card card-link">
+                <!-- <div class="col-lg-4 col-sm-12 grid-item px-2 py-2">
+                    <div class="card d-flex flex-column">
+                        <a href="#">
+                            <img class="card-img-top img-fluid" src="{{ club.img_url }}" alt="img">
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h3 class="card-title"><a href="/clubs/{{ club.id }}">{{ club.name }}</a></h3>
+                            <div class="text-muted text-truncate">{{ club.description }}</div>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="col-lg-4 col-12 grid-item p-2">
+                    <div class="card">
                         <div class="card-img-top img-responsive img-responsive-21x9"
                             style="background-image: url({{ club.img_url }})">
                         </div>
                         <div class="card-body">
-                            <h3 class="card-title"><a href="/clubs/{{ club.id }}">{{ club.name }}</a></h3>
+                            <h3 class="card-title">
+                                <a href="/clubs/{{ club.id }}">
+                                    {{ club.name }}
+                                </a>
+                            </h3>
                             <p class="text-muted text-truncate">{{ club.description }}</p>
                         </div>
                     </div>
