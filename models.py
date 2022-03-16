@@ -239,7 +239,7 @@ class BillboardPost(db.Model):
     img_url = db.Column(db.String)
     school_id = db.Column(db.String, db.ForeignKey('school.id'))
     student_id = db.Column(db.String, db.ForeignKey('student.id'))
-    tag_id = db.Column(db.String, db.ForeignKey('billboard_categories.id'))
+    # tag_id = db.Column(db.String, db.ForeignKey('billboard_categories.id'))
 
     school = db.relationship('School', back_populates='billboard_post')
     student = db.relationship('Student', back_populates='billboard_post')
