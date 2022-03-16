@@ -47,6 +47,12 @@ def get_events():
         e["date"] = e.get('date_time').strftime("%b %d")
         e["time"] = e.get('date_time').strftime("%I:%M %p")
     return events
+
+@app.template_filter('is_member')
+def is_member(value):
+    if ClubMembers.query.filter_by(student_id=session['user']['id'], club_id=value).first():
+        return True
+    return False
 # -----------------------------------------------------------------------------
 
 def requires_auth(f):
@@ -267,6 +273,12 @@ def create_club():
         print(e)
         flash('Something went wrong!')
         return redirect(url_for('home'))
+
+@app.route('/join-club/<club_id>')
+def join_club(club_id):
+    club_member = ClubMembers(club_id=club_id, student_id=session['user']['id'])
+    club_member.insert()
+    return redirect(request.referrer)
 
 @app.route('/club-post/<club_id>', methods=['POST'])
 def add_club_post(club_id):
