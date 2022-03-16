@@ -239,6 +239,7 @@ class BillboardPost(db.Model):
     img_url = db.Column(db.String)
     school_id = db.Column(db.String, db.ForeignKey('school.id'))
     student_id = db.Column(db.String, db.ForeignKey('student.id'))
+    tag_id = db.Column(db.String, db.ForeignKey('billboard_categories.id'))
 
     school = db.relationship('School', back_populates='billboard_post')
     student = db.relationship('Student', back_populates='billboard_post')
@@ -316,4 +317,26 @@ class ClubMembers(db.Model):
             'student_id': self.student_id,
             'club': self.club.format(),
             'student': self.student.format()
+        }
+
+class BillboardCaregories(db.Model):
+    __tablename__ = 'billboard_categories'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'name': self.name,
         }
