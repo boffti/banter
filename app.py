@@ -292,6 +292,18 @@ def add_club_post(club_id):
         flash('Something went wrong!')
         return redirect(request.referrer)
 
+# Search Clubs
+@app.route('/clubs/search', methods=['POST'])
+def clubs_search():
+    try:
+        search_term = request.form.get('searchTerm', '')
+        clubs = Club.query.filter(Club.name.ilike(f'%{search_term}%')).all()
+        return render_template('club/clubs.html', clubs=clubs)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
 @app.route('/club-post/<club_id>', methods=['DELETE'])
 def delete_club_post(club_id):
     # TODO - Delete club post
