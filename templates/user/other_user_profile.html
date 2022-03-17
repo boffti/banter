@@ -36,6 +36,7 @@ Banter | Profile
                         <h3 class="card-title">Deets</h3>
                     </div>
                     <div class="list-group list-group-flush list-group-hoverable">
+                        {% if student.name %}
                         <div class="list-group-item">
                             <div class="row align-items-center">
                                 <div class="col-auto">
@@ -49,10 +50,31 @@ Banter | Profile
                                     </svg>
                                 </div>
                                 <div class="col text-truncate">
-                                    <span class="text-reset d-block">{{ student.name }}</span>
+                                    <span class="text-reset text-muted d-block">{{ student.name }}</span>
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
+                        {% if student.major %}
+                        <div class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school"
+                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6"></path>
+                                        <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4"></path>
+                                    </svg>
+                                </div>
+                                <div class="col">
+                                    <div class="d-block text-muted mt-n1">{{ student.major }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if student.bio %}
                         <div class="list-group-item">
                             <div class="row align-items-center">
                                 <div class="col-auto">
@@ -66,13 +88,12 @@ Banter | Profile
                                     </svg>
                                 </div>
                                 <div class="col">
-                                    <div class="d-block text-muted mt-n1">Lorem ipsum dolor sit amet
-                                        consectetur adipisicing elit. Porro dolorem nihil aperiam nesciunt cumque
-                                        blanditiis ducimus, libero accusantium, quasi eligendi esse ipsa, asperiores
-                                        similique voluptatum amet? Amet iure quod ipsum!</div>
+                                    <div class="d-block text-muted mt-n1">{{ student.bio }}</div>
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
+                        {% if student.phone %}
                         <div class="list-group-item">
                             <div class="row align-items-center">
                                 <div class="col-auto">
@@ -86,11 +107,13 @@ Banter | Profile
                                         </path>
                                     </svg>
                                 </div>
-                                <div class="col text-truncate">
-                                    <span class="text-reset d-block">(217) 904 2873</span>
+                                <div class="col text-truncate text-muted">
+                                    <span class="text-reset d-block">{{ student.phone }}</span>
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
+                        {% if student.dob %}
                         <div class="list-group-item">
                             <div class="row align-items-center">
                                 <div class="col-auto">
@@ -104,10 +127,11 @@ Banter | Profile
                                     </svg>
                                 </div>
                                 <div class="col text-truncate">
-                                    <span class="text-reset d-block">{{ student.dob }}</span>
+                                    <span class="text-reset text-muted d-block">{{ student.dob }}</span>
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
                 <br>
@@ -242,10 +266,10 @@ Banter | Profile
                                 <div class="delete-btn">
                                     <a href="#">
                                         <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
-                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                            stroke="currentColor" fill="none" stroke-linecap="round"
-                                            stroke-linejoin="round">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-trash" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                             <line x1="4" y1="7" x2="20" y2="7"></line>
                                             <line x1="10" y1="11" x2="10" y2="17"></line>
