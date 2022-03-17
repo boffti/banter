@@ -17,3 +17,7 @@
 .delete-btn:hover {
     opacity: 1;
 }
+
+.list-item:hover .delete-btn {
+    opacity: 1;
+}
