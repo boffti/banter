@@ -265,7 +265,7 @@ def create_club():
             flash("Invalid image type. Please upload a jpeg or png image.")
             return redirect(request.url)
         res = _cu.upload(file, folder=CLUB_IMG_PATH)
-        club = Club(name=data['name'], description=data['description'], school_id=session['user']['school_id'], img_url=res['secure_url'])
+        club = Club(name=data['name'], description=data['description'], school_id=session['user']['school_id'], img_url=res['secure_url'], owner_id=session['user']['id'])
         club.insert()
         flash('Club created successfully!')
         return redirect(request.referrer)
