@@ -278,6 +278,14 @@ def create_club():
 def join_club(club_id):
     club_member = ClubMembers(club_id=club_id, student_id=session['user']['id'])
     club_member.insert()
+    flash('You have joined the club!')
+    return redirect(request.referrer)
+
+@app.route('/exit-club/<club_id>')
+def exit_club(club_id):
+    club_member = ClubMembers.query.filter_by(club_id=club_id, student_id=session['user']['id']).first()
+    club_member.delete()
+    flash('You have successfully exited the club!')
     return redirect(request.referrer)
 
 @app.route('/club-post/<club_id>', methods=['POST'])
