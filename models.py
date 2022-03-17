@@ -32,6 +32,8 @@ class Student(db.Model):
     name = db.Column(db.String)
     password = db.Column(db.String)
     bio = db.Column(db.String)
+    major = db.Column(db.String)
+    phone = db.Column(db.String)
     dob = db.Column(db.String)
     dp = db.Column(db.String)
     school_id = db.Column(db.String, db.ForeignKey('school.id'))
@@ -59,6 +61,8 @@ class Student(db.Model):
             'id': self.id,
             'name': self.name,
             'bio': self.bio,
+            'major': self.major,
+            'phone': self.phone,
             'dob': self.dob,
             'dp': self.dp,
             'school_id': self.school_id,

@@ -217,8 +217,17 @@ def update_dp():
 @app.route('/update-profile', methods=['POST'])
 def update_profile():
     data = request.form.to_dict()
-    print(data)
-    return 'pass'
+    user_id = session['user']['id']
+    user = Student.query.filter_by(id=user_id).first()
+    user.name = data['name']
+    user.bio = data['bio']
+    user.phone = data['phone']
+    user.dob = data['dob']
+    user.major = data['major']
+    user.update()
+    session['user'] = user.format()
+    flash('Profile updated successfully!')
+    return redirect(request.referrer)
 # ------------------------------------------------------------------------------
 
 # BillBoard Routes ------------------------------------------------------------
