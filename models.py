@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+import arrow
 
 db = SQLAlchemy()
 
@@ -243,10 +244,12 @@ class BillboardPost(db.Model):
     img_url = db.Column(db.String)
     school_id = db.Column(db.String, db.ForeignKey('school.id'))
     student_id = db.Column(db.String, db.ForeignKey('student.id'))
-    # tag_id = db.Column(db.String, db.ForeignKey('billboard_categories.id'))
+    tag_id = db.Column(db.String, db.ForeignKey('billboard_categories.id'))
+    created_at = db.Column(db.DateTime)
 
     school = db.relationship('School', back_populates='billboard_post')
     student = db.relationship('Student', back_populates='billboard_post')
+    tag = db.relationship('BillboardCategories', back_populates='billboard_post')
 
     def insert(self):
         db.session.add(self)
@@ -267,7 +270,10 @@ class BillboardPost(db.Model):
             'img_url': self.img_url,
             'school_id': self.school_id,
             'student_id': self.student_id,
-            'student': self.student.format()
+            'student': self.student.format(),
+            'tag_id': self.tag_id,
+            'tag': self.tag.format(),
+            'created_at': arrow.Arrow.fromdatetime(self.created_at).humanize()
         }
 
 class UserRoles(db.Model):
@@ -323,10 +329,12 @@ class ClubMembers(db.Model):
             'student': self.student.format()
         }
 
-class BillboardCaregories(db.Model):
+class BillboardCategories(db.Model):
     __tablename__ = 'billboard_categories'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
+
+    billboard_post = db.relationship('BillboardPost', back_populates='tag')
 
     def insert(self):
         db.session.add(self)

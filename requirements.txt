@@ -10,3 +10,4 @@ pymysql
 pytest
 passlib
 cloudinary
+arrow

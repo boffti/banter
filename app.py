@@ -38,6 +38,7 @@ def get_clubs():
 
 def get_billboard_posts():
     posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).all()
+    posts = [p.format() for p in posts]
     return posts
 
 def get_events():
