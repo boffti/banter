@@ -374,12 +374,12 @@ def insertEvent():
     flash('Event created successfully!')
     return redirect(request.referrer)
 
-@app.route('/events/<event_id>')
+@app.route('/delete-event/<event_id>')
 def delete_event(event_id):
     try:
         event = Event.query.filter_by(id=event_id).first()
         event.delete()
-        flash('Event deleted successfully! which was created by,{}!'.format(session['user']['name']))
+        flash('Event deleted successfully!')
         return redirect(request.referrer)
     except:
         flash("login to view event")
