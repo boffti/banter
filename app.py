@@ -179,6 +179,8 @@ def profile():
 
 @app.route('/student/<id>')
 def other_profile(id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     student = Student.query.filter_by(id=id).first()
     billboard_posts = BillboardPost.query.filter_by(student_id=id).all()
     billboard_posts = [post.format() for post in billboard_posts]
@@ -195,6 +197,8 @@ def other_profile(id):
 
 @app.route('/update-dp', methods=['POST'])
 def update_dp():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     dp = request.files['file']
     if dp.filename != '':
         try:
@@ -216,6 +220,8 @@ def update_dp():
 
 @app.route('/update-profile', methods=['POST'])
 def update_profile():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     data = request.form.to_dict()
     user_id = session['user']['id']
     user = Student.query.filter_by(id=user_id).first()
@@ -252,6 +258,8 @@ def delete_billboard_post(post_id):
 # Club Routes ---------------------------------------------------------------
 @app.route('/clubs')
 def club():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     return render_template('club/clubs.html', clubs=get_clubs())
 
 @app.route('/clubs/<club_id>')
@@ -266,6 +274,8 @@ def club_details(club_id):
 
 @app.route('/create-club', methods=['POST'])
 def create_club():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     data = request.form.to_dict()
     file = request.files['file']
     try:
@@ -285,6 +295,8 @@ def create_club():
 
 @app.route('/join-club/<club_id>')
 def join_club(club_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     club_member = ClubMembers(club_id=club_id, student_id=session['user']['id'])
     club_member.insert()
     flash('You have joined the club!')
@@ -292,6 +304,8 @@ def join_club(club_id):
 
 @app.route('/exit-club/<club_id>')
 def exit_club(club_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     club_member = ClubMembers.query.filter_by(club_id=club_id, student_id=session['user']['id']).first()
     club_member.delete()
     flash('You have successfully exited the club!')
@@ -299,6 +313,8 @@ def exit_club(club_id):
 
 @app.route('/delete-club-post/<post_id>')
 def delete_club_post(post_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     try:
         club_post = ClubPost.query.filter_by(id=post_id).first()
         club_post.delete()
@@ -311,6 +327,8 @@ def delete_club_post(post_id):
 
 @app.route('/delete-club/<club_id>')
 def delete_club(club_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     try:
         club = Club.query.filter_by(id=club_id).first()
         club_posts = ClubPost.query.filter_by(club_id=club_id).all()
@@ -329,6 +347,8 @@ def delete_club(club_id):
 
 @app.route('/club-post/<club_id>', methods=['POST'])
 def add_club_post(club_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     try:
         data = request.form.to_dict()
         club_post = ClubPost(title=data['title'], content=data['content'], club_id=club_id, student_id=session['user']['id'])
@@ -342,6 +362,8 @@ def add_club_post(club_id):
 # Search Clubs
 @app.route('/clubs/search', methods=['POST'])
 def clubs_search():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     try:
         search_term = request.form.get('searchTerm', '')
         clubs = Club.query.filter(Club.name.ilike(f'%{search_term}%')).all()
@@ -355,17 +377,23 @@ def clubs_search():
 # Shop Routes ---------------------------------------------------------------
 @app.route('/shop')
 def get_shop_page():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     return render_template('shop/shop.html')
 # ----------------------------------------------------------------------------
 
 # Event routes ---------------------------------------------------------------
 @app.route('/events')
 def events():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     events = get_events()
     return render_template('events/events.html',events=events)
 
 @app.route('/events' ,methods=['POST'])
 def insertEvent():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     data = request.form.to_dict()
     # Example - 2022-03-17 05:30 pm
     date_time = datetime.strptime(data['date'] + ' ' + data['time'] + ' ' + data['ampm'], '%Y-%m-%d %I:%M %p')
@@ -376,6 +404,8 @@ def insertEvent():
 
 @app.route('/delete-event/<event_id>')
 def delete_event(event_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     try:
         event = Event.query.filter_by(id=event_id).first()
         event.delete()
@@ -408,6 +438,8 @@ def school_admin():
 # Search Routes --------------------------------------------------------------
 @app.route('/search')
 def search_page():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
     return render_template('search/search_results.html')
 # ----------------------------------------------------------------------------
 
