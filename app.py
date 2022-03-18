@@ -382,10 +382,8 @@ def delete_event(event_id):
         flash('Event deleted successfully!')
         return redirect(request.referrer)
     except:
-        flash("login to view event")
-        return redirect(request.referrer)
-    
-    
+        flash("Something went wrong!")
+        return redirect(request.referrer) 
 # ----------------------------------------------------------------------------
 
 @app.route('/about')
