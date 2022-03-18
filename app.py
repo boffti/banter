@@ -297,6 +297,18 @@ def exit_club(club_id):
     flash('You have successfully exited the club!')
     return redirect(request.referrer)
 
+@app.route('/delete-club-post/<post_id>')
+def delete_club_post(post_id):
+    try:
+        club_post = ClubPost.query.filter_by(id=post_id).first()
+        club_post.delete()
+        flash('Post deleted successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(f'Error ==> {e}')
+        flash('Something went wrong')
+        return redirect(request.referrer)
+
 @app.route('/delete-club/<club_id>')
 def delete_club(club_id):
     try:
@@ -338,11 +350,6 @@ def clubs_search():
         print(e)
         flash('Something went wrong!')
         return redirect(request.referrer)
-
-@app.route('/club-post/<club_id>', methods=['DELETE'])
-def delete_club_post(club_id):
-    # TODO - Delete club post
-    return 'pass'
 # ----------------------------------------------------------------------------
 
 # Shop Routes ---------------------------------------------------------------
