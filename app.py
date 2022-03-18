@@ -382,7 +382,7 @@ def delete_event(event_id):
         flash('Event deleted successfully! which was created by,{}!'.format(session['user']['name']))
         return redirect(request.referrer)
     except:
-        flash("login to view event post")
+        flash("login to view event")
         return redirect(request.referrer)
     
     
