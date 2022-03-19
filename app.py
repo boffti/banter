@@ -443,6 +443,24 @@ def delete_event(event_id):
     except:
         flash("Something went wrong!")
         return redirect(request.referrer) 
+
+# Search Events
+@app.route('/events/search', methods=['POST'])
+def events_search():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        search_term = request.form.get('searchTerm', '')
+        events = Event.query.filter(Event.name.ilike(f'%{search_term}%')).all()
+        events = [e.format() for e in events]
+        for e in events:
+            e["date"] = e.get('date_time').strftime("%b %d")
+            e["time"] = e.get('date_time').strftime("%I:%M %p")
+        return render_template('events/events.html', events=events)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 # ----------------------------------------------------------------------------
 
 @app.route('/about')
