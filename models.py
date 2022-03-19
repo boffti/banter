@@ -352,3 +352,36 @@ class BillboardCategories(db.Model):
             'id': self.id,
             'name': self.name,
         }
+
+class Advertisement(db.Model):
+    __tablename__ = 'advertisement'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String)
+    description = db.Column(db.String)
+    img_url = db.Column(db.String)
+    ext_link = db.Column(db.String)
+    school_id = db.Column(db.String, db.ForeignKey('school.id'))
+    admin_id = db.Column(db.String, db.ForeignKey('student.id'))
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'img_url': self.img_url,
+            'ext_link': self.ext_link,
+            'school_id': self.school_id,
+            'admin_id': self.admin_id,
+            'tag': 'ad',
+        }

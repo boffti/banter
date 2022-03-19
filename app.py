@@ -1,7 +1,6 @@
 import json
 import os
 from random import sample
-from unicodedata import name
 from functools import wraps
 import cloudinary
 import cloudinary.uploader as _cu
@@ -12,7 +11,7 @@ from passlib.hash import pbkdf2_sha256 as sha256
 from datetime import datetime
 
 from models import (Admin, BillboardPost, Club, ClubPost, Event, School,
-                    Student, UserRoles, ClubMembers, db_init)
+                    Student, UserRoles, ClubMembers, Advertisement, db_init)
 
 load_dotenv()
 
@@ -32,13 +31,37 @@ cloudinary.config(
 )
 
 # UTIL Functions --------------------------------------------------------------
-def get_clubs():
-    clubs = Club.query.filter_by(school_id=session['user']['school_id']).all()
-    return clubs
+def get_clubs(n=7, no_ad=False):
+    if no_ad:
+        return  Club.query.filter_by(school_id=session['user']['school_id']).all()
+    else:
+        ads = get_ads()
+        if n == 'all':
+            clubs = Club.query.filter_by(school_id=session['user']['school_id']).all()
+        else:
+            clubs = Club.query.filter_by(school_id=session['user']['school_id']).limit(n).all()
+        clubs = [p.format() for p in clubs]
+        idx = len(clubs)//(len(ads)+1)
+        for i, ad in enumerate(ads):
+            if i == 0:
+                clubs.insert(idx * (i+1), ad)
+            else:
+                clubs.insert(idx * (i+2), ad)
+        return clubs
 
-def get_billboard_posts():
-    posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).all()
+def get_billboard_posts(n=6):
+    ads = get_ads()
+    if n == 'all':
+        posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).all()
+    else:
+        posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).limit(n+len(ads)).all()
     posts = [p.format() for p in posts]
+    idx = len(posts)//(len(ads)+1)
+    for i, ad in enumerate(ads):
+        if i == 0:
+            posts.insert(idx * (i+1), ad)
+        else:
+            posts.insert(idx * (i+2), ad)
     return posts
 
 def get_events():
@@ -48,6 +71,11 @@ def get_events():
         e["date"] = e.get('date_time').strftime("%b %d")
         e["time"] = e.get('date_time').strftime("%I:%M %p")
     return events
+
+def get_ads():
+    ads = Advertisement.query.filter_by(school_id=session['user']['school_id']).all()
+    ads = [a.format() for a in ads]
+    return ads
 
 @app.template_filter('is_member')
 def is_member(value):
@@ -72,10 +100,10 @@ def home():
     if 'user' not in session:
         return render_template('login/login.html')
     else:
-        clubs = get_clubs()
+        clubs = get_clubs(no_ad=True)
         sample_size = min(len(clubs), 6)
         clubs = sample(clubs, sample_size) if len(clubs) > 0 else []
-        return render_template('index.html', billboard=get_billboard_posts(), events=get_events(), clubs=clubs)
+        return render_template('index.html', billboard=get_billboard_posts(6), events=get_events(), clubs=clubs)
 # -----------------------------------------------------------------------------
 
 # Login & Register Routes --------------------------------------------------------------
@@ -242,8 +270,8 @@ def update_profile():
 def billboard_page():
     if 'user' not in session:
         return redirect(url_for('login_page'))
-    else:
-        return render_template('billboard/billboard.html', billboard=get_billboard_posts())
+    billboard_posts = get_billboard_posts('all')
+    return render_template('billboard/billboard.html', billboard=billboard_posts)
 
 @app.route('/billboard/post', methods=['POST'])
 def add_billboard_post():
