@@ -31,7 +31,7 @@ cloudinary.config(
 )
 
 # UTIL Functions --------------------------------------------------------------
-def get_clubs(n=7, no_ad=False):
+def get_clubs(n=6, no_ad=False):
     if no_ad:
         return  Club.query.filter_by(school_id=session['user']['school_id']).all()
     else:
@@ -42,11 +42,11 @@ def get_clubs(n=7, no_ad=False):
             clubs = Club.query.filter_by(school_id=session['user']['school_id']).limit(n).all()
         clubs = [p.format() for p in clubs]
         idx = len(clubs)//(len(ads)+1)
-        for i, ad in enumerate(ads):
-            if i == 0:
-                clubs.insert(idx * (i+1), ad)
-            else:
-                clubs.insert(idx * (i+2), ad)
+        k, m = 1, 0
+        for ad in ads:
+            clubs.insert(idx * (k) + (m), ad)
+            k+=1
+            m+=1
         return clubs
 
 def get_billboard_posts(n=6):
@@ -54,14 +54,15 @@ def get_billboard_posts(n=6):
     if n == 'all':
         posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).all()
     else:
-        posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).limit(n+len(ads)).all()
+        posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).limit(n).all()
     posts = [p.format() for p in posts]
+    print(len(posts))
     idx = len(posts)//(len(ads)+1)
-    for i, ad in enumerate(ads):
-        if i == 0:
-            posts.insert(idx * (i+1), ad)
-        else:
-            posts.insert(idx * (i+2), ad)
+    k, m = 1, 0
+    for ad in ads:
+        posts.insert(idx * k + m, ad)
+        k+=1
+        m+=1
     return posts
 
 def get_events():
@@ -103,7 +104,7 @@ def home():
         clubs = get_clubs(no_ad=True)
         sample_size = min(len(clubs), 6)
         clubs = sample(clubs, sample_size) if len(clubs) > 0 else []
-        return render_template('index.html', billboard=get_billboard_posts(6), events=get_events(), clubs=clubs)
+        return render_template('index.html', billboard=get_billboard_posts(9), events=get_events(), clubs=clubs)
 # -----------------------------------------------------------------------------
 
 # Login & Register Routes --------------------------------------------------------------
@@ -289,7 +290,7 @@ def delete_billboard_post(post_id):
 def club():
     if 'user' not in session:
         return redirect(url_for('login_page'))
-    return render_template('club/clubs.html', clubs=get_clubs())
+    return render_template('club/clubs.html', clubs=get_clubs('all'))
 
 @app.route('/clubs/<club_id>')
 def club_details(club_id):
