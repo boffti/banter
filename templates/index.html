@@ -103,14 +103,18 @@ Banter | Home
             <div class="grid">
                 {% if billboard|length > 0 %}
                 {% for post in billboard %}
-                <div class="col-lg-4 col-md-6 col-sm-12 grid-item px-2 py-2">
-                    <div class="card d-flex flex-column">
+                <div class="col-lg-4 col-md-6 grid-item px-2 py-2">
+                    <div class="card d-flex flex-column card-link card-link-pop">
+                        {% if post.img_url %}
                         <a href="#">
                             <img class="card-img-top" src="{{ post.img_url }}" alt="img">
                         </a>
+                        {% endif %}
                         <div class="card-body d-flex flex-column">
+                            {% if post.title %}
                             <h3 class="card-title"><a href="#">{{ post.title }}</a></h3>
-                            <div class="text-muted">{{ post.content }}</div>
+                            {% endif %}
+                            <div class="{{ 'text-muted' if post.title else '' }}">{{ post.content }}</div>
                             <div class="d-flex align-items-center pt-4 mt-auto">
                                 <span class="avatar" style="background-image: url({{ post.student.dp }})"></span>
                                 <div class="ms-3">
@@ -119,10 +123,7 @@ Banter | Home
                                     <div class="text-muted">{{ post.created_at }}</div>
                                 </div>
                                 <div class="ms-auto">
-                                    <a href="#" class="icon d-none d-md-inline-block ms-3 text-muted">
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
-                                        <!-- SVG icon code -->
-                                    </a>
+                                    <span class="badge bg-blue-lt">{{ post.tag.name }}</span>
                                 </div>
                             </div>
                         </div>
@@ -176,7 +177,7 @@ Banter | Home
                 {% if events|length > 0 %}
                 {% for event in events %}
                 <div class="col-lg-4 col-md-6 col-12 grid-item px-2 py-2">
-                    <div class="card card-link d-flex flex-column w-100">
+                    <div class="card card-link d-flex flex-column w-100 card-link-pop">
                         <div class="card-status-bottom bg-blue"></div>
                         <div class="row row-0 flex-fill">
                             <!-- <div class="col-md-3 d-flex flex-column justify-content-center align-items-center">
@@ -291,19 +292,8 @@ Banter | Home
             <div class="grid">
                 {% if clubs|length > 0 %}
                 {% for club in clubs %}
-                <!-- <div class="col-lg-4 col-sm-12 grid-item px-2 py-2">
-                    <div class="card d-flex flex-column">
-                        <a href="#">
-                            <img class="card-img-top img-fluid" src="{{ club.img_url }}" alt="img">
-                        </a>
-                        <div class="card-body d-flex flex-column">
-                            <h3 class="card-title"><a href="/clubs/{{ club.id }}">{{ club.name }}</a></h3>
-                            <div class="text-muted text-truncate">{{ club.description }}</div>
-                        </div>
-                    </div>
-                </div> -->
                 <div class="col-lg-4 col-md-6 col-12 grid-item p-2">
-                    <div class="card">
+                    <div class="card card-link card-link-pop">
                         <div class="card-img-top img-responsive img-responsive-21x9"
                             style="background-image: url({{ club.img_url }})">
                         </div>
