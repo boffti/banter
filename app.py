@@ -140,10 +140,19 @@ def test():
 @app.route('/events')
 def getEvents():
     events = Event.query.all()
+    finalevent=[]
     for e in events:
+        event=[]
+        event.append(e.id)
+        event.append(e.name)
+        event.append(e.description)
+        event.append(e.location)
+        event.append(e.date_time.strftime("%b %d"))
+        event.append(e.date_time.strftime("%I:%M %p"))
+        finalevent.append(event)
         e.date_time=e.date_time.strftime("%b %d")
         
-    return render_template('event.html',events=events)
+    return render_template('event.html',events=finalevent)
 
 @app.route('/addevent')
 def addEvent():
@@ -160,8 +169,8 @@ def insertEvent():
     description = request.form['description']
     location= request.form['location']
     date_time=request.form['date_time']
-    school = request.form['school']
-    student = request.form['student']
+    school = session['user']['school']['id']
+    student = session['user']['id']
 
     new_event=Event(name=name,description=description,location=location,date_time=date_time,school_id=school,student_id=student)
     new_event.insert()
