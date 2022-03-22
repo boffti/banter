@@ -5,74 +5,115 @@ Banter : Register
 {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+<style>
+    body {
+        background: url("../../static/images/login_bg.jpg") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 
-<div class="signup-page">
-    <div class="grid grid-2">
-        <a href="#">
-            <img class="signup-img" src="{{url_for('static', filename='images/register_bg.jpg')}}" alt="">
-        </a>
-        <div class="signup-form flex-vertical">
-            <img src="" alt="" style="width: 100px;" class="">
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            {% for message in messages %}
-            <div class="container">
-                <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                    <strong>{{ message }}</strong>
-                </div>
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-            <div class="card">
-                <div class="flex-vertical">
-                    <h2 class="login-heading">Welcome to Banter</h2>
-                    <p class="login-heading mb-4">Create an account to get started.</p>
-                </div>
-                <form role="form" action="/register" method="post">
-                    <div class="">
-                        <input name="name" type="name" id="name" class="" placeholder="Full Name" required autofocus>
-                        <!-- <label for="name">Full Name</label> -->
-                    </div>
-                    <div class="">
-                        <input name="id" type="text" id="school_id" class="" placeholder="School ID" required>
-                        <!-- <label for="email">E-Mail</label> -->
-                    </div>
-                    <div class=""> <select name="school" id="school" required>
-                            <option value="choose" disabled selected>Where do you study?</option>
-                            {% if schools %}
-                            {% for school in schools %}
-                            <option value="{{ school.id }}">{{ school.name }}</option>
-                            {% endfor %}
-                            {% endif %}
-                        </select>
-                    </div>
-                    <div class="">
-                        <input name="password" type="password" id="inputPassword" class="" placeholder="Password"
-                            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$"
-                            title="8-12 letters, Atleast 1 uppercase, lowercase, symbol and number." required>
-                        <!-- <label for="inputPassword">Password</label> -->
-                    </div>
-                    <div class="">
-                        <input name="confirm_password" type="password" id="inputPasswordReenter" class=""
-                            placeholder="Re-Enter Password" required>
-                        <!-- <label for="inputPasswordReenter">Re-enter Password</label> -->
-                    </div>
-                    <br>
-                    <button class="btn btn-lg" type="submit">Sign Up</button>
-                    <br>
-                    <div class="flex flex-vertical">
-                        <p>Already have an account?</p>
-                        <a class="text-accent" href="/login">Sign In</a>
-                    </div>
-                </form>
+<div class="page page-center">
+    <div class="container-tight py-4">
+        <div class="text-center mb-4">
+            <a href="." class="navbar-brand navbar-brand-autodark">
+                <h1>Banter</h1>
+            </a>
+        </div>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="container">
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                <strong>{{ message }}</strong>
             </div>
         </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <form class="card card-md" action="/register" method="post">
+            <div class="card-body">
+
+                <h2 class="card-title text-center mb-4">Create new account</h2>
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input name="name" type="text" class="form-control" placeholder="Enter your name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">School ID</label>
+                    <input name="id" type="text" class="form-control" placeholder="Enter your School ID">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">School</label>
+                    <select name="school" class="form-select">
+                        <option value="choose" disabled selected>Where do you study?</option>
+                        {% if schools %}
+                        {% for school in schools %}
+                        <option value="{{ school.id }}">{{ school.name }}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <div class="input-group input-group-flat">
+                        <input name="password" type="password" class="form-control" placeholder="Password"
+                            autocomplete="off">
+                        <span class="input-group-text">
+                            <a href="#" class="link-secondary" title="" data-bs-toggle="tooltip"
+                                data-bs-original-title="Show password">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <circle cx="12" cy="12" r="2"></circle>
+                                    <path
+                                        d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7">
+                                    </path>
+                                </svg>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Confirm Password</label>
+                    <div class="input-group input-group-flat">
+                        <input name="confirm_password" type="password" class="form-control"
+                            placeholder="Re-Enter Password" autocomplete="off">
+                        <span class="input-group-text">
+                            <a href="#" class="link-secondary" title="" data-bs-toggle="tooltip"
+                                data-bs-original-title="Show password">
+                            </a>
+                        </span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-check">
+                        <input type="checkbox" class="form-check-input">
+                        <span class="form-check-label">Agree the <a href="#" tabindex="-1">terms
+                                and policy</a>.</span>
+                    </label>
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="btn btn-primary w-100">Create new account</button>
+                </div>
+                <div class="text-center text-muted mt-4">
+                    Already have account? <a href="/login" tabindex="-1">Sign in</a>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
 {% endblock %}

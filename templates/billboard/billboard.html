@@ -1,0 +1,177 @@
+{% extends 'base_w_header.html' %}
+{% set page = "billboard" %}
+{% block title %}
+Banter | Billboard
+{% endblock %}
+
+{% block styles %}
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/new_styles.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="container-xl">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary mt-3 alert-dismissible mb-0 fade show" role="alert">
+            <strong>{{ message }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <!-- Page title -->
+        <div class="page-header d-print-none">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Billboard
+                    </h2>
+                    <div class="text-muted mt-1">Here's what the students in your school are saying</div>
+                </div>
+                <!-- Page title actions -->
+                <div class="col-12 col-md-auto ms-auto d-print-none">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <select class="form-select">
+                                <option disabled selected>Categories</option>
+                                <option value="2">News</option>
+                                <option value="3">Job</option>
+                                <option value="3">Room-mate</option>
+                                <option value="3">General</option>
+                            </select>
+                        </div>
+                        <div class="me-3">
+                            <div class="input-icon">
+                                <input type="text" value="" class="form-control" placeholder="Search…">
+                                <span class="input-icon-addon">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <circle cx="10" cy="10" r="7"></circle>
+                                        <line x1="21" y1="21" x2="15" y2="15"></line>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-post">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Create post
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="grid">
+                {% if billboard|length > 0 %}
+                {% for post in billboard %}
+                <div class="col-lg-4 col-md-6 grid-item px-2 py-2">
+                    <div class="card d-flex flex-column card-link card-link-pop">
+                        {% if post.img_url %}
+                        <a href="#">
+                            <img class="card-img-top" src="{{ post.img_url }}" alt="img">
+                        </a>
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            {% if post.title %}
+                            <h3 class="card-title"><a href="#">{{ post.title }}</a></h3>
+                            {% endif %}
+                            <div class="{{ 'text-muted' if post.title else '' }}">{{ post.content }}</div>
+                            <div class="d-flex align-items-center pt-4 mt-auto">
+                                <span class="avatar" style="background-image: url({{ post.student.dp }})"></span>
+                                <div class="ms-3">
+                                    <a href="/student/{{ post.student.id }}"
+                                        class="text-body">{{ post.student.name }}</a>
+                                    <div class="text-muted">{{ post.created_at }}</div>
+                                </div>
+                                <div class="ms-auto">
+                                    <span class="badge bg-blue-lt">{{ post.tag.name }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="col-lg-12 grid-item px-2 py-2">
+                    <div class="row align-items-center">
+                        <div class="empty p-4">
+                            <div class="empty-img"><img src="{{ url_for('static', filename='images/empty.svg') }}"
+                                    height="128" alt="">
+                            </div>
+                            <p class="empty-title">Nothing on the Billboard yet</p>
+                            <p class="empty-subtitle text-muted">
+                                Create a post to let others know what you are up to.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Billboard Post Modal -->
+    <div class="modal modal-blur fade" id="modal-post" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Billboard Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Post Title</label>
+                        <input type="text" class="form-control" name="example-text-input" placeholder="Type here...">
+                    </div>
+                    <div class="col-lg-12">
+                        <div>
+                            <label class="form-label">Post Content</label>
+                            <textarea class="form-control" rows="3" placeholder="Type here..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-label">Post Image</div>
+                        <input type="file" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </a>
+                    <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Create post
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% endblock %}

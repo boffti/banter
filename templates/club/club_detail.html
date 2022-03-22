@@ -1,0 +1,164 @@
+{% extends 'base_w_header.html' %}
+{% set page = "clubs" %}
+{% block title %}
+Banter | {{ club.name }}
+{% endblock %}
+
+{% block styles %}
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/new_styles.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary mt-3 alert-dismissible mb-0 fade show" role="alert">
+            <strong>{{ message }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    <br>
+    <div class="card">
+        <div class="card-img-top img-responsive img-responsive-21x9" style="background-image: url({{ club.img_url }})">
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">{{ club.name }}</h3>
+            <p class="text-muted">{{ club.description }}</p>
+        </div>
+        {% if club.id | is_member %}
+        <!-- <div class="d-flex">
+            <a href="#" class="card-btn">Already a Member</a>
+        </div> -->
+        {% else %}
+        <div class="d-flex">
+            <a type="submit" href="/join-club/{{ club.id }}" class="card-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users mr-2" width="24"
+                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                </svg>
+                &nbsp; Join</a>
+        </div>
+        {% endif %}
+    </div>
+    <br>
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Members</h3>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                {% if club.members|length > 0 %}
+                {% for student in club.members %}
+                <div class="col-lg-4 col-6">
+                    <div class="row g-3 align-items-center">
+                        <a href="#" class="col-auto">
+                            <span class="avatar" style="background-image: url({{ student.dp }})">
+                                <!-- <span class="badge bg-red"></span></span> -->
+                        </a>
+                        <div class="col text-truncate">
+                            <a href="/student/{{ student.id }}"
+                                class="text-reset d-block text-truncate">{{ student.name }}</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="row g-3 align-items-center">
+                    <div class="empty p-0">
+                        <div class="empty-img"><img src="{{ url_for('static', filename='images/student.svg') }}"
+                                height="128" alt="">
+                        </div>
+                        <p class="empty-title">No Students</p>
+                        <p class="empty-subtitle text-muted">
+                            Student's haven't joined this club yet!
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Posts</h3>
+        </div>
+        <div class="list-group list-group-flush list-group-hoverable">
+            <!-- Template this -->
+            {% if club_posts|length > 0 %}
+            {% for post in club_posts %}
+            <div class="list-group-item">
+                <div class="row align-items-start">
+                    <div class="col-auto">
+                        <a href="#">
+                            <span class="avatar" style="background-image: url({{ post.student.dp }})"></span>
+                        </a>
+                    </div>
+                    <div class="col">
+                        <a href="/student/{{ post.student.id }}" class="text-reset d-block">{{ post.student.name }}</a>
+                        <div class="d-block fw-bold text-truncate mt-n1">{{ post.title }}</div>
+                        <div>
+                            <p class="m-0">{{ post.content }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="list-group-item">
+                <div class="row align-items-center">
+                    <div class="empty p-0">
+                        <div class="empty-img"><img src="{{ url_for('static', filename='images/empty.svg') }}"
+                                height="128" alt="">
+                        </div>
+                        <p class="empty-title">No messages yet</p>
+                        <p class="empty-subtitle text-muted">
+                            Check back later or feel free to leave a message.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Post Something</h3>
+        </div>
+        <div class="card-body">
+            <form action="/club-post/{{ club.id }}" method="post">
+                <div class="mb-3">
+                    <div class="form-label">Title</div>
+                    <input type="text" name="title" class="form-control" placeholder="Optional">
+                </div>
+                <div class="mb-3">
+                    <div class="form-label">Message</div>
+                    <textarea name="content" class="form-control" rows="3" placeholder="Type here..."></textarea>
+                </div>
+                <div class="mt-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Post
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

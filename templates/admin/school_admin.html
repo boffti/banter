@@ -1,0 +1,230 @@
+{% extends 'base_w_header.html' %}
+{% set page = "" %}
+{% block title %}
+Banter | Admin
+{% endblock %}
+
+{% block styles %}
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/new_styles.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="container-xl">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary mt-3 alert-dismissible mb-0 fade show" role="alert">
+            <strong>{{ message }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <!-- Page title -->
+        <div class="page-header d-print-none">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <!-- Page pre-title -->
+                    <div class="page-pretitle">
+                        School Admin
+                    </div>
+                    <h2 class="page-title">
+                        {{ session.user.school.name }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-deck row-cards">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="subheader">Sales</div>
+                                <div class="ms-auto lh-1">
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">Last 7 days</a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item active" href="#">Last 7 days</a>
+                                            <a class="dropdown-item" href="#">Last 30 days</a>
+                                            <a class="dropdown-item" href="#">Last 3 months</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="h1 mb-3">27361</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="subheader">Students</div>
+                                <div class="ms-auto lh-1">
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">Last 7 days</a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item active" href="#">Last 7 days</a>
+                                            <a class="dropdown-item" href="#">Last 30 days</a>
+                                            <a class="dropdown-item" href="#">Last 3 months</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="h1 mb-3">553</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="subheader">Posts</div>
+                                <div class="ms-auto lh-1">
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">Last 7 days</a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item active" href="#">Last 7 days</a>
+                                            <a class="dropdown-item" href="#">Last 30 days</a>
+                                            <a class="dropdown-item" href="#">Last 3 months</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="h1 mb-3">1364</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="subheader">Events</div>
+                                <div class="ms-auto lh-1">
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">Last 7 days</a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item active" href="#">Last 7 days</a>
+                                            <a class="dropdown-item" href="#">Last 30 days</a>
+                                            <a class="dropdown-item" href="#">Last 3 months</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="h1 mb-3">230</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Most Active Students</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    {% if students|length > 0 %}
+                                    {% for student in students %}
+                                    <div class="col-6">
+                                        <div class="row g-3 align-items-center">
+                                            <a href="#" class="col-auto">
+                                                <span class="avatar"
+                                                    style="background-image: url({{ student.dp }})">
+                                                    <!-- <span class="badge bg-red"></span></span> -->
+                                            </a>
+                                            <div class="col text-truncate">
+                                                <a href="/student/{{ student.id }}" class="text-reset d-block text-truncate">{{ student.name }}</a>
+                                                <div class="text-muted text-truncate mt-n1">2 days ago</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    {% else %}
+                                    <div class="row g-3 align-items-center">
+                                        <div class="empty p-0">
+                                            <div class="empty-img"><img
+                                                    src="{{ url_for('static', filename='images/student.svg') }}" height="128"
+                                                    alt="">
+                                            </div>
+                                            <p class="empty-title">No Students</p>
+                                            <p class="empty-subtitle text-muted">
+                                                Student's haven't signed up yet!
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header d-flex flex-row justify-content-between">
+                                <h3 class="card-title">Ad Campaigns</h3>
+                                <button class="btn btn-outline-primary">New</button>
+                            </div>
+                            <div class="list-group list-group-flush list-group-hoverable">
+                                <div class="list-group-item">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            <a href="#">
+                                                <span class="avatar"
+                                                    style="background-image: url(./static/avatars/000m.jpg)"></span>
+                                            </a>
+                                        </div>
+                                        <div class="col">
+                                            <a href="#" class="text-reset d-block">Ad Title</a>
+                                            <div class="d-block text-muted mt-n1">Lorem ipsum dolor sit
+                                                amet consectetur adipisicing elit. Voluptate similique laborum, nostrum
+                                                fugiat facilis quidem sapiente veritatis, eligendi odit tenetur
+                                                voluptatum maiores reiciendis et vel ipsam exercitationem sequi!
+                                                Sapiente, molestiae.</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a href="#" class="list-group-item-actions">
+                                                <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted"
+                                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path
+                                                        d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
+                                                    </path>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

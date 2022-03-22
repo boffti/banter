@@ -1,0 +1,23 @@
+.event-date {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #000;
+}
+
+.event-time {
+    font-size: 1.2em;
+    color: #000;
+}
+
+.delete-btn {
+    opacity: 0;
+    transition: opacity .3s;
+}
+
+.delete-btn:hover {
+    opacity: 1;
+}
+
+.list-item:hover .delete-btn {
+    opacity: 1;
+}

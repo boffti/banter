@@ -25,53 +25,18 @@ Banter | Profile
             <div class="col-lg-4 col-12">
                 <div class="card">
                     <div class="card-body p-4 text-center">
-                        <img id="profileIMG" src="{{ session['user']['dp'] }}" alt="profile" class=""
+                        <img id="profileIMG" src="{{ student.dp }}" alt="profile" class=""
                             style="width: 200px; border-radius: 100px;">
-                        <h1 class="m-0 mb-1 mt-2">{{ session['user']['name'] }}</h3>
-                            <div class="mt-3">
-                                <span class="badge bg-blue-lt"><a id="changeDP" href="#">Change Profile Image</a></span>
-                                <input type="file" name="dp" id="inputChangeDP" style="display: none;">
-                            </div>
+                        <h1 class="m-0 mb-1 mt-2">{{ student.name }}</h3>
                     </div>
-                    <!-- <div class="d-flex">
-                        <a href="#" class="card-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
-                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <rect x="3" y="5" width="18" height="14" rx="2"></rect>
-                                <polyline points="3 7 12 13 21 7"></polyline>
-                            </svg>
-                            Email</a>
-                        <a href="#" class="card-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
-                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path
-                                    d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2">
-                                </path>
-                            </svg>
-                            Call</a>
-                    </div> -->
-                    <!-- <div></div> -->
                 </div>
                 <br>
                 <div class="card">
                     <div class="card-header d-flex flex-row justify-content-between">
-                        <h3 class="card-title">My Deets</h3>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-profile">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24"
-                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
-                                <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3"></path>
-                                <line x1="16" y1="5" x2="19" y2="8"></line>
-                            </svg>
-                        </a>
+                        <h3 class="card-title">Deets</h3>
                     </div>
                     <div class="list-group list-group-flush list-group-hoverable">
+                        {% if student.name %}
                         <div class="list-group-item">
                             <div class="row align-items-center">
                                 <div class="col-auto">
@@ -89,6 +54,8 @@ Banter | Profile
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
+                        {% if student.major %}
                         <div class="list-group-item">
                             <div class="row align-items-center">
                                 <div class="col-auto">
@@ -106,6 +73,8 @@ Banter | Profile
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
+                        {% if student.bio %}
                         <div class="list-group-item">
                             <div class="row align-items-center">
                                 <div class="col-auto">
@@ -123,6 +92,8 @@ Banter | Profile
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
+                        {% if student.phone %}
                         <div class="list-group-item">
                             <div class="row align-items-center">
                                 <div class="col-auto">
@@ -141,6 +112,8 @@ Banter | Profile
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
+                        {% if student.dob %}
                         <div class="list-group-item">
                             <div class="row align-items-center">
                                 <div class="col-auto">
@@ -158,6 +131,7 @@ Banter | Profile
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
                 <br>
@@ -209,22 +183,6 @@ Banter | Profile
                                             </svg> {{ event.time }}</div>
                                     </div>
                                 </div>
-                                <div class="col-auto">
-                                    <a href="/delete-event/{{ event.id }}" class="list-group-item-actions">
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-trash" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <line x1="4" y1="7" x2="20" y2="7"></line>
-                                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                        </svg>
-                                    </a>
-                                </div>
                             </div>
                         </div>
                         {% endfor %}
@@ -236,15 +194,10 @@ Banter | Profile
                                             src="{{ url_for('static', filename='images/empty_3.svg') }}" height="128"
                                             alt="">
                                     </div>
-                                    <p class="empty-title">You haven't created any events yet</p>
+                                    <p class="empty-title">No Events yet</p>
                                     <p class="empty-subtitle text-muted">
-                                        Head to the Events page to create a new Event!
+                                        {{ student.name }} has not created any events yet.
                                     </p>
-                                    <div class="empty-action">
-                                        <a href="/events" class="btn btn-primary">
-                                            Events
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -260,7 +213,7 @@ Banter | Profile
                         <div class="row g-3">
                             {% if owned_clubs|length > 0 %}
                             {% for club in owned_clubs %}
-                            <div class="col-12 d-flex justify-content-between align-items-center list-item">
+                            <div class="col-12 d-flex justify-content-between align-items-center">
                                 <div class="row g-3 align-items-center">
                                     <a href="#" class="col-auto">
                                         <span class="avatar" style="background-image: url({{ club.img_url }})"></span>
@@ -269,22 +222,6 @@ Banter | Profile
                                         <a href="/clubs/{{ club.id }}" target="_blank"
                                             class="text-reset d-block text-truncate">{{ club.name }}</a>
                                     </div>
-                                </div>
-                                <div class="delete-btn">
-                                    <a href="/delete-club/{{ club.id }}">
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-trash" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <line x1="4" y1="7" x2="20" y2="7"></line>
-                                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                        </svg>
-                                    </a>
                                 </div>
                             </div>
                             {% endfor %}
@@ -297,13 +234,8 @@ Banter | Profile
                                     </div>
                                     <p class="empty-title">No Clubs owned</p>
                                     <p class="empty-subtitle text-muted">
-                                        Head to the Clubs page and start your own club!
+                                        {{ student.name }} doesn't own any clubs yet.
                                     </p>
-                                    <div class="empty-action">
-                                        <a href="/clubs" class="btn btn-primary">
-                                            Clubs
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                             {% endif %}
@@ -320,7 +252,7 @@ Banter | Profile
                         <div class="row g-3">
                             {% if student.clubs|length > 0 %}
                             {% for club in student.clubs %}
-                            <div class="col-lg-4 col-12 d-flex justify-content-between align-items-center list-item">
+                            <div class="col-lg-4 col-12 d-flex justify-content-between align-items-center">
                                 <div class="row g-3 align-items-center">
                                     <a href="#" class="col-auto">
                                         <span class="avatar" style="background-image: url({{ club.img_url }})"></span>
@@ -329,21 +261,6 @@ Banter | Profile
                                         <a href="/clubs/{{ club.id }}" target="_blank"
                                             class="text-reset d-block text-truncate">{{ club.name }}</a>
                                     </div>
-                                </div>
-                                <div class="delete-btn">
-                                    <a href="/exit-club/{{ club.id }}">
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-door-exit" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M13 12v.01"></path>
-                                            <path d="M3 21h18"></path>
-                                            <path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5"></path>
-                                            <path d="M14 7h7m-3 -3l3 3l-3 3"></path>
-                                        </svg>
-                                    </a>
                                 </div>
                             </div>
                             {% endfor %}
@@ -354,15 +271,10 @@ Banter | Profile
                                             src="{{ url_for('static', filename='images/student.svg') }}" height="128"
                                             alt="">
                                     </div>
-                                    <p class="empty-title">No clubs yet</p>
+                                    <p class="empty-title">No Clubs yet</p>
                                     <p class="empty-subtitle text-muted">
-                                        Head to the Clubs page to join a cool club today!
+                                        {{ student.name }} has not joined any clubs yet.
                                     </p>
-                                    <div class="empty-action">
-                                        <a href="/clubs" class="btn btn-primary">
-                                            Clubs
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                             {% endif %}
@@ -384,22 +296,6 @@ Banter | Profile
                                         class="text-title text-reset d-block"><strong>{{ post.title }}</strong></a>
                                     <div class="d-block text-muted mt-n1">{{ post.content }}</div>
                                 </div>
-                                <div class="col-auto">
-                                    <a href="#" class="list-group-item-actions">
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-trash" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <line x1="4" y1="7" x2="20" y2="7"></line>
-                                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                        </svg>
-                                    </a>
-                                </div>
                             </div>
                         </div>
                         {% endfor %}
@@ -413,13 +309,8 @@ Banter | Profile
                                     </div>
                                     <p class="empty-title">No Posts Yet</p>
                                     <p class="empty-subtitle text-muted">
-                                        Head to the Billboard page and speak your mind!
+                                        {{ student.name }} hasn't posted anything yet.
                                     </p>
-                                    <div class="empty-action">
-                                        <a href="/billboard" class="btn btn-primary">
-                                            Billboard
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -446,22 +337,6 @@ Banter | Profile
                                     <a href="#" class="text-reset d-block">{{ post.title }}</a>
                                     <div class="d-block text-muted mt-n1">{{ post.content }}</div>
                                 </div>
-                                <div class="col-auto">
-                                    <a href="/delete-club-post/{{ post.id }}" class="list-group-item-actions">
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-trash" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <line x1="4" y1="7" x2="20" y2="7"></line>
-                                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                        </svg>
-                                    </a>
-                                </div>
                             </div>
                         </div>
                         {% endfor %}
@@ -475,20 +350,14 @@ Banter | Profile
                                     </div>
                                     <p class="empty-title">No Posts Yet</p>
                                     <p class="empty-subtitle text-muted">
-                                        Head to the Clubs page and check out all the cool clubs on your campus!
+                                        {{ student.name }} hasn't posted anything in the clubs yet!
                                     </p>
-                                    <div class="empty-action">
-                                        <a href="/clubs" class="btn btn-primary">
-                                            Clubs
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                         {% endif %}
                     </div>
                 </div>
-                <br>
             </div>
         </div>
     </div>
@@ -553,135 +422,9 @@ Banter | Profile
     </div>
 </div>
 
-<!-- Edit Details Modal -->
-<div class="modal modal-blur fade" id="modal-edit-profile" tabindex="-1" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <form action="/update-profile" method="post" class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-6">
-                        <div class="mb-3">
-                            <label class="form-label">Name</label>
-                            <input value="{{ student.name }}" type="text" class="form-control" name="name"
-                                placeholder="Type here...">
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="mb-3">
-                            <label class="form-label">Date of birth</label>
-                            <div class="input-icon">
-                                <span class="input-icon-addon">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-candle"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                        stroke="currentColor" fill="none" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M9 21h6v-9a1 1 0 0 0 -1 -1h-4a1 1 0 0 0 -1 1v9z"></path>
-                                        <path d="M12 3l1.465 1.638a2 2 0 1 1 -3.015 .099l1.55 -1.737z"></path>
-                                    </svg>
-                                </span>
-                                <input value="{{ student.dob }}" type="text" class="form-control" name="dob"
-                                    placeholder="mm/dd/yyyy">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="mb-3">
-                            <label class="form-label">Major</label>
-                            <div class="input-icon">
-                                <span class="input-icon-addon">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                        stroke="currentColor" fill="none" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6"></path>
-                                        <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4"></path>
-                                    </svg>
-                                </span>
-                                <input value="{{ student.major }}" type="text" class="form-control" name="major"
-                                    placeholder="Type here...">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="mb-3">
-                            <label class="form-label">Phone Number</label>
-                            <div class="input-icon">
-                                <span class="input-icon-addon">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-phone"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                        stroke="currentColor" fill="none" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path
-                                            d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2">
-                                        </path>
-                                    </svg>
-                                </span>
-                                <input value="{{ student.phone }}" type="text" class="form-control" name="phone"
-                                    placeholder="Type here...">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-12">
-                    <div>
-                        <label class="form-label">Bio</label>
-                        <textarea name="bio" class="form-control" rows="3"
-                            placeholder="Type here...">{{ student.bio }}</textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                    Cancel
-                </a>
-                <button type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    Update Profile
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
 {% endblock %}
 
 
 {% block scripts %}
-<script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-<script>
-    // @formatter:off
-    document.addEventListener("DOMContentLoaded", function () {
-        window.Litepicker && (new Litepicker({
-            element: document.getElementById('datepicker-icon-prepend'),
-            buttonText: {
-                previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
-    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>`,
-                nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
-    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>`,
-            },
-        }));
-    });
-    // @formatter:on
-</script>
 {% endblock %}

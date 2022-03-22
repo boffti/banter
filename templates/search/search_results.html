@@ -1,0 +1,136 @@
+{% extends 'base_w_header.html' %}
+{% set page = "clubs" %}
+{% block title %}
+Banter | Search Results
+{% endblock %}
+
+{% block styles %}
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/new_styles.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="container-xl">
+        <!-- Page title -->
+        <div class="page-header d-print-none">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Search results
+                    </h2>
+                    <div class="text-muted mt-1">About 2,410 result (0.19 seconds)</div>
+                </div>
+                <div class="col-12 col-md-auto ms-auto d-print-none">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <div class="input-icon">
+                                <input type="text" value="" class="form-control" placeholder="Search…">
+                                <span class="input-icon-addon">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <circle cx="10" cy="10" r="7"></circle>
+                                        <line x1="21" y1="21" x2="15" y2="15"></line>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-product">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row g-4">
+                <div class="col-3">
+                    <form action="" method="get">
+                        <div class="subheader mb-2">Category</div>
+                        <div class="list-group list-group-transparent mb-3">
+                            <a class="list-group-item list-group-item-action d-flex align-items-center active" href="#">
+                                Products
+                                <small class="text-muted ms-auto">24</small>
+                            </a>
+                            <a class="list-group-item list-group-item-action d-flex align-items-center" href="#">
+                                Events
+                                <small class="text-muted ms-auto">149</small>
+                            </a>
+                            <a class="list-group-item list-group-item-action d-flex align-items-center" href="#">
+                                Billboard
+                                <small class="text-muted ms-auto">88</small>
+                            </a>
+                            <a class="list-group-item list-group-item-action d-flex align-items-center" href="#">
+                                Clubs
+                                <small class="text-muted ms-auto">54</small>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-9">
+                    <div class="row row-cards">
+                        {% for _ in range(20) %}
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="card card-sm">
+                                <a href="#" class="d-block"><img
+                                        src="https://m.media-amazon.com/images/I/71vM54GzJ1L._AC_SL1000_.jpg"
+                                        class="card-img-top"></a>
+                                <div class="card-body">
+                                    <h3 class="card-title">Laptop Table</h3>
+                                    <div class="d-flex align-items-center">
+                                        <h1>$30</h2>
+                                            <div class="ms-auto">
+                                                <a href="#" class="ms-3 text-muted">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="icon icon-tabler icon-tabler-shopping-cart-plus"
+                                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <circle cx="6" cy="19" r="2"></circle>
+                                                        <circle cx="17" cy="19" r="2"></circle>
+                                                        <path d="M17 17h-11v-14h-2"></path>
+                                                        <path d="M6 5l6.005 .429m7.138 6.573l-.143 .998h-13"></path>
+                                                        <path d="M15 6h6m-3 -3v6"></path>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex flex-row">
+                                    <span class="avatar me-3 rounded"
+                                        style="background-image: url({{ session['user']['dp'] }})"></span>
+                                    <div>
+                                        <div>{{ session['user']['name'] }}</div>
+                                        <div class="text-muted">3 days ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

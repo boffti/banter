@@ -1,0 +1,368 @@
+{% extends 'base_w_header.html' %}
+{% set page = "" %}
+{% block title %}
+Banter | About
+{% endblock %}
+
+{% block styles %}
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/new_styles.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="nav-color">
+    <div class="container py-5">
+        <div class="row h-99 align-items-center py-5 mt-3">
+            <div class="col-lg-6">
+                <h1 class="display-4 text-primary">Welcome to Banter</h1>
+                <p class="lead text-muted mb-0">This is a humble effort to connect students on every campus so they can
+                    interact, share and trade.</p>
+                <a class="btn btn-primary btn-lg mt-3" href="{{ url_for('home') }}"></i> Start Exploring</a>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block"><img src="{{ url_for('static', filename='images/school.svg') }}"
+                    alt="" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-white py-5">
+    <div class="container py-5">
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-6 order-2 order-lg-1"><i class="fas fa-pen fa-2x mb-3 text-primary"></i>
+                <h2 class="font-weight-light">Speak your mind</h2>
+                <p class="font-italic text-muted mb-4">You can check out the Billboard and see the latest goss on campus
+                    and also share your own thoughts in a post</p>
+                <a class="btn btn-primary mt-1" href="/billboard"></i> Billboard</a>
+            </div>
+            <div class="col-lg-5 px-5 mx-auto order-1 order-lg-2"><img
+                    src="{{ url_for('static', filename='images/communicate.svg') }}" alt="billboard"
+                    class="img-fluid mb-4 mb-lg-0"></div>
+        </div>
+        <div class="row d-flex align-items-center justify-content-between mb-5">
+            <div class="col-lg-5 px-5 mx-auto"><img src="{{ url_for('static', filename='images/events.svg') }}"
+                    alt="events" class="img-fluid mb-4 mb-lg-0"></div>
+            <div class="col-lg-6"><i class="fas fa-calendar fa-2x mb-3 text-primary"></i>
+                <h2 class="font-weight-light">Plan events on campus</h2>
+                <p class="font-italic text-muted mb-4">Use the events page to see the latest events happening on campus
+                    and also plan your own events</p>
+                <a class="btn btn-primary mt-1" href="/events"></i> Events</a>
+            </div>
+        </div>
+        <br>
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-6 order-2 order-lg-1"><i class="fas fa-users fa-2x mb-3 text-primary"></i>
+                <h2 class="font-weight-light">Check out the clubs</h2>
+                <p class="font-italic text-muted mb-4">You can check out all the cool clubs on your campus and get
+                    involved in the conversations.</p>
+                <a class="btn btn-primary mt-1" href="/clubs"></i> Clubs</a>
+            </div>
+            <div class="col-lg-5 px-5 mx-auto order-1 order-lg-2"><img
+                    src="{{ url_for('static', filename='images/club.svg') }}" alt="club" class="img-fluid mb-4 mb-lg-0">
+            </div>
+        </div>
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-5 px-5 mx-auto"><img src="{{ url_for('static', filename='images/trade.svg') }}"
+                    alt="trade" class="img-fluid mb-4 mb-lg-0"></div>
+            <div class="col-lg-6"><i class="fas fa-calendar fa-2x mb-3 text-primary"></i>
+                <h2 class="font-weight-light">Trade with your peers</h2>
+                <p class="font-italic text-muted mb-4">You can list your used products and buy/sell products with other
+                    students on compus</p>
+                <a class="btn btn-primary mt-1" href="/shop"></i> Shop</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bg-white pt-0 pb-0">
+    <div class="container py-5">
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <h2 class="display-5 text-primary font-weight-light">Meet Team 13</h2>
+                <p class="font-italic text-muted">This team worked day and night to develop this product</p>
+            </div>
+        </div>
+
+        <div class="row text-center">
+            <!-- Team item-->
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body p-4 text-center">
+                        <span class="avatar avatar-xl mb-3 avatar-rounded"
+                            style="background-image: url({{ url_for('static', filename='images/team/aneesh.jpg') }})"></span>
+                        <h3 class="m-0 mb-1"><a href="#">Aneesh Melkot</a></h3>
+                        <div class="text-muted">Developer</div>
+                    </div>
+                    <div class="d-flex">
+                        <a href="#" class="card-btn">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-instagram"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <line x1="16.5" y1="7.5" x2="16.5" y2="7.501"></line>
+                            </svg>
+                            Instagram</a>
+                        <a href="#" class="card-btn">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-linkedin"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                                <line x1="8" y1="11" x2="8" y2="16"></line>
+                                <line x1="8" y1="8" x2="8" y2="8.01"></line>
+                                <line x1="12" y1="16" x2="12" y2="11"></line>
+                                <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+                            </svg>
+                            LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            <!-- End-->
+
+            <!-- Team item-->
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body p-4 text-center">
+                        <span class="avatar avatar-xl mb-3 avatar-rounded"
+                            style="background-image: url(https://res.cloudinary.com/dtvhyzofv/image/upload/v1647144583/banter/dp/user_awjxuf.png)"></span>
+                        <h3 class="m-0 mb-1"><a href="#">Aditya Kulkarni</a></h3>
+                        <div class="text-muted">Developer</div>
+                    </div>
+                    <div class="d-flex">
+                        <a href="#" class="card-btn">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-instagram"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <line x1="16.5" y1="7.5" x2="16.5" y2="7.501"></line>
+                            </svg>
+                            Instagram</a>
+                        <a href="#" class="card-btn">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-linkedin"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                                <line x1="8" y1="11" x2="8" y2="16"></line>
+                                <line x1="8" y1="8" x2="8" y2="8.01"></line>
+                                <line x1="12" y1="16" x2="12" y2="11"></line>
+                                <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+                            </svg>
+                            LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            <!-- End-->
+
+            <!-- Team item-->
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body p-4 text-center">
+                        <span class="avatar avatar-xl mb-3 avatar-rounded"
+                            style="background-image: url(https://res.cloudinary.com/dtvhyzofv/image/upload/v1647144583/banter/dp/user_awjxuf.png)"></span>
+                        <h3 class="m-0 mb-1"><a href="#">Anamika Karolla</a></h3>
+                        <div class="text-muted">Developer</div>
+                    </div>
+                    <div class="d-flex">
+                        <a href="#" class="card-btn">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-instagram"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <line x1="16.5" y1="7.5" x2="16.5" y2="7.501"></line>
+                            </svg>
+                            Instagram</a>
+                        <a href="#" class="card-btn">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-linkedin"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                                <line x1="8" y1="11" x2="8" y2="16"></line>
+                                <line x1="8" y1="8" x2="8" y2="8.01"></line>
+                                <line x1="12" y1="16" x2="12" y2="11"></line>
+                                <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+                            </svg>
+                            LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            <!-- End-->
+
+            <!-- Team item-->
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body p-4 text-center">
+                        <span class="avatar avatar-xl mb-3 avatar-rounded"
+                            style="background-image: url(https://res.cloudinary.com/dtvhyzofv/image/upload/v1647144583/banter/dp/user_awjxuf.png)"></span>
+                        <h3 class="m-0 mb-1"><a href="#">Deepika Rajaneni</a></h3>
+                        <div class="text-muted">Developer</div>
+                    </div>
+                    <div class="d-flex">
+                        <a href="#" class="card-btn">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-instagram"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <line x1="16.5" y1="7.5" x2="16.5" y2="7.501"></line>
+                            </svg>
+                            Instagram</a>
+                        <a href="#" class="card-btn">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-linkedin"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                                <line x1="8" y1="11" x2="8" y2="16"></line>
+                                <line x1="8" y1="8" x2="8" y2="8.01"></line>
+                                <line x1="12" y1="16" x2="12" y2="11"></line>
+                                <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+                            </svg>
+                            LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            <!-- End-->
+        </div>
+        <br>
+        <div class="row">
+                        <!-- Team item-->
+                        <div class="col-lg-3">
+                            <div class="card">
+                                <div class="card-body p-4 text-center">
+                                    <span class="avatar avatar-xl mb-3 avatar-rounded"
+                                        style="background-image: url(https://res.cloudinary.com/dtvhyzofv/image/upload/v1647144583/banter/dp/user_awjxuf.png)"></span>
+                                    <h3 class="m-0 mb-1"><a href="#">Sahana Balakrishna</a></h3>
+                                    <div class="text-muted">Developer</div>
+                                </div>
+                                <div class="d-flex">
+                                    <a href="#" class="card-btn">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-instagram"
+                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                            <line x1="16.5" y1="7.5" x2="16.5" y2="7.501"></line>
+                                        </svg>
+                                        Instagram</a>
+                                    <a href="#" class="card-btn">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-linkedin"
+                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                                            <line x1="8" y1="11" x2="8" y2="16"></line>
+                                            <line x1="8" y1="8" x2="8" y2="8.01"></line>
+                                            <line x1="12" y1="16" x2="12" y2="11"></line>
+                                            <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+                                        </svg>
+                                        LinkedIn</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End-->
+            
+                        <!-- Team item-->
+                        <div class="col-lg-3">
+                            <div class="card">
+                                <div class="card-body p-4 text-center">
+                                    <span class="avatar avatar-xl mb-3 avatar-rounded"
+                                        style="background-image: url(https://res.cloudinary.com/dtvhyzofv/image/upload/v1647144583/banter/dp/user_awjxuf.png)"></span>
+                                    <h3 class="m-0 mb-1"><a href="#">Saitheja Bikumalla</a></h3>
+                                    <div class="text-muted">Developer</div>
+                                </div>
+                                <div class="d-flex">
+                                    <a href="#" class="card-btn">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-instagram"
+                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                            <line x1="16.5" y1="7.5" x2="16.5" y2="7.501"></line>
+                                        </svg>
+                                        Instagram</a>
+                                    <a href="#" class="card-btn">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-linkedin"
+                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                                            <line x1="8" y1="11" x2="8" y2="16"></line>
+                                            <line x1="8" y1="8" x2="8" y2="8.01"></line>
+                                            <line x1="12" y1="16" x2="12" y2="11"></line>
+                                            <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+                                        </svg>
+                                        LinkedIn</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End-->
+            
+                        <!-- Team item-->
+                        <div class="col-lg-3">
+                            <div class="card">
+                                <div class="card-body p-4 text-center">
+                                    <span class="avatar avatar-xl mb-3 avatar-rounded"
+                                        style="background-image: url(https://res.cloudinary.com/dtvhyzofv/image/upload/v1647144583/banter/dp/user_awjxuf.png)"></span>
+                                    <h3 class="m-0 mb-1"><a href="#">Vishwa Naik</a></h3>
+                                    <div class="text-muted">Developer</div>
+                                </div>
+                                <div class="d-flex">
+                                    <a href="#" class="card-btn">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-instagram"
+                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <rect x="4" y="4" width="16" height="16" rx="4"></rect>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                            <line x1="16.5" y1="7.5" x2="16.5" y2="7.501"></line>
+                                        </svg>
+                                        Instagram</a>
+                                    <a href="#" class="card-btn">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-linkedin"
+                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                                            <line x1="8" y1="11" x2="8" y2="16"></line>
+                                            <line x1="8" y1="8" x2="8" y2="8.01"></line>
+                                            <line x1="12" y1="16" x2="12" y2="11"></line>
+                                            <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+                                        </svg>
+                                        LinkedIn</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End-->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}
