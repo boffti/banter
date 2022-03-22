@@ -475,49 +475,6 @@ def test():
     studentResponse = [student.format() for student in students]
     return json.dumps(studentResponse)
 
-
-
-@app.route('/events')
-def getEvents():
-    events = Event.query.all()
-    finalevent=[]
-    for e in events:
-        event=[]
-        event.append(e.id)
-        event.append(e.name)
-        event.append(e.description)
-        event.append(e.location)
-        event.append(e.date_time.strftime("%b %d"))
-        event.append(e.date_time.strftime("%I:%M %p"))
-        finalevent.append(event)
-        e.date_time=e.date_time.strftime("%b %d")
-        
-    return render_template('event.html',events=finalevent)
-
-@app.route('/addevent')
-def addEvent():
-    schools = [school.format() for school in School.query.all()]
-    students = [student.format() for student in Student.query.all()]
-    
-    return render_template('addEvent.html',schools=schools,students=students)
-
-    
-
-@app.route('/insertevent' ,methods=['POST'])
-def insertEvent():
-    name = request.form['name']
-    description = request.form['description']
-    location= request.form['location']
-    date_time=request.form['date_time']
-    school = session['user']['school']['id']
-    student = session['user']['id']
-
-    new_event=Event(name=name,description=description,location=location,date_time=date_time,school_id=school,student_id=student)
-    new_event.insert()
-    return redirect(url_for('getEvents'))
-
-
-
 @app.route('/session')
 def get_session():
     return jsonify(session.get('user_roles'))
