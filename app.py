@@ -282,6 +282,12 @@ def create_club():
         return redirect(url_for('login_page'))
     data = request.form.to_dict()
     file = request.files['file']
+    if data['name'] == '' or data['description'] == '':
+        flash('Please fill in all the fields.')
+        return redirect(request.referrer)
+    if file.filename == '':
+        flash('Please select an image to upload.')
+        return redirect(request.referrer)
     try:
         # Uploading to cloudinary
         if file.content_type not in ALLOWED_TYPES:
@@ -296,6 +302,23 @@ def create_club():
         print(e)
         flash('Something went wrong!')
         return redirect(url_for('home'))
+
+@app.route('/club-post/<club_id>', methods=['POST'])
+def add_club_post(club_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        data = request.form.to_dict()
+        if data['content'] == '':
+            flash('Please enter a message to post.')
+            return redirect(request.referrer)
+        club_post = ClubPost(title=data['title'], content=data['content'], club_id=club_id, student_id=session['user']['id'])
+        club_post.insert()
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 
 @app.route('/join-club/<club_id>')
 def join_club(club_id):
@@ -349,20 +372,6 @@ def delete_club(club_id):
         flash('Something went wrong')
         return redirect(request.referrer)
 
-@app.route('/club-post/<club_id>', methods=['POST'])
-def add_club_post(club_id):
-    if 'user' not in session:
-        return redirect(url_for('login_page'))
-    try:
-        data = request.form.to_dict()
-        club_post = ClubPost(title=data['title'], content=data['content'], club_id=club_id, student_id=session['user']['id'])
-        club_post.insert()
-        return redirect(request.referrer)
-    except Exception as e:
-        print(e)
-        flash('Something went wrong!')
-        return redirect(request.referrer)
-
 # Search Clubs
 @app.route('/clubs/search', methods=['POST'])
 def clubs_search():
@@ -394,17 +403,25 @@ def events():
     events = get_events()
     return render_template('events/events.html',events=events)
 
-@app.route('/events' ,methods=['POST'])
+@app.route('/events', methods=['POST'])
 def insertEvent():
     if 'user' not in session:
         return redirect(url_for('login_page'))
     data = request.form.to_dict()
-    # Example - 2022-03-17 05:30 pm
-    date_time = datetime.strptime(data['date'] + ' ' + data['time'] + ' ' + data['ampm'], '%Y-%m-%d %I:%M %p')
-    event = Event(name=data['name'], description=data['description'], date_time=date_time, location=data['location'], student_id=session['user']['id'], school_id=session['user']['school_id'])
-    event.insert()
-    flash('Event created successfully!')
-    return redirect(request.referrer)
+    if data['name'] == '' or data['description'] == '' or data['time'] == '':
+        flash('Please fill in all the fields.')
+        return redirect(request.referrer)
+    try:
+        # Example - 2022-03-17 05:30 pm
+        date_time = datetime.strptime(data['date'] + ' ' + data['time'] + ' ' + data['ampm'], '%Y-%m-%d %I:%M %p')
+        event = Event(name=data['name'], description=data['description'], date_time=date_time, location=data['location'], student_id=session['user']['id'], school_id=session['user']['school_id'])
+        event.insert()
+        flash('Event created successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 
 @app.route('/delete-event/<event_id>')
 def delete_event(event_id):
