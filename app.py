@@ -75,7 +75,10 @@ def home():
         clubs = get_clubs()
         sample_size = min(len(clubs), 6)
         clubs = sample(clubs, sample_size) if len(clubs) > 0 else []
-        return render_template('index.html', billboard=get_billboard_posts(), events=get_events(), clubs=clubs)
+        events = get_events()
+        sample_size = min(len(events), 6)
+        events = sample(events, sample_size) if len(events) > 0 else []
+        return render_template('index.html', billboard=get_billboard_posts(), events=events, clubs=clubs)
 # -----------------------------------------------------------------------------
 
 # Login & Register Routes --------------------------------------------------------------
