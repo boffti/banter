@@ -21,3 +21,7 @@
 .list-item:hover .delete-btn {
     opacity: 1;
 }
+
+.bg-white {
+    background-color: #fff;
+}
