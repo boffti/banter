@@ -292,8 +292,10 @@ Banter | Profile
                         <div class="list-group-item">
                             <div class="row align-items-center">
                                 <div class="col">
+                                    {% if post.title %}
                                     <a href="#"
                                         class="text-title text-reset d-block"><strong>{{ post.title }}</strong></a>
+                                    {% endif %}
                                     <div class="d-block text-muted mt-n1">{{ post.content }}</div>
                                 </div>
                             </div>
