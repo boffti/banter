@@ -125,7 +125,19 @@ Banter | Shop
                 </div>
                 {% endfor %}
                 {% else %}
-                <!-- empty state -->
+                <div class="col-lg-12 grid-item px-2 py-2">
+                    <div class="row align-items-center">
+                        <div class="empty p-4">
+                            <div class="empty-img"><img src="{{ url_for('static', filename='images/empty_cart.svg') }}"
+                                    height="128" alt="">
+                            </div>
+                            <p class="empty-title">Nothing listed for sale in your school</p>
+                            <p class="empty-subtitle text-muted">
+                                Use this space to list anything you want to sell.
+                            </p>
+                        </div>
+                    </div>
+                </div>
                 {% endif %}
                 <div class="d-flex">
                     <ul class="pagination ms-auto">
