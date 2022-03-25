@@ -53,7 +53,9 @@
                                 <path d="M17 17h-11v-14h-2"></path>
                                 <path d="M6 5l14 1l-1 7h-13"></path>
                             </svg>
+                            {% if session['cart']|length > 0 %}
                             <span class="badge bg-primary"></span>
+                            {% endif %}
                         </a>
                         <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
                             <div class="card">
@@ -61,19 +63,22 @@
                                     <div>
                                         <strong>Cart total</strong>
                                     </div>
-                                    <h1 class="card-title">$230.00</h1>
+                                    <h1 class="card-title">${{ session['cart']|get_total }}</h1>
                                 </div>
                                 <div class="list-group list-group-flush list-group-hoverable">
+                                    {% if session['cart']|length > 0 %}
+                                    {% for id in session['cart'] %}
+                                    {% set item = id|get_product  %}
                                     <div class="list-group-item">
                                         <div class="d-flex flex-row justify-content-between align-items-center">
                                             <div class="text-truncate">
-                                                <a href="#" class="text-body d-block">Laptop Table</a>
+                                                <a href="#" class="text-body d-block">{{ item.name }}</a>
                                                 <div class="d-block text-muted text-truncate mt-n1">
-                                                    $100.00
+                                                    ${{ item.price }}
                                                 </div>
                                             </div>
                                             <div class="ms-4">
-                                                <a href="#" class="list-group-item-actions">
+                                                <a href="/delete-from-cart/{{ item.id }}" class="list-group-item-actions">
                                                     <!-- Download SVG icon from http://tabler-icons.io/i/star -->
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         class="icon icon-tabler icon-tabler-trash" width="24"
@@ -91,88 +96,21 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {% endfor %}
+                                    {% else %}
                                     <div class="list-group-item">
                                         <div class="d-flex flex-row justify-content-between align-items-center">
                                             <div class="text-truncate">
-                                                <a href="#" class="text-body d-block">ADV SE Text Book</a>
+                                                <span href="#" class="text-body d-block">Your cart is empty!</span>
                                                 <div class="d-block text-muted text-truncate mt-n1">
-                                                    $50.00
+                                                    Visit the <a href="/shop">shop</a>
                                                 </div>
-                                            </div>
-                                            <div class="ms-4">
-                                                <a href="#" class="list-group-item-actions">
-                                                    <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="icon icon-tabler icon-tabler-trash" width="24"
-                                                        height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                        stroke="currentColor" fill="none" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <line x1="4" y1="7" x2="20" y2="7"></line>
-                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                                    </svg>
-                                                </a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="list-group-item">
-                                        <div class="d-flex flex-row justify-content-between align-items-center">
-                                            <div class="text-truncate">
-                                                <a href="#" class="text-body d-block">Bluetooth Keyboard</a>
-                                                <div class="d-block text-muted text-truncate mt-n1">
-                                                    $30.00
-                                                </div>
-                                            </div>
-                                            <div class="ms-4">
-                                                <a href="#" class="list-group-item-actions">
-                                                    <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="icon icon-tabler icon-tabler-trash" width="24"
-                                                        height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                        stroke="currentColor" fill="none" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <line x1="4" y1="7" x2="20" y2="7"></line>
-                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="list-group-item">
-                                        <div class="d-flex flex-row justify-content-between align-items-center">
-                                            <div class="text-truncate">
-                                                <a href="#" class="text-body d-block">Used Couch</a>
-                                                <div class="d-block text-muted text-truncate mt-n1">
-                                                    $50.00
-                                                </div>
-                                            </div>
-                                            <div class="ms-4">
-                                                <a href="#" class="list-group-item-actions">
-                                                    <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                                        class="icon icon-tabler icon-tabler-trash" width="24"
-                                                        height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                        stroke="currentColor" fill="none" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <line x1="4" y1="7" x2="20" y2="7"></line>
-                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {% endif %}
                                 </div>
+                                {% if session['cart']|length > 0 %}
                                 <div class="card-footer">
                                     <a class="float-center" href="#"><strong>Go to checkout</strong>
                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -186,6 +124,7 @@
                                         </svg>
                                     </a>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

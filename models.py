@@ -45,6 +45,7 @@ class Student(db.Model):
     event = db.relationship('Event', back_populates='student')
     user_roles = db.relationship('UserRoles', back_populates='student')
     clubs = db.relationship('Club', secondary='club_members', backref='clubs')
+    products = db.relationship('Product', back_populates='student')
 
     def insert(self):
         db.session.add(self)
@@ -83,6 +84,7 @@ class School(db.Model):
     club = db.relationship('Club', back_populates='school', uselist=False)
     billboard_post = db.relationship('BillboardPost', back_populates='school')
     event = db.relationship('Event', back_populates='school', uselist=False)
+    products = db.relationship('Product', back_populates='school')
 
     def insert(self):
         db.session.add(self)
@@ -335,6 +337,69 @@ class BillboardCategories(db.Model):
     name = db.Column(db.String)
 
     billboard_post = db.relationship('BillboardPost', back_populates='tag')
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+        }
+
+class Product(db.Model):
+    __tablename__ = 'product'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    description = db.Column(db.String)
+    price = db.Column(db.Float)
+    img_url = db.Column(db.String)
+    school_id = db.Column(db.String, db.ForeignKey('school.id'))
+    seller_id = db.Column(db.String, db.ForeignKey('student.id'))
+    category_id = db.Column(db.Integer, db.ForeignKey('product_categories.id'))
+    created_at = db.Column(db.DateTime)
+
+    school = db.relationship('School', back_populates='products')
+    student = db.relationship('Student', back_populates='products')
+    category = db.relationship('ProductCategory', back_populates='products')
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'price': self.price,
+            'img_url': self.img_url,
+            'student': self.student.format(),
+            'category': self.category_id.format(),
+            'created_at': arrow.Arrow.fromdatetime(self.created_at).humanize()
+        }
+
+class ProductCategory(db.Model):
+    __tablename__ = 'product_categories'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+
+    products = db.relationship('Product', back_populates='category')
 
     def insert(self):
         db.session.add(self)

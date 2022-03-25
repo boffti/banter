@@ -68,18 +68,24 @@ Banter | Shop
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-cards">
-                {% for _ in range(20) %}
+                {% if products|length > 0 %}
+                {% for product in products %}
                 <div class="col-sm-6 col-lg-4">
                     <div class="card card-sm">
-                        <a href="#" class="d-block"><img
-                                src="https://m.media-amazon.com/images/I/71vM54GzJ1L._AC_SL1000_.jpg"
+                        <a href="#" class="d-block"><img src="{{ product.img_url }}" alt="{{ product.name }}"
                                 class="card-img-top"></a>
                         <div class="card-body">
-                            <h3 class="card-title">Laptop Table</h3>
-                            <div class="d-flex align-items-center">
-                                <h1>$30</h2>
+                            <div class="d-flex flex-row justify-content-between align-items-center">
+                                <h3 class="card-title">{{ product.name }}</h3>
+                                <span class="badge bg-blue-lt mb-auto">{{ product.category.name }}</span>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <p>{{ product.description }}</p>
+                                <div class="d-flex flex-row justify-content-between">
+                                    <h1>${{ product.price }}</h1>
                                     <div class="ms-auto">
-                                        <a href="#" class="ms-3 text-muted">
+                                        {% if product.id not in session['cart'] %}
+                                        <a href="/add-to-cart/{{ product.id }}" class="ms-3 text-muted">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="icon icon-tabler icon-tabler-shopping-cart-plus" width="24"
                                                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -92,7 +98,19 @@ Banter | Shop
                                                 <path d="M15 6h6m-3 -3v6"></path>
                                             </svg>
                                         </a>
+                                        {% else %}
+                                        <a href="#" class="ms-3 text-muted">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="icon icon-tabler icon-tabler-check" width="24" height="24"
+                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M5 12l5 5l10 -10"></path>
+                                            </svg>
+                                        </a>
+                                        {% endif %}
                                     </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card-footer d-flex flex-row">
@@ -100,12 +118,15 @@ Banter | Shop
                                 style="background-image: url({{ session['user']['dp'] }})"></span>
                             <div>
                                 <div>{{ session['user']['name'] }}</div>
-                                <div class="text-muted">3 days ago</div>
+                                <div class="text-muted">{{ product.created_at|humanize }}</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
+                {% else %}
+                <!-- empty state -->
+                {% endif %}
                 <div class="d-flex">
                     <ul class="pagination ms-auto">
                         <li class="page-item disabled">

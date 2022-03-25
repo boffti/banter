@@ -1,5 +1,6 @@
 import json
 import os
+import arrow
 from random import sample
 from unicodedata import name
 from functools import wraps
@@ -12,7 +13,7 @@ from passlib.hash import pbkdf2_sha256 as sha256
 from datetime import datetime
 
 from models import (Admin, BillboardPost, Club, ClubPost, Event, School,
-                    Student, UserRoles, ClubMembers, db_init)
+                    Student, UserRoles, ClubMembers, Product, db_init)
 
 load_dotenv()
 
@@ -54,6 +55,22 @@ def is_member(value):
     if ClubMembers.query.filter_by(student_id=session['user']['id'], club_id=value).first():
         return True
     return False
+
+@app.template_filter('humanize')
+def humanize(value):
+    return arrow.Arrow.fromdatetime(value).humanize()
+
+@app.template_filter('get_product')
+def get_product(value):
+    return Product.query.filter_by(id=value).first()
+
+@app.template_filter('get_total')
+def get_total(value):
+    total = 0
+    for id in session['cart']:  
+        product = get_product(id)
+        total += product.price
+    return total
 # -----------------------------------------------------------------------------
 
 def requires_auth(f):
@@ -121,6 +138,7 @@ def register_user():
                 return redirect(url_for('register'))
     else:
         return redirect(url_for('home'))
+
 # Login Route GET
 @app.route('/login')
 def login_page():
@@ -392,7 +410,42 @@ def clubs_search():
 def get_shop_page():
     if 'user' not in session:
         return redirect(url_for('login_page'))
-    return render_template('shop/shop.html')
+    products = Product.query.filter_by(school_id=session['user']['school_id']).all()
+    return render_template('shop/shop.html', products=products)
+
+@app.route('/add-to-cart/<product_id>')
+def add_to_cart(product_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        product = Product.query.filter_by(id=product_id).first()
+        if 'cart' not in session:
+            session['cart'] = []
+        session['cart'].append(product.id)
+        flash('Product added to cart!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
+@app.route('/delete-from-cart/<int:product_id>')
+def delete_from_cart(product_id):
+    print(product_id)
+    print(session['cart'])
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        if 'cart' not in session:
+            session['cart'] = []
+        session['cart'].remove(product_id)
+        flash('Product removed from cart!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
 # ----------------------------------------------------------------------------
 
 # Event routes ---------------------------------------------------------------
