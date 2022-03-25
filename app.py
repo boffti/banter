@@ -88,9 +88,9 @@ def requires_auth(f):
 def home():
     if 'user' not in session:
         return render_template('login/login.html')
-    if 'cart' not in session:
-        session['cart'] = []
     else:
+        if 'cart' not in session:
+            session['cart'] = []
         clubs = get_clubs()
         sample_size = min(len(clubs), 6)
         clubs = sample(clubs, sample_size) if len(clubs) > 0 else []
