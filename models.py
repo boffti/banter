@@ -45,7 +45,7 @@ class Student(db.Model):
     event = db.relationship('Event', back_populates='student')
     user_roles = db.relationship('UserRoles', back_populates='student')
     clubs = db.relationship('Club', secondary='club_members', backref='clubs')
-    products = db.relationship('Product', back_populates='student')
+    products = db.relationship('Product', back_populates='seller')
 
     def insert(self):
         db.session.add(self)
@@ -368,7 +368,7 @@ class Product(db.Model):
     created_at = db.Column(db.DateTime)
 
     school = db.relationship('School', back_populates='products')
-    student = db.relationship('Student', back_populates='products')
+    seller = db.relationship('Student', back_populates='products')
     category = db.relationship('ProductCategory', back_populates='products')
 
     def insert(self):
