@@ -115,9 +115,9 @@ Banter | Shop
                         </div>
                         <div class="card-footer d-flex flex-row">
                             <span class="avatar me-3 rounded"
-                                style="background-image: url({{ session['user']['dp'] }})"></span>
+                                style="background-image: url({{ product.seller.dp }})"></span>
                             <div>
-                                <div>{{ session['user']['name'] }}</div>
+                                <a class="text-black" href="/student/{{ product.seller.id }}">{{ product.seller.name }}</a>
                                 <div class="text-muted">{{ product.created_at|humanize }}</div>
                             </div>
                         </div>
