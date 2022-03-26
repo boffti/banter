@@ -12,7 +12,7 @@ from flask import (Flask, flash, jsonify, redirect, render_template, request,
 from passlib.hash import pbkdf2_sha256 as sha256
 from datetime import datetime
 
-from models import (Admin, BillboardPost, Club, ClubPost, Event, School,
+from models import (Admin, BillboardPost, Club, ClubPost, Event, ProductCategory, School,
                     Student, UserRoles, ClubMembers, Product, db_init)
 
 load_dotenv()
@@ -23,6 +23,7 @@ db = db_init(app)
 
 INIT_DP = "https://res.cloudinary.com/dtvhyzofv/image/upload/v1647144583/banter/dp/user_awjxuf.png"
 CLUB_IMG_PATH = 'banter/clubs/'
+PRODUCT_IMG_PATH = 'banter/product/'
 DP_IMG_PATH = 'banter/dp/'
 ALLOWED_TYPES = ['image/jpeg', 'image/png']
 
@@ -413,7 +414,8 @@ def get_shop_page():
     if 'user' not in session:
         return redirect(url_for('login_page'))
     products = Product.query.filter_by(school_id=session['user']['school_id']).all()
-    return render_template('shop/shop.html', products=products)
+    categories = ProductCategory.query.all()
+    return render_template('shop/shop.html', products=products, categories=categories)
 
 @app.route('/add-to-cart/<product_id>')
 def add_to_cart(product_id):
@@ -448,6 +450,31 @@ def delete_from_cart(product_id):
         flash('Something went wrong!')
         return redirect(request.referrer)
 
+@app.route('/add-product', methods=['POST'])
+def add_product():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        data = request.form.to_dict()
+        file = request.files['file']
+        if data['name'] == '' or data['description'] == '':
+            flash('Please fill in all the fields.')
+            return redirect(request.referrer)
+        if file.filename == '':
+            flash('Please select an image to upload.')
+            return redirect(request.referrer)
+        if file.content_type not in ALLOWED_TYPES:
+            flash("Invalid image type. Please upload a jpeg or png image.")
+            return redirect(request.url)
+        res = _cu.upload(file, folder=CLUB_IMG_PATH)
+        product = Product(name=data['name'], price=data['price'], description=data['description'], img_url=res['secure_url'], category_id=data['category'], school_id=session['user']['school_id'], created_at=datetime.now(), seller_id=session['user']['id'])
+        product.insert()
+        flash('Product created successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 # ----------------------------------------------------------------------------
 
 # Event routes ---------------------------------------------------------------
