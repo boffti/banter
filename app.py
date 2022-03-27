@@ -518,6 +518,13 @@ def my_products():
         else:
             product.buyer = None
     return render_template('user/products.html', products=products)
+
+@app.route('/my-purchases')
+def my_purchases():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    orders = Order.query.filter_by(buyer_id=session['user']['id']).all()
+    return render_template('user/purchases.html', orders=orders)
 # ----------------------------------------------------------------------------
 
 # Event routes ---------------------------------------------------------------

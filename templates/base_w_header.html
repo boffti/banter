@@ -142,7 +142,7 @@
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                         <!-- <a href="#" class="dropdown-item">Set status</a> -->
                         <a href="/profile" class="dropdown-item">Profile &amp; Account</a>
-                        <a href="#" class="dropdown-item">My Purchases</a>
+                        <a href="/my-purchases" class="dropdown-item">My Purchases</a>
                         <a href="/my-products" class="dropdown-item">My Products
                             {% if session['user']|get_sale_count > 0 %}
                             <span class="badge badge-pill bg-blue ms-3">{{ session['user']|get_sale_count }}</span>
