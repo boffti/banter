@@ -423,6 +423,9 @@ def add_to_cart(product_id):
         return redirect(url_for('login_page'))
     try:
         product = Product.query.filter_by(id=product_id).first()
+        if product.seller_id == session['user']['id']:
+            flash('You cannot buy your own product!')
+            return redirect(request.referrer)
         if 'cart' not in session:
             session['cart'] = []
         session['cart'].append(product.id)
