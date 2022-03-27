@@ -144,7 +144,9 @@
                         <a href="/profile" class="dropdown-item">Profile &amp; Account</a>
                         <a href="#" class="dropdown-item">My Purchases</a>
                         <a href="/my-products" class="dropdown-item">My Products
+                            {% if session['user']|get_sale_count > 0 %}
                             <span class="badge badge-pill bg-blue ms-3">{{ session['user']|get_sale_count }}</span>
+                            {% endif %}
                         </a>
                         {% if 2 in session['user_roles'] %}
                         <div class="dropdown-divider"></div>
