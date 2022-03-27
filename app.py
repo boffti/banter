@@ -443,8 +443,6 @@ def add_to_cart(product_id):
 
 @app.route('/delete-from-cart/<int:product_id>')
 def delete_from_cart(product_id):
-    print(product_id)
-    print(session['cart'])
     if 'user' not in session:
         return redirect(url_for('login_page'))
     try:
@@ -494,6 +492,10 @@ def checkout():
     try:
         for id in session['cart']:
             product = Product.query.filter_by(id=id).first()
+            if Order.query.filter_by(product_id=id).first():
+                session['cart'].remove(id)
+                flash(f'{product.name} has already been purchased! Product removed from cart. Place order again.')
+                return redirect(request.referrer)
             product.purchased = True
             product.update()
             order = Order(product_id=id, buyer_id=session['user']['id'], seller_id=product.seller.id, created_at=datetime.now())
