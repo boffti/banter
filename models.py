@@ -366,6 +366,7 @@ class Product(db.Model):
     seller_id = db.Column(db.String, db.ForeignKey('student.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('product_categories.id'))
     created_at = db.Column(db.DateTime)
+    purchased = db.Column(db.Boolean)
 
     school = db.relationship('School', back_populates='products')
     seller = db.relationship('Student', back_populates='products')
@@ -416,4 +417,36 @@ class ProductCategory(db.Model):
         return {
             'id': self.id,
             'name': self.name,
+        }
+
+class Order(db.Model):
+    __tablename__ = 'orders'
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+    seller_id = db.Column(db.String, db.ForeignKey('student.id'))
+    buyer_id = db.Column(db.String, db.ForeignKey('student.id'))
+    created_at = db.Column(db.DateTime)
+
+    seller = db.relationship('Student', backref='orderss', foreign_keys=[seller_id])
+    buyer = db.relationship('Student', backref='orders', foreign_keys=[buyer_id])
+    product = db.relationship('Product', backref='orders', foreign_keys=[product_id])
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'product_id': self.product_id,
+            'seller_id': self.seller_id,
+            'buyer_id': self.buyer_id,
+            'created_at': arrow.Arrow.fromdatetime(self.created_at).humanize()
         }

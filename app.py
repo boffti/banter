@@ -13,7 +13,7 @@ from passlib.hash import pbkdf2_sha256 as sha256
 from datetime import datetime
 
 from models import (Admin, BillboardPost, Club, ClubPost, Event, ProductCategory, School,
-                    Student, UserRoles, ClubMembers, Product, db_init)
+                    Student, UserRoles, ClubMembers, Product, Order, db_init)
 
 load_dotenv()
 
@@ -72,6 +72,11 @@ def get_total(value):
         product = get_product(id)
         total += product.price
     return total
+
+@app.template_filter('get_sale_count')
+def get_sale_count(value):
+    order = Order.query.filter_by(seller_id=value.get('id')).all()
+    return len(order)
 # -----------------------------------------------------------------------------
 
 def requires_auth(f):
@@ -413,7 +418,7 @@ def clubs_search():
 def get_shop_page():
     if 'user' not in session:
         return redirect(url_for('login_page'))
-    products = Product.query.filter_by(school_id=session['user']['school_id']).all()
+    products = Product.query.filter_by(school_id=session['user']['school_id']).filter_by(purchased=False).all()
     categories = ProductCategory.query.all()
     return render_template('shop/shop.html', products=products, categories=categories)
 
@@ -479,11 +484,39 @@ def add_product():
         flash('Something went wrong!')
         return redirect(request.referrer)
 
+@app.route('/checkout')
+def checkout():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    if 'cart' not in session or len(session['cart']) == 0:
+        flash('Your cart is empty!')
+        return redirect(request.referrer)
+    try:
+        for id in session['cart']:
+            product = Product.query.filter_by(id=id).first()
+            product.purchased = True
+            product.update()
+            order = Order(product_id=id, buyer_id=session['user']['id'], seller_id=product.seller.id, created_at=datetime.now())
+            order.insert()
+        flash('Order placed successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
 @app.route('/my-products')
 def my_products():
     if 'user' not in session:
         return redirect(url_for('login_page'))
     products = Product.query.filter_by(seller_id=session['user']['id']).all()
+    for product in products:
+        if product.purchased:
+            order = Order.query.filter_by(product_id=product.id).first()
+            product.buyer = order.buyer
+            product.buyer.created_at = order.created_at
+        else:
+            product.buyer = None
     return render_template('user/products.html', products=products)
 # ----------------------------------------------------------------------------
 

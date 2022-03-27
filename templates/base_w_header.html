@@ -113,7 +113,7 @@
                                 </div>
                                 {% if session['cart']|length > 0 %}
                                 <div class="card-footer">
-                                    <a class="float-center" href="#"><strong>Go to checkout</strong>
+                                    <a class="float-center" href="/checkout"><strong>Go to checkout</strong>
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             class="icon icon-tabler icon-tabler-arrow-narrow-right" width="24"
                                             height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -144,7 +144,7 @@
                         <a href="/profile" class="dropdown-item">Profile &amp; Account</a>
                         <a href="#" class="dropdown-item">My Purchases</a>
                         <a href="/my-products" class="dropdown-item">My Products
-                            <span class="badge badge-pill bg-blue ms-3">1</span>
+                            <span class="badge badge-pill bg-blue ms-3">{{ session['user']|get_sale_count }}</span>
                         </a>
                         {% if 2 in session['user_roles'] %}
                         <div class="dropdown-divider"></div>
