@@ -473,7 +473,7 @@ def add_product():
             flash("Invalid image type. Please upload a jpeg or png image.")
             return redirect(request.url)
         res = _cu.upload(file, folder=PRODUCT_IMG_PATH)
-        product = Product(name=data['name'], price=data['price'], description=data['description'], img_url=res['secure_url'], category_id=data['category'], school_id=session['user']['school_id'], created_at=datetime.now(), seller_id=session['user']['id'])
+        product = Product(name=data['name'], price=data['price'], description=data['description'], img_url=res['secure_url'], category_id=data['category'], school_id=session['user']['school_id'], created_at=datetime.now(), seller_id=session['user']['id'], purchased=False)
         product.insert()
         flash('Product created successfully!')
         return redirect(request.referrer)
@@ -511,6 +511,7 @@ def checkout():
 def my_products():
     if 'user' not in session:
         return redirect(url_for('login_page'))
+    categories = ProductCategory.query.all()
     products = Product.query.filter_by(seller_id=session['user']['id']).all()
     for product in products:
         if product.purchased:
@@ -519,7 +520,7 @@ def my_products():
             product.buyer.created_at = order.created_at
         else:
             product.buyer = None
-    return render_template('user/products.html', products=products)
+    return render_template('user/products.html', products=products, categories=categories)
 
 @app.route('/my-purchases')
 def my_purchases():
