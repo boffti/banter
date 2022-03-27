@@ -78,7 +78,8 @@
                                                 </div>
                                             </div>
                                             <div class="ms-4">
-                                                <a href="/delete-from-cart/{{ item.id }}" class="list-group-item-actions">
+                                                <a href="/delete-from-cart/{{ item.id }}"
+                                                    class="list-group-item-actions">
                                                     <!-- Download SVG icon from http://tabler-icons.io/i/star -->
                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                         class="icon icon-tabler icon-tabler-trash" width="24"
@@ -142,7 +143,9 @@
                         <!-- <a href="#" class="dropdown-item">Set status</a> -->
                         <a href="/profile" class="dropdown-item">Profile &amp; Account</a>
                         <a href="#" class="dropdown-item">My Purchases</a>
-                        <a href="/my-products" class="dropdown-item">My Products</a>
+                        <a href="/my-products" class="dropdown-item">My Products
+                            <span class="badge badge-pill bg-blue ms-3">1</span>
+                        </a>
                         {% if 2 in session['user_roles'] %}
                         <div class="dropdown-divider"></div>
                         <a href="/school_admin" class="dropdown-item">School Admin Console</a>
