@@ -1,0 +1,217 @@
+{% extends 'base_w_header.html' %}
+{% set page = "shop" %}
+
+{% block title %}
+Banter | Shop
+{% endblock %}
+
+{% block styles %}
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/new_styles.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="container-xl">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary mt-3 alert-dismissible mb-0 fade show" role="alert">
+            <strong>{{ message }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <!-- Page title -->
+        <div class="page-header d-print-none">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        My products listed for sale
+                    </h2>
+                    <div class="text-muted mt-1">{{ products|length }} products</div>
+                </div>
+                <!-- Page title actions -->
+                <div class="col-12 col-md-auto ms-auto d-print-none">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <div class="input-icon">
+                                <input type="text" value="" class="form-control" placeholder="Search…">
+                                <span class="input-icon-addon">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <circle cx="10" cy="10" r="7"></circle>
+                                        <line x1="21" y1="21" x2="15" y2="15"></line>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-product">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add product
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="grid">
+                {% if products|length > 0 %}
+                {% for product in products %}
+                <div class="col-sm-6 col-lg-4 grid-item p-2">
+                    <div class="card card-sm">
+                        <a href="#" class="d-block"><img src="{{ product.img_url }}" alt="{{ product.name }}"
+                                class="card-img-top"></a>
+                        <div class="card-body">
+                            <div class="d-flex flex-row justify-content-between align-items-center">
+                                <h3 class="card-title">{{ product.name }}</h3>
+                                <span class="badge bg-blue-lt mb-auto">{{ product.category.name }}</span>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <p>{{ product.description }}</p>
+                                <div class="d-flex flex-row justify-content-between">
+                                    <h1>${{ product.price }}</h1>
+                                    <div class="ms-auto">
+                                        {% if product.id not in session['cart'] %}
+                                        <a href="/add-to-cart/{{ product.id }}" class="ms-3 text-muted">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="icon icon-tabler icon-tabler-shopping-cart-plus" width="24"
+                                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <circle cx="6" cy="19" r="2"></circle>
+                                                <circle cx="17" cy="19" r="2"></circle>
+                                                <path d="M17 17h-11v-14h-2"></path>
+                                                <path d="M6 5l6.005 .429m7.138 6.573l-.143 .998h-13"></path>
+                                                <path d="M15 6h6m-3 -3v6"></path>
+                                            </svg>
+                                        </a>
+                                        {% else %}
+                                        <a href="#" class="ms-3 text-muted">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="icon icon-tabler icon-tabler-check" width="24" height="24"
+                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M5 12l5 5l10 -10"></path>
+                                            </svg>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex flex-row">
+                            <span class="avatar me-3 rounded"
+                                style="background-image: url({{ product.seller.dp }})"></span>
+                            <div>
+                                <a class="text-black" href="/student/{{ product.seller.id }}">{{ product.seller.name }}</a>
+                                <div class="text-muted">{{ product.created_at|humanize }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="col-lg-12 grid-item px-2 py-2">
+                    <div class="row align-items-center">
+                        <div class="empty p-4">
+                            <div class="empty-img"><img src="{{ url_for('static', filename='images/empty_cart.svg') }}"
+                                    height="128" alt="">
+                            </div>
+                            <p class="empty-title">You have not listed any products yet</p>
+                            <p class="empty-subtitle text-muted">
+                                Use this space to list anything you want to sell.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Club Modal -->
+    <div class="modal modal-blur fade" id="modal-product" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <form class="modal-content" action="/add-product" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add new Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" name="name" placeholder="Type here...">
+                    </div>
+                    <div class="col-lg-12">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" rows="3"
+                            placeholder="Type here..."></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 mt-3">
+                            <label class="form-label">Price</label>
+                            <div class="input-group mb-2">
+                                <span class="input-group-text">
+                                    $
+                                </span>
+                                <input name="price" type="text" class="form-control" placeholder="price" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mt-3">
+                            <label class="form-label">Category</label>
+                            <div class="d-flex flex-row">
+                                <select name="category" class="form-select">
+                                    <option value="0" disabled selected>Select one</option>
+                                    {% for cat in categories %}
+                                    <option value="{{ cat.id }}">{{ cat.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-label">Product Image</div>
+                        <input name="file" type="file" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Product
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% endblock content %}
+
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% endblock %}

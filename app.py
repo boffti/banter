@@ -475,6 +475,13 @@ def add_product():
         print(e)
         flash('Something went wrong!')
         return redirect(request.referrer)
+
+@app.route('/my-products')
+def my_products():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    products = Product.query.filter_by(seller_id=session['user']['id']).all()
+    return render_template('user/products.html', products=products)
 # ----------------------------------------------------------------------------
 
 # Event routes ---------------------------------------------------------------
