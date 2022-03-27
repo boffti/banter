@@ -85,7 +85,7 @@ Banter | Shop
                                     <h1>${{ product.price }}</h1>
                                     <div class="ms-auto">
                                         {% if product.id not in session['cart'] %}
-                                        <a href="/add-to-cart/{{ product.id }}" class="ms-3 text-muted">
+                                        <a href="/add-to-cart/{{ product.id }}" class="ms-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="icon icon-tabler icon-tabler-shopping-cart-plus" width="24"
                                                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -99,7 +99,7 @@ Banter | Shop
                                             </svg>
                                         </a>
                                         {% else %}
-                                        <a href="#" class="ms-3 text-muted">
+                                        <a href="#" class="ms-3 text-muted" data-bs-toggle="tooltip" data-bs-placement="top" title="Already in cart!">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="icon icon-tabler icon-tabler-check" width="24" height="24"
                                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -113,7 +113,7 @@ Banter | Shop
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer d-flex flex-row">
+                        <div class="card-footer d-flex flex-row" data-bs-toggle="tooltip" data-bs-placement="left" title="Seller">
                             <span class="avatar me-3 rounded"
                                 style="background-image: url({{ product.seller.dp }})"></span>
                             <div>
