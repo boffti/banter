@@ -77,6 +77,13 @@ def get_total(value):
 def get_sale_count(value):
     order = Order.query.filter_by(seller_id=value.get('id')).all()
     return len(order)
+
+@app.template_filter('no_purchases')
+def get_sale_count(value):
+    for product in value:
+        if product.purchased:
+            return False
+    return True
 # -----------------------------------------------------------------------------
 
 def requires_auth(f):
