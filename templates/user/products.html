@@ -72,6 +72,9 @@ Banter | My Products
                 {% for product in products %}
                 <div class="col-sm-6 col-lg-4 grid-item p-2">
                     <div class="card card-sm">
+                        {% if product.purchased %}
+                        <div class="ribbon bg-blue">SOLD!</div>
+                        {% endif %}
                         <a href="#" class="d-block"><img src="{{ product.img_url }}" alt="{{ product.name }}"
                                 class="card-img-top"></a>
                         <div class="card-body">
