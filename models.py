@@ -371,6 +371,7 @@ class Product(db.Model):
     school = db.relationship('School', back_populates='products')
     seller = db.relationship('Student', back_populates='products')
     category = db.relationship('ProductCategory', back_populates='products')
+    order = db.relationship('Order', back_populates='product')
 
     def insert(self):
         db.session.add(self)
@@ -429,7 +430,7 @@ class Order(db.Model):
 
     seller = db.relationship('Student', backref='orderss', foreign_keys=[seller_id])
     buyer = db.relationship('Student', backref='orders', foreign_keys=[buyer_id])
-    product = db.relationship('Product', backref='orders', foreign_keys=[product_id])
+    product = db.relationship('Product', back_populates='order')
 
     def insert(self):
         db.session.add(self)

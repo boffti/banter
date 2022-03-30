@@ -518,6 +518,7 @@ def my_products():
             order = Order.query.filter_by(product_id=product.id).first()
             product.buyer = order.buyer
             product.buyer.created_at = order.created_at
+            product.order_id = order.id
         else:
             product.buyer = None
     return render_template('user/products.html', products=products, categories=categories)
@@ -528,6 +529,23 @@ def my_purchases():
         return redirect(url_for('login_page'))
     orders = Order.query.filter_by(buyer_id=session['user']['id']).all()
     return render_template('user/purchases.html', orders=orders)
+
+@app.route('/cancel-order/<int:order_id>')
+def cancel_order(order_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        order = Order.query.filter_by(id=order_id).first()
+        product = Product.query.filter_by(id=order.product_id).first()
+        product.purchased = False
+        product.update()
+        order.delete()
+        flash('Order cancelled successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 # ----------------------------------------------------------------------------
 
 # Event routes ---------------------------------------------------------------
