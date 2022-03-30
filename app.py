@@ -613,6 +613,10 @@ def events_search():
 def about_page():
     return render_template('other/about.html')
 
+@app.route('/faq')
+def faq_page():
+    return render_template('other/faq.html')
+
 # Admin Routes ---------------------------------------------------------------
 @app.route('/admin')
 @requires_auth
