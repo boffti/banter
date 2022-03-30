@@ -500,6 +500,7 @@ def checkout():
             product.update()
             order = Order(product_id=id, buyer_id=session['user']['id'], seller_id=product.seller.id, created_at=datetime.now())
             order.insert()
+            session['cart'] = []
         flash('Order placed successfully!')
         return redirect(request.referrer)
     except Exception as e:
