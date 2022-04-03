@@ -611,6 +611,20 @@ def get_shop_by_category(category_id):
     school_id=session['user']['school_id']).filter_by(purchased=False).filter_by(category_id=category_id).all()
     categories = ProductCategory.query.all()
     return render_template('shop/shop.html', products=products, categories=categories)
+
+@app.route('/shop/delete-product/<int:product_id>')
+def delete_product(product_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        product = Product.query.filter_by(id=product_id).first()
+        product.delete()
+        flash('Product deleted successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 # ----------------------------------------------------------------------------
 
 # Event routes ---------------------------------------------------------------
