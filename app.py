@@ -494,7 +494,7 @@ def add_product():
     try:
         data = request.form.to_dict()
         file = request.files['file']
-        if data['name'] == '' or data['description'] == '':
+        if data['name'] == '' or data['description'] == '' or data['price'] == '':
             flash('Please fill in all the fields.')
             return redirect(request.referrer)
         if file.filename == '':
