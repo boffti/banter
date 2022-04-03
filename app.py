@@ -427,7 +427,7 @@ def delete_club(club_id):
         return redirect(request.referrer)
 
 # Search Clubs
-@app.route('/clubs/search', methods=['POST'])
+@app.route('/clubs/search', methods=['GET','POST'])
 def clubs_search():
     if 'user' not in session:
         return redirect(url_for('login_page'))
@@ -674,7 +674,7 @@ def delete_event(event_id):
         return redirect(request.referrer)
 
 # Search Events
-@app.route('/events/search', methods=['POST'])
+@app.route('/events/search', methods=['GET','POST'])
 def events_search():
     if 'user' not in session:
         return redirect(url_for('login_page'))
