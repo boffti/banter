@@ -154,7 +154,7 @@ def register_user():
                     return redirect(url_for('register'))
                 else:
                     new_user = Student(id=school_id, name=name, password=sha256.hash(
-                        password), bio='Awesome Student', dob='', school_id=school.id, dp=INIT_DP)
+                        password), bio='Awesome Student', dob='', school_id=school.id, dp=INIT_DP, major='', phone='')
                     new_user.insert()
                     session['user'] = new_user.format()
                     flash("Welcome to your best campus life, {}!".format(
@@ -433,7 +433,7 @@ def clubs_search():
         return redirect(url_for('login_page'))
     try:
         search_term = request.form.get('searchTerm', '')
-        clubs = Club.query.filter(Club.name.ilike(f'%{search_term}%')).all()
+        clubs = Club.query.filter_by(school_id=session['user']['school_id']).filter(Club.name.ilike(f'%{search_term}%')).all()
         return render_template('club/clubs.html', clubs=clubs)
     except Exception as e:
         print(e)
@@ -680,7 +680,7 @@ def events_search():
         return redirect(url_for('login_page'))
     try:
         search_term = request.form.get('searchTerm', '')
-        events = Event.query.filter(Event.name.ilike(f'%{search_term}%')).all()
+        events = Event.query.filter_by(school_id=session['user']['school_id']).filter(Event.name.ilike(f'%{search_term}%')).all()
         events = [e.format() for e in events]
         for e in events:
             e["date"] = e.get('date_time').strftime("%b %d")
@@ -738,7 +738,7 @@ def test():
 
 @app.route('/session')
 def get_session():
-    return jsonify(session.get('user_roles'))
+    return jsonify(session)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000, debug=True)
