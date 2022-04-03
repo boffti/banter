@@ -71,7 +71,7 @@ Banter | My Products
                 {% if products|length > 0 %}
                 {% for product in products %}
                 <div class="col-sm-6 col-lg-4 grid-item p-2">
-                    <div class="card card-sm">
+                    <div class="card card-sm hoverable">
                         {% if product.purchased %}
                         <div class="ribbon bg-blue">SOLD!</div>
                         {% endif %}
@@ -87,19 +87,21 @@ Banter | My Products
                                 <div class="d-flex flex-row align-items-center justify-content-between">
                                     <h1>${{ product.price }}</h1>
                                     {% if not product.purchased %}
-                                    <a href="/shop/delete-product/{{ product.id }}">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-trash" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <line x1="4" y1="7" x2="20" y2="7"></line>
-                                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                                        </svg>
-                                    </a>
+                                    <div class="hoverable-cta">
+                                        <a href="/shop/delete-product/{{ product.id }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="icon icon-tabler icon-tabler-trash" width="24" height="24"
+                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <line x1="4" y1="7" x2="20" y2="7"></line>
+                                                <line x1="10" y1="11" x2="10" y2="17"></line>
+                                                <line x1="14" y1="11" x2="14" y2="17"></line>
+                                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                            </svg>
+                                        </a>
+                                    </div>
                                     {% endif %}
                                 </div>
                             </div>

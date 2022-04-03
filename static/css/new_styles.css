@@ -25,3 +25,12 @@
 .bg-white {
     background-color: #fff;
 }
+
+.hoverable-cta {
+    opacity: 0;
+    transition: opacity .4s;
+}
+
+.hoverable:hover .hoverable-cta {
+    opacity: 1;
+}
