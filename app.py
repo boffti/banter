@@ -449,7 +449,7 @@ def get_shop_page():
     if 'shop_category' in session:
         session.pop('shop_category')
     products = Product.query.filter_by(
-        school_id=session['user']['school_id']).filter_by(purchased=False).all()
+        school_id=session['user']['school_id']).filter_by(purchased=False).order_by(Product.created_at.desc()).all()
     categories = ProductCategory.query.all()
     return render_template('shop/shop.html', products=products, categories=categories)
 
