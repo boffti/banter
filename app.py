@@ -592,7 +592,7 @@ def shop_search():
             session.pop('shop_category')
         search_term = request.form.get('searchTerm', '')
         products = Product.query.filter_by(
-            school_id=session['user']['school_id']).filter_by(purchased=False).filter(Product.name.ilike(f'%{search_term}%')).all()
+            school_id=session['user']['school_id']).filter_by(purchased=False).filter(Product.name.ilike(f'%{search_term}%')).order_by(Product.created_at.desc()).all()
         categories = ProductCategory.query.all()
         return render_template('shop/shop.html', products=products, categories=categories)
     except Exception as e:
