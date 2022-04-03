@@ -608,7 +608,7 @@ def get_shop_by_category(category_id):
         return redirect(url_for('get_shop_page'))
     session['shop_category'] = ProductCategory.query.filter_by(id=category_id).first().name
     products = Product.query.filter_by(
-    school_id=session['user']['school_id']).filter_by(purchased=False).filter_by(category_id=category_id).all()
+    school_id=session['user']['school_id']).filter_by(purchased=False).filter_by(category_id=category_id).order_by(Product.created_at.desc()).all()
     categories = ProductCategory.query.all()
     return render_template('shop/shop.html', products=products, categories=categories)
 
