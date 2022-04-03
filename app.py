@@ -618,6 +618,9 @@ def delete_product(product_id):
         return redirect(url_for('login_page'))
     try:
         product = Product.query.filter_by(id=product_id).first()
+        if product.seller_id != session['user']['id']:
+            flash('You are not authorized to delete this product!')
+            return redirect(request.referrer)
         product.delete()
         flash('Product deleted successfully!')
         return redirect(request.referrer)
