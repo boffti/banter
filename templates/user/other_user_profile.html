@@ -1,7 +1,7 @@
 {% extends 'base_w_header.html' %}
 
 {% block title %}
-Banter | Profile
+Banter | {{ student.name }}
 {% endblock %}
 
 {% block styles %}
@@ -37,7 +37,7 @@ Banter | Profile
                     </div>
                     <div class="list-group list-group-flush list-group-hoverable">
                         {% if student.name %}
-                        <div class="list-group-item">
+                        <div class="list-group-item bg-white">
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user"
@@ -56,7 +56,7 @@ Banter | Profile
                         </div>
                         {% endif %}
                         {% if student.major %}
-                        <div class="list-group-item">
+                        <div class="list-group-item bg-white">
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-school"
@@ -75,7 +75,7 @@ Banter | Profile
                         </div>
                         {% endif %}
                         {% if student.bio %}
-                        <div class="list-group-item">
+                        <div class="list-group-item bg-white">
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-pencil"
@@ -94,7 +94,7 @@ Banter | Profile
                         </div>
                         {% endif %}
                         {% if student.phone %}
-                        <div class="list-group-item">
+                        <div class="list-group-item bg-white">
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-phone"
@@ -114,7 +114,7 @@ Banter | Profile
                         </div>
                         {% endif %}
                         {% if student.dob %}
-                        <div class="list-group-item">
+                        <div class="list-group-item bg-white">
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-candle"
@@ -142,7 +142,7 @@ Banter | Profile
                     <div class="list-group list-group-flush list-group-hoverable">
                         {% if events|length > 0 %}
                         {% for event in events %}
-                        <div class="list-group-item">
+                        <div class="list-group-item bg-white">
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-ticket"
@@ -246,6 +246,77 @@ Banter | Profile
             <div class="col-lg-8 col-12">
                 <div class="card">
                     <div class="card-header">
+                        <h3 class="card-title">Products</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            {% if student.products|length > 0 %}
+                            {% for product in student.products %}
+                            {% if not product.purchased %}
+                            <div class="col-lg-4 col-12 d-flex justify-content-between align-items-center list-item">
+                                <div class="row g-3 align-items-center">
+                                    <a href="#" class="col-auto">
+                                        <span class="avatar"
+                                            style="background-image: url({{ product.img_url }})"></span>
+                                    </a>
+                                    <div class="col text-truncate">
+                                        <a href="#" class="text-reset d-block text-truncate">{{ product.name }}</a>
+                                        <span class="text-muted">${{ product.price }}</span> &nbsp;
+                                        <span class="badge bg-blue-lt">{{ product.category.name }}</span>
+                                    </div>
+                                </div>
+                                <div class="delete-btn">
+                                    {% if product.id not in session['cart'] %}
+                                    <a href="/add-to-cart/{{ product.id }}" class="ms-3" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" title="Add to Cart">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-shopping-cart-plus" width="24"
+                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <circle cx="6" cy="19" r="2"></circle>
+                                            <circle cx="17" cy="19" r="2"></circle>
+                                            <path d="M17 17h-11v-14h-2"></path>
+                                            <path d="M6 5l6.005 .429m7.138 6.573l-.143 .998h-13"></path>
+                                            <path d="M15 6h6m-3 -3v6"></path>
+                                        </svg>
+                                    </a>
+                                    {% else %}
+                                    <a href="#" class="ms-3 text-muted" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        title="Already in cart!">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-check" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M5 12l5 5l10 -10"></path>
+                                        </svg>
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% else %}
+                            <div class="row align-items-center">
+                                <div class="empty p-4 pb-0">
+                                    <div class="empty-img"><img
+                                            src="{{ url_for('static', filename='images/empty_cart.svg') }}" height="128"
+                                            alt="">
+                                    </div>
+                                    <p class="empty-title">No products listed</p>
+                                    <p class="empty-subtitle text-muted">
+                                        {{ student.name }} has not listed any products yet. Check back later.
+                                    </p>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header">
                         <h3 class="card-title">Clubs</h3>
                     </div>
                     <div class="card-body">
@@ -289,11 +360,13 @@ Banter | Profile
                     <div class="list-group list-group-flush list-group-hoverable">
                         {% if billboard_posts|length > 0 %}
                         {% for post in billboard_posts %}
-                        <div class="list-group-item">
+                        <div class="list-group-item bg-white">
                             <div class="row align-items-center">
                                 <div class="col">
+                                    {% if post.title %}
                                     <a href="#"
                                         class="text-title text-reset d-block"><strong>{{ post.title }}</strong></a>
+                                    {% endif %}
                                     <div class="d-block text-muted mt-n1">{{ post.content }}</div>
                                 </div>
                             </div>
@@ -325,7 +398,7 @@ Banter | Profile
                     <div class="list-group list-group-flush list-group-hoverable">
                         {% if club_posts|length > 0 %}
                         {% for post in club_posts %}
-                        <div class="list-group-item">
+                        <div class="list-group-item bg-white">
                             <div class="row align-items-center">
                                 <div class="col-auto">
                                     <a href="#">

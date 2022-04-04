@@ -45,6 +45,7 @@ class Student(db.Model):
     event = db.relationship('Event', back_populates='student')
     user_roles = db.relationship('UserRoles', back_populates='student')
     clubs = db.relationship('Club', secondary='club_members', backref='clubs')
+    products = db.relationship('Product', back_populates='seller')
 
     def insert(self):
         db.session.add(self)
@@ -83,6 +84,7 @@ class School(db.Model):
     club = db.relationship('Club', back_populates='school', uselist=False)
     billboard_post = db.relationship('BillboardPost', back_populates='school')
     event = db.relationship('Event', back_populates='school', uselist=False)
+    products = db.relationship('Product', back_populates='school')
 
     def insert(self):
         db.session.add(self)
@@ -362,6 +364,24 @@ class Advertisement(db.Model):
     ext_link = db.Column(db.String)
     school_id = db.Column(db.String, db.ForeignKey('school.id'))
     admin_id = db.Column(db.String, db.ForeignKey('student.id'))
+    
+class Product(db.Model):
+    __tablename__ = 'product'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    description = db.Column(db.String)
+    price = db.Column(db.Float)
+    img_url = db.Column(db.String)
+    school_id = db.Column(db.String, db.ForeignKey('school.id'))
+    seller_id = db.Column(db.String, db.ForeignKey('student.id'))
+    category_id = db.Column(db.Integer, db.ForeignKey('product_categories.id'))
+    created_at = db.Column(db.DateTime)
+    purchased = db.Column(db.Boolean)
+
+    school = db.relationship('School', back_populates='products')
+    seller = db.relationship('Student', back_populates='products')
+    category = db.relationship('ProductCategory', back_populates='products')
+    order = db.relationship('Order', back_populates='product')
 
     def insert(self):
         db.session.add(self)
@@ -384,4 +404,67 @@ class Advertisement(db.Model):
             'school_id': self.school_id,
             'admin_id': self.admin_id,
             'tag': 'ad',
+            'name': self.name,
+            'description': self.description,
+            'price': self.price,
+            'img_url': self.img_url,
+            'student': self.student.format(),
+            'category': self.category_id.format(),
+            'created_at': arrow.Arrow.fromdatetime(self.created_at).humanize()
+        }
+
+class ProductCategory(db.Model):
+    __tablename__ = 'product_categories'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+
+    products = db.relationship('Product', back_populates='category')
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+        }
+
+class Order(db.Model):
+    __tablename__ = 'orders'
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+    seller_id = db.Column(db.String, db.ForeignKey('student.id'))
+    buyer_id = db.Column(db.String, db.ForeignKey('student.id'))
+    created_at = db.Column(db.DateTime)
+
+    seller = db.relationship('Student', backref='orderss', foreign_keys=[seller_id])
+    buyer = db.relationship('Student', backref='orders', foreign_keys=[buyer_id])
+    product = db.relationship('Product', back_populates='order')
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'product_id': self.product_id,
+            'seller_id': self.seller_id,
+            'buyer_id': self.buyer_id,
+            'created_at': arrow.Arrow.fromdatetime(self.created_at).humanize()
         }
