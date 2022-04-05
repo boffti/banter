@@ -304,13 +304,13 @@ def get_billboard_by_category(category_id):
     if category_id == 0:
         print("billbords categgories")
         return redirect(url_for('billboard_page'))
-    
+        
     posts = BillboardPost.query.filter_by(
         school_id=session['user']['school_id']).filter_by(id=category_id).all()
     posts = [p.format() for p in posts]
     categories = BillboardCategories.query.all()
     print(categories)
-    return render_template('billboard/billboard.html', billboard=posts,categories=categories)
+    return render_template('billboard/billboard.html', billboard=posts,categories=categories,prev=category_id)
 
 @app.route('/billboard/post', methods=['POST'])
 def add_billboard_post():
