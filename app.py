@@ -12,7 +12,7 @@ from flask import (Flask, flash, jsonify, redirect, render_template, request,
 from passlib.hash import pbkdf2_sha256 as sha256
 from datetime import datetime
 
-from models import (Admin, BillboardPost, Club, ClubPost, Event, ProductCategory, School,
+from models import (Admin, BillboardCategories, BillboardPost, Club, ClubPost, Event, ProductCategory, School,
                     Student, UserRoles, ClubMembers, Product, Order, db_init)
 
 load_dotenv()
@@ -44,7 +44,6 @@ def get_billboard_posts():
         school_id=session['user']['school_id']).all()
     posts = [p.format() for p in posts]
     return posts
-
 
 def get_events():
     events = Event.query.filter_by(
@@ -295,7 +294,23 @@ def billboard_page():
     if 'user' not in session:
         return redirect(url_for('login_page'))
     else:
-        return render_template('billboard/billboard.html', billboard=get_billboard_posts())
+        categories = BillboardCategories.query.all()
+        return render_template('billboard/billboard.html', billboard=get_billboard_posts(),categories=categories)
+
+@app.route('/billboard/category/<int:category_id>')
+def get_billboard_by_category(category_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    if category_id == 0:
+        print("billbords categgories")
+        return redirect(url_for('billboard_page'))
+    
+    posts = BillboardPost.query.filter_by(
+        school_id=session['user']['school_id']).filter_by(id=category_id).all()
+    posts = [p.format() for p in posts]
+    categories = BillboardCategories.query.all()
+    print(categories)
+    return render_template('billboard/billboard.html', billboard=posts,categories=categories)
 
 @app.route('/billboard/post', methods=['POST'])
 def add_billboard_post():
