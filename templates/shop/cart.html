@@ -37,7 +37,7 @@ Banter | Cart
     <div class="page-body">
         <div class="container-xl">
             <div class="row">
-                <div class="col-7">
+                <div class="col-8">
                     {% if session.cart|length > 0 %}
                     {% for id in session.cart %}
                     {% set product = id|get_product  %}
@@ -113,7 +113,7 @@ Banter | Cart
                     {% endif %}
 
                 </div>
-                <div class="col-5">
+                <div class="col-4">
                     <div class="card mb-3">
                         <div class="card-body">
                             <div class="">
