@@ -197,10 +197,11 @@ Banter | Cart
                                 </svg> Confirm Order</h3>
                             <div class="text-muted">
                                 {% set platform_charge = (session.cart|get_total) * 0.02 %}
+                                {% set platform_charge = platform_charge if platform_charge < 5 else 5 %}
                                 {% set grandTotal = session.cart|get_total + platform_charge %}
                                 <p class="">Cart Total : <strong>${{ session.cart|get_total|precision_2 }}</strong></p>
                                 <p class="">Platform Charge : <strong>${{ platform_charge|precision_2 }}</strong> <span
-                                        style="font-size: 10px;">(2% of total)</span></p>
+                                        style="font-size: 10px;">(2% of total, $5 maximum)</span></p>
                                 <p class="">Order Total : <strong
                                         class="grandTotalText">${{ grandTotal|precision_2 }}</strong></p>
                             </div>
