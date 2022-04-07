@@ -513,7 +513,7 @@ def add_product():
             return redirect(request.referrer)
         if file.content_type not in ALLOWED_TYPES:
             flash("Invalid image type. Please upload a jpeg or png image.")
-            return redirect(request.url)
+            return redirect(request.referrer)
         res = _cu.upload(file, folder=PRODUCT_IMG_PATH)
         product = Product(name=data['name'], price=data['price'], description=data['description'], img_url=res['secure_url'], category_id=data['category'],
                           school_id=session['user']['school_id'], created_at=datetime.now(), seller_id=session['user']['id'], purchased=False)
