@@ -1,0 +1,289 @@
+{% extends 'base_w_header.html' %}
+{% set page = "shop" %}
+
+{% block title %}
+Banter | Cart
+{% endblock %}
+
+{% block styles %}
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/new_styles.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="container-xl">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary mt-3 alert-dismissible mb-0 fade show" role="alert">
+            <strong>{{ message }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <!-- Page title -->
+        <div class="page-header d-print-none">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        My cart
+                    </h2>
+                    <div class="text-muted mt-1">{{ session.cart|length }} items</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row">
+                <div class="col-7">
+                    {% if session.cart|length > 0 %}
+                    {% for id in session.cart %}
+                    {% set product = id|get_product  %}
+                    <div class="card">
+                        <div class="row row-0">
+                            <div class="col-3">
+                                <img src="{{ product.img_url }}" class="w-100 h-100 object-cover" alt="Card side image">
+                            </div>
+                            <div class="col">
+                                <div class="card-body">
+                                    <div class="d-flex flex-row align-items-center justify-content-between">
+                                        <div>
+                                            <h1 class="">${{ product.price }}</h1>
+                                            <p class="text-muted">{{ product.name }}</p>
+                                            <br>
+                                            <p>
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="icon icon-tabler icon-tabler-packge-export me-1" width="24"
+                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M12 21l-8 -4.5v-9l8 -4.5l8 4.5v4.5"></path>
+                                                    <path d="M12 12l8 -4.5"></path>
+                                                    <path d="M12 12v9"></path>
+                                                    <path d="M12 12l-8 -4.5"></path>
+                                                    <path d="M15 18h7"></path>
+                                                    <path d="M19 15l3 3l-3 3"></path>
+                                                </svg> {{ product.seller.name }}</p>
+                                        </div>
+                                        <div>
+                                            <a href="/delete-from-cart/{{ product.id }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="icon icon-tabler icon-tabler-trash" width="24" height="24"
+                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <line x1="4" y1="7" x2="20" y2="7"></line>
+                                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    {% endfor %}
+                    {% else %}
+                    <div class="col-lg-12 grid-item px-2 py-2">
+                        <div class="row align-items-center">
+                            <div class="empty p-4">
+                                <div class="empty-img"><img
+                                        src="{{ url_for('static', filename='images/empty_cart.svg') }}" height="128"
+                                        alt="">
+                                </div>
+                                <p class="empty-title">Your cart is empty!</p>
+                                <p class="empty-subtitle text-muted">
+                                    Check out the products in your school
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+                <div class="col-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="">
+                                <div class="d-flex flex-row align-items-center mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-credit-card me-2" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <rect x="3" y="5" width="18" height="14" rx="3"></rect>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                        <line x1="7" y1="15" x2="7.01" y2="15"></line>
+                                        <line x1="11" y1="15" x2="13" y2="15"></line>
+                                    </svg>
+                                    <label class="form-label m-0">Payment method</label>
+                                </div>
+                                <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
+                                    <label class="form-selectgroup-item flex-fill">
+                                        <input type="radio" name="form-payment" value="visa"
+                                            class="form-selectgroup-input">
+                                        <div class="form-selectgroup-label d-flex align-items-center p-3">
+                                            <div class="me-3">
+                                                <span class="form-selectgroup-check"></span>
+                                            </div>
+                                            <div>
+                                                <img src="https://preview.tabler.io/dist/img/payments/visa.svg"
+                                                    class="payment payment-provider-visa payment-xs me-2" />
+                                                ending in <strong>7998</strong>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <label class="form-selectgroup-item flex-fill">
+                                        <input type="radio" name="form-payment" value="mastercard"
+                                            class="form-selectgroup-input" checked="">
+                                        <div class="form-selectgroup-label d-flex align-items-center p-3">
+                                            <div class="me-3">
+                                                <span class="form-selectgroup-check"></span>
+                                            </div>
+                                            <div>
+                                                <img src="https://preview.tabler.io/dist/img/payments/mastercard.svg"
+                                                    class="payment payment-mastercard payment-xs me-2" />
+                                                ending in <strong>2807</strong>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <label class="form-selectgroup-item flex-fill">
+                                        <input type="radio" name="form-payment" value="paypal"
+                                            class="form-selectgroup-input">
+                                        <div class="form-selectgroup-label d-flex align-items-center p-3">
+                                            <div class="me-3">
+                                                <span class="form-selectgroup-check"></span>
+                                            </div>
+                                            <div>
+                                                <img src="https://preview.tabler.io/dist/img/payments/paypal.svg"
+                                                    class="payment payment-provider-paypal payment-xs me-2" />
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex">
+                                <!-- <a href="#" class="btn btn-link">Cancel</a> -->
+                                <a href="#" class="btn btn-pill ms-auto">
+                                    Add new payment method
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title"><svg xmlns="http://www.w3.org/2000/svg"
+                                    class="icon icon-tabler icon-tabler-receipt" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path
+                                        d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2m4 -14h6m-6 4h6m-2 4h2">
+                                    </path>
+                                </svg> Confirm Order</h3>
+                            <div class="text-muted">
+                                {% set platform_charge = (session.cart|get_total) * 0.02 %}
+                                {% set grandTotal = session.cart|get_total + platform_charge %}
+                                <p class="">Cart Total : <strong>${{ session.cart|get_total|precision_2 }}</strong></p>
+                                <p class="">Platform Charge : <strong>${{ platform_charge|precision_2 }}</strong> <span
+                                        style="font-size: 10px;">(2% of total)</span></p>
+                                <p class="">Order Total : <strong
+                                        class="grandTotalText">${{ grandTotal|precision_2 }}</strong></p>
+                            </div>
+                        </div>
+                        <!-- Card footer -->
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-center">
+                                <!-- <a href="#" class="btn btn-link">Cancel</a> -->
+                                <a href="/checkout" class="btn btn-primary ms-auto">Place Order</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Club Modal -->
+    <div class="modal modal-blur fade" id="modal-product" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <form class="modal-content" action="/add-product" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add new Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" name="name" placeholder="Type here...">
+                    </div>
+                    <div class="col-lg-12">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" rows="3"
+                            placeholder="Type here..."></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 mt-3">
+                            <label class="form-label">Price</label>
+                            <div class="input-group mb-2">
+                                <span class="input-group-text">
+                                    $
+                                </span>
+                                <input name="price" type="text" class="form-control" placeholder="price"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mt-3">
+                            <label class="form-label">Category</label>
+                            <div class="d-flex flex-row">
+                                <select name="category" class="form-select">
+                                    <option value="0" disabled selected>Select one</option>
+                                    {% for cat in categories %}
+                                    <option value="{{ cat.id }}">{{ cat.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-label">Product Image</div>
+                        <input name="file" type="file" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Product
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% endblock content %}
+
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% endblock %}

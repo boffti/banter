@@ -89,11 +89,15 @@ def get_sale_count(value):
 
 
 @app.template_filter('no_purchases')
-def get_sale_count(value):
+def no_purchase(value):
     for product in value:
         if product.purchased:
             return False
     return True
+
+@app.template_filter('precision_2')
+def precision_2(value):
+    return "{:.2f}".format(value)
 # -----------------------------------------------------------------------------
 
 # Admin Auth Decorator
@@ -453,6 +457,13 @@ def get_shop_page():
     categories = ProductCategory.query.all()
     return render_template('shop/shop.html', products=products, categories=categories)
 
+@app.route('/cart')
+def cart_page():
+    if len(session.get('cart')) == 0:
+        flash('Your cart is empty!')
+        return redirect(url_for('get_shop_page'))
+    return render_template('/shop/cart.html')
+
 @app.route('/add-to-cart/<product_id>')
 def add_to_cart(product_id):
     if 'user' not in session:
@@ -536,7 +547,7 @@ def checkout():
             order.insert()
             session['cart'] = []
         flash('Order placed successfully!')
-        return redirect(request.referrer)
+        return redirect(url_for('get_shop_page'))
     except Exception as e:
         print(e)
         flash('Something went wrong!')
