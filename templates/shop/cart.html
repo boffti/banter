@@ -27,7 +27,7 @@ Banter | Cart
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        My cart
+                        Shopping Cart
                     </h2>
                     <div class="text-muted mt-1">{{ session.cart|length }} items</div>
                 </div>
@@ -51,8 +51,12 @@ Banter | Cart
                                     <div class="d-flex flex-row align-items-center justify-content-between">
                                         <div>
                                             <h1 class="">${{ product.price }}</h1>
-                                            <p class="text-muted">{{ product.name }}</p>
-                                            <br>
+                                            <p class="text-muted mb-4">{{ product.name }}</p>
+                                            <!-- <a href="/shop/category/{{ product.category.id }}"
+                                                class="badge bg-blue-lt mb-3" data-bs-toggle="tooltip"
+                                                data-bs-placement="left"
+                                                title="Product Category"
+                                                style="display: block;">{{ product.category.name }}</a> -->
                                             <a href="/student/{{ product.seller.id }}" class="text-muted">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                     class="icon icon-tabler icon-tabler-packge-export me-1" width="24"

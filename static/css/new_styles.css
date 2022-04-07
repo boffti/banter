@@ -46,12 +46,10 @@
 
 .cartTotalText {
     font-size: 1em;
-    /* font-weight: bold; */
     color: #000;
 }
 
 .grandTotalText {
-    font-size: 1.5em;
-    /* font-weight: bold; */
+    font-size: 1.8em;
     color: #000;
 }
