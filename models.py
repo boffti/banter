@@ -385,6 +385,7 @@ class Advertisement(db.Model):
             'ext_link': self.ext_link,
             'school_id': self.school_id,
             'admin_id': self.admin_id,
+            'tag':'ad'
         }
     
 class Product(db.Model):
