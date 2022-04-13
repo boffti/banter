@@ -58,7 +58,6 @@ def get_billboard_posts(n=6):
     else:
         posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).limit(n).all()
     posts = [p.format() for p in posts]
-    print(len(posts))
     idx = len(posts)//(len(ads)+1)
     k, m = 1, 0
     for ad in ads:
@@ -66,7 +65,6 @@ def get_billboard_posts(n=6):
         k+=1
         m+=1
     return posts
-
 
 def get_events():
     events = Event.query.filter_by(
@@ -88,16 +86,13 @@ def is_member(value):
         return True
     return False
 
-
 @app.template_filter('humanize')
 def humanize(value):
     return arrow.Arrow.fromdatetime(value).humanize()
 
-
 @app.template_filter('get_product')
 def get_product(value):
     return Product.query.filter_by(id=value).first()
-
 
 @app.template_filter('get_total')
 def get_total(value):
@@ -107,12 +102,10 @@ def get_total(value):
         total += product.price
     return total
 
-
 @app.template_filter('get_sale_count')
 def get_sale_count(value):
     order = Order.query.filter_by(seller_id=value.get('id')).all()
     return len(order)
-
 
 @app.template_filter('no_purchases')
 def no_purchase(value):
@@ -124,6 +117,14 @@ def no_purchase(value):
 @app.template_filter('precision_2')
 def precision_2(value):
     return "{:.2f}".format(value)
+
+@app.template_filter('get_sold_count')
+def get_sold_count(value):
+    count = 0
+    for product in value:
+        if product.purchased:
+            count += 1
+    return count == len(value)
 # -----------------------------------------------------------------------------
 
 # Admin Auth Decorator
