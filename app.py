@@ -145,7 +145,7 @@ def home():
     else:
         if 'cart' not in session:
             session['cart'] = []
-        clubs = get_clubs()
+        clubs = get_clubs(no_ad=True)
         sample_size = min(len(clubs), 6)
         clubs = sample(clubs, sample_size) if len(clubs) > 0 else []
         events = get_events()
