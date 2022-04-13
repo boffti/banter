@@ -38,13 +38,11 @@ def get_clubs():
     clubs = Club.query.filter_by(school_id=session['user']['school_id']).all()
     return clubs
 
-
 def get_billboard_posts():
     posts = BillboardPost.query.filter_by(
         school_id=session['user']['school_id']).all()
     posts = [p.format() for p in posts]
     return posts
-
 
 def get_events():
     events = Event.query.filter_by(
@@ -55,23 +53,19 @@ def get_events():
         e["time"] = e.get('date_time').strftime("%I:%M %p")
     return events
 
-
 @app.template_filter('is_member')
 def is_member(value):
     if ClubMembers.query.filter_by(student_id=session['user']['id'], club_id=value).first():
         return True
     return False
 
-
 @app.template_filter('humanize')
 def humanize(value):
     return arrow.Arrow.fromdatetime(value).humanize()
 
-
 @app.template_filter('get_product')
 def get_product(value):
     return Product.query.filter_by(id=value).first()
-
 
 @app.template_filter('get_total')
 def get_total(value):
@@ -81,12 +75,10 @@ def get_total(value):
         total += product.price
     return total
 
-
 @app.template_filter('get_sale_count')
 def get_sale_count(value):
     order = Order.query.filter_by(seller_id=value.get('id')).all()
     return len(order)
-
 
 @app.template_filter('no_purchases')
 def no_purchase(value):
@@ -98,6 +90,14 @@ def no_purchase(value):
 @app.template_filter('precision_2')
 def precision_2(value):
     return "{:.2f}".format(value)
+
+@app.template_filter('get_sold_count')
+def get_sold_count(value):
+    count = 0
+    for product in value:
+        if product.purchased:
+            count += 1
+    return count == len(value)
 # -----------------------------------------------------------------------------
 
 # Admin Auth Decorator
