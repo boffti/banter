@@ -34,3 +34,22 @@
 .hoverable:hover .hoverable-cta {
     opacity: 1;
 }
+
+.payment-mastercard {
+    background-image: url(../images/mastercard.svg) !important;
+}
+
+.payment-xs {
+    width: 2.49999rem;
+    height: 1.5rem;
+}
+
+.cartTotalText {
+    font-size: 1em;
+    color: #000;
+}
+
+.grandTotalText {
+    font-size: 1.8em;
+    color: #000;
+}
