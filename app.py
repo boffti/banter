@@ -669,7 +669,7 @@ def events():
     if 'user' not in session:
         return redirect(url_for('login_page'))
     events = get_events()
-    return render_template('events/events.html', events=events)
+    return render_template('events/events.html', events=inject_ads(events))
 
 @app.route('/events', methods=['POST'])
 def insertEvent():
