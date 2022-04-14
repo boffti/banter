@@ -43,6 +43,8 @@ def get_ads():
 
 # Inject Ads Algorithm
 def inject_ads(data):
+    if len(data) == 0:
+        return data
     ads = get_ads()
     idx = math.ceil(len(data)/(len(ads)+1))
     # idx = (len(data)//(len(ads)+1))
