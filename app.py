@@ -741,7 +741,9 @@ def faq_page():
 @app.route('/admin')
 @requires_auth
 def admin_page():
-    return render_template('admin/admin.html')
+    schools = School.query.all()
+    user_roles = UserRoles.query.filter_by(role_id=2).all()
+    return render_template('admin/admin.html', schools=schools, school_admins=user_roles)
 
 @app.route('/school_admin')
 @requires_auth
