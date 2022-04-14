@@ -780,6 +780,23 @@ def create_ad():
         print(e)
         flash('Something went wrong!')
         return redirect(request.referrer)
+
+@app.route('/delete-ad/<int:ad_id>')
+def delete_ad(ad_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        ad = Advertisement.query.filter_by(id=ad_id).first()
+        if ad.admin_id != session['user']['id']:
+            flash('You are not authorized to delete this ad!')
+            return redirect(request.referrer)
+        ad.delete()
+        flash('Ad deleted successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 # ----------------------------------------------------------------------------
 
 # Search Routes --------------------------------------------------------------
