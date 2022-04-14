@@ -749,8 +749,12 @@ def admin_page():
 def school_admin():
     students = Student.query.filter_by(
         school_id=session['user']['school_id']).all()
-    students = [student.format() for student in students]
-    return render_template('admin/school_admin.html', students=students)
+    posts = BillboardPost.query.filter_by(
+        school_id=session['user']['school_id']).all()
+    events = Event.query.filter_by(school_id=session['user']['school_id']).all()
+    ads = Advertisement.query.filter_by(
+        school_id=session['user']['school_id']).all()
+    return render_template('admin/school_admin.html', students=students, posts=posts, events=events, ads=ads)
 # ----------------------------------------------------------------------------
 
 # Search Routes --------------------------------------------------------------
