@@ -23,6 +23,7 @@ db = db_init(app)
 INIT_DP = "https://res.cloudinary.com/dtvhyzofv/image/upload/v1647144583/banter/dp/user_awjxuf.png"
 CLUB_IMG_PATH = 'banter/clubs/'
 PRODUCT_IMG_PATH = 'banter/product/'
+AD_IMG_PATH = 'banter/advertisement/'
 DP_IMG_PATH = 'banter/dp/'
 ALLOWED_TYPES = ['image/jpeg', 'image/png']
 
@@ -750,6 +751,32 @@ def school_admin():
     ads = Advertisement.query.filter_by(
         school_id=session['user']['school_id']).all()
     return render_template('admin/school_admin.html', students=students, posts=posts, events=events, ads=ads)
+
+@app.route('/create-ad', methods=['POST'])
+def create_ad():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        data = request.form.to_dict()
+        file = request.files['file']
+        if data['title'] == '' or data['description'] == '' or data['ext_link'] == '':
+            flash('Please fill in all the fields.')
+            return redirect(request.referrer)
+        if file.filename == '':
+            flash('Please select an image to upload.')
+            return redirect(request.referrer)
+        if file.content_type not in ALLOWED_TYPES:
+            flash("Invalid image type. Please upload a jpeg or png image.")
+            return redirect(request.referrer)
+        res = _cu.upload(file, folder=AD_IMG_PATH)
+        ad = Advertisement(title=data['title'], description=data['description'], ext_link=data['ext_link'], img_url=res['secure_url'], school_id=session['user']['school_id'], admin_id=session['user']['id'])
+        ad.insert()
+        flash('Ad created successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 # ----------------------------------------------------------------------------
 
 # Search Routes --------------------------------------------------------------

@@ -174,7 +174,8 @@ Banter | Admin
                         <div class="card">
                             <div class="card-header d-flex flex-row justify-content-between">
                                 <h3 class="card-title">Ad Campaigns</h3>
-                                <button class="btn btn-outline-primary">New</button>
+                                <button class="btn btn-outline-primary" data-bs-toggle="modal"
+                                    data-bs-target="#modal-adcamp">New</button>
                             </div>
                             <div class="list-group list-group-flush list-group-hoverable">
                                 {% for ad in ads %}
@@ -217,11 +218,60 @@ Banter | Admin
 
 
 
-
         </div>
     </div>
 </div>
+
+
+
+<!-- Create Ad Modal -->
+<div class="modal modal-blur fade" id="modal-adcamp" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <form class="modal-content" action="/create-ad" method="post" enctype="multipart/form-data">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Ad Campaign</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-control" name="title" placeholder="Type here...">
+                </div>
+                <div class="col-lg-12">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" class="form-control" rows="3" placeholder="Type here..."></textarea>
+                </div>
+                <div class="mt-3">
+                    <label class="form-label">External Redirect Link</label>
+                    <input type="text" class="form-control" name="ext_link" placeholder="Type here...">
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-label">Ad Image</div>
+                    <input name="file" type="file" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Create Campaign
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
+
 {% endblock %}
 
 {% block scripts %}
