@@ -1,5 +1,6 @@
 import json
 import os
+from pyexpat.errors import messages
 import arrow
 from random import sample
 from functools import wraps
@@ -13,7 +14,7 @@ from datetime import datetime
 import math
 
 from models import (Admin, BillboardPost, Club, ClubPost, Event, ProductCategory, School,
-                    Student, UserRoles, ClubMembers, Product, Order, Advertisement, db_init)
+                    Student, UserRoles, ClubMembers, Product, Order, Advertisement, BroadcastMessage, db_init)
 
 load_dotenv()
 
@@ -50,6 +51,11 @@ def inject_ads(data):
         data.insert(idx * k + m, ad)
         k, m = k+1, m+1
     return data
+
+def get_notifications():
+    notifications = BroadcastMessage.query.filter_by(school_id=session['user']['school_id']).all()
+    notifications = [n.format() for n in notifications]
+    session['broadcast_messages'] = notifications
 
 def get_clubs(n=6, no_ad=False):
     if no_ad:
@@ -143,6 +149,7 @@ def home():
     if 'user' not in session:
         return render_template('login/login.html')
     else:
+        get_notifications()
         if 'cart' not in session:
             session['cart'] = []
         clubs = get_clubs(no_ad=True)
@@ -234,6 +241,8 @@ def logout():
         session.pop('user')
         if 'user_roles' in session:
             session.pop('user_roles')
+    if 'broadcast_messages' in session:
+        session.pop('broadcast_messages')
     return redirect(url_for('login_page'))
 # -----------------------------------------------------------------------------------
 
@@ -755,7 +764,9 @@ def school_admin():
     events = Event.query.filter_by(school_id=session['user']['school_id']).all()
     ads = Advertisement.query.filter_by(
         school_id=session['user']['school_id']).all()
-    return render_template('admin/school_admin.html', students=students, posts=posts, events=events, ads=ads)
+    broadcast_messages = BroadcastMessage.query.filter_by(
+        school_id=session['user']['school_id']).all()
+    return render_template('admin/school_admin.html', students=students, posts=posts, events=events, ads=ads, broadcast_messages=broadcast_messages)
 
 @app.route('/create-ad', methods=['POST'])
 def create_ad():
@@ -794,6 +805,41 @@ def delete_ad(ad_id):
             return redirect(request.referrer)
         ad.delete()
         flash('Ad deleted successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
+@app.route('/create-broadcast', methods=['POST'])
+def create_broadcast():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        data = request.form.to_dict()
+        if data['title'] == '' or data['content'] == '':
+            flash('Please fill in all the fields.')
+            return redirect(request.referrer)
+        message = BroadcastMessage(title=data['title'], content=data['content'], school_id=session['user']['school_id'], created_at = datetime.now())
+        message.insert()
+        flash('Broadcast created successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
+@app.route('/delete-broadcast/<int:broadcast_id>')
+def delete_broadcast(broadcast_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        broadcast = BroadcastMessage.query.filter_by(id=broadcast_id).first()
+        if broadcast.school_id != session['user']['school_id']:
+            flash('You are not authorized to delete this broadcast!')
+            return redirect(request.referrer)
+        broadcast.delete()
+        flash('Broadcast deleted successfully!')
         return redirect(request.referrer)
     except Exception as e:
         print(e)

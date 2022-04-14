@@ -85,6 +85,7 @@ class School(db.Model):
     billboard_post = db.relationship('BillboardPost', back_populates='school')
     event = db.relationship('Event', back_populates='school', uselist=False)
     products = db.relationship('Product', back_populates='school')
+    messages = db.relationship('BroadcastMessage', back_populates='school', uselist=False)
 
     def insert(self):
         db.session.add(self)
@@ -489,5 +490,35 @@ class Order(db.Model):
             'product_id': self.product_id,
             'seller_id': self.seller_id,
             'buyer_id': self.buyer_id,
+            'created_at': arrow.Arrow.fromdatetime(self.created_at).humanize()
+        }
+
+class BroadcastMessage(db.Model):
+    __tablename__ = 'messages'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String)
+    content = db.Column(db.String)
+    created_at = db.Column(db.DateTime)
+    school_id = db.Column(db.String, db.ForeignKey('school.id'))
+
+    school = db.relationship('School', back_populates='messages')
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'content': self.content,
+            'school_id': self.school_id,
             'created_at': arrow.Arrow.fromdatetime(self.created_at).humanize()
         }
