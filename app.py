@@ -33,38 +33,39 @@ cloudinary.config(
 )
 
 # UTIL Functions --------------------------------------------------------------
+def get_ads():
+    ads = Advertisement.query.filter_by(school_id=session['user']['school_id']).all()
+    ads = [a.format() for a in ads]
+    return ads
+
+def inject_ads(data):
+    ads = get_ads()
+    idx = len(data)//(len(ads)+1)
+    k, m = 1, 0
+    for ad in ads:
+        data.insert(idx * (k) + (m), ad)
+        k+=1
+        m+=1
+    return data
+
 def get_clubs(n=6, no_ad=False):
     if no_ad:
         return  Club.query.filter_by(school_id=session['user']['school_id']).all()
     else:
-        ads = get_ads()
         if n == 'all':
             clubs = Club.query.filter_by(school_id=session['user']['school_id']).all()
         else:
             clubs = Club.query.filter_by(school_id=session['user']['school_id']).limit(n).all()
         clubs = [p.format() for p in clubs]
-        idx = len(clubs)//(len(ads)+1)
-        k, m = 1, 0
-        for ad in ads:
-            clubs.insert(idx * (k) + (m), ad)
-            k+=1
-            m+=1
-        return clubs
+        return inject_ads(clubs)
 
 def get_billboard_posts(n=6):
-    ads = get_ads()
     if n == 'all':
         posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).all()
     else:
         posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).limit(n).all()
     posts = [p.format() for p in posts]
-    idx = len(posts)//(len(ads)+1)
-    k, m = 1, 0
-    for ad in ads:
-        posts.insert(idx * k + m, ad)
-        k+=1
-        m+=1
-    return posts
+    return inject_ads(posts)
 
 def get_events():
     events = Event.query.filter_by(
@@ -74,11 +75,6 @@ def get_events():
         e["date"] = e.get('date_time').strftime("%b %d")
         e["time"] = e.get('date_time').strftime("%I:%M %p")
     return events
-
-def get_ads():
-    ads = Advertisement.query.filter_by(school_id=session['user']['school_id']).all()
-    ads = [a.format() for a in ads]
-    return ads
 
 @app.template_filter('is_member')
 def is_member(value):
@@ -482,7 +478,7 @@ def get_shop_page():
     products = Product.query.filter_by(
         school_id=session['user']['school_id']).filter_by(purchased=False).order_by(Product.created_at.desc()).all()
     categories = ProductCategory.query.all()
-    return render_template('shop/shop.html', products=products, categories=categories)
+    return render_template('shop/shop.html', products=inject_ads(products), categories=categories)
 
 @app.route('/cart')
 def cart_page():
