@@ -44,8 +44,7 @@ def inject_ads(data):
     k, m = 1, 0
     for ad in ads:
         data.insert(idx * (k) + (m), ad)
-        k+=1
-        m+=1
+        k, m = k+1, m+1
     return data
 
 def get_clubs(n=6, no_ad=False):
