@@ -10,6 +10,7 @@ from flask import (Flask, flash, jsonify, redirect, render_template, request,
                    send_file, session, url_for)
 from passlib.hash import pbkdf2_sha256 as sha256
 from datetime import datetime
+import math
 
 from models import (Admin, BillboardPost, Club, ClubPost, Event, ProductCategory, School,
                     Student, UserRoles, ClubMembers, Product, Order, Advertisement, db_init)
@@ -39,12 +40,14 @@ def get_ads():
     ads = [a.format() for a in ads]
     return ads
 
+# Inject Ads Algorithm
 def inject_ads(data):
     ads = get_ads()
-    idx = len(data)//(len(ads)+1)
+    idx = math.ceil(len(data)/(len(ads)+1))
+    # idx = (len(data)//(len(ads)+1))
     k, m = 1, 0
     for ad in ads:
-        data.insert(idx * (k) + (m), ad)
+        data.insert(idx * k + m, ad)
         k, m = k+1, m+1
     return data
 
