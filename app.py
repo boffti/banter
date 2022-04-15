@@ -946,7 +946,11 @@ def search_page_event():
         return redirect(url_for('login_page'))
     events_1 = Event.query.filter_by(school_id=session['user']['school_id']).filter(Event.name.ilike('%' + session.get('search_term') + '%' )).all()
     events_2 = Event.query.filter_by(school_id=session['user']['school_id']).filter(Event.description.ilike('%' + session.get('search_term') + '%' )).all()
-    events = set(events_1 + events_2)
+    events = list(set(events_1 + events_2))
+    events = [e.format() for e in events]
+    for e in events:
+        e["date"] = e.get('date_time').strftime("%b %d")
+        e["time"] = e.get('date_time').strftime("%I:%M %p")
     session['num_events'] = len(events)
     if len(events) == 0:
         return redirect(url_for('search_page_billboard'))
