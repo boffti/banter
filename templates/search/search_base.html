@@ -68,6 +68,7 @@ Banter | Search Results
     <div class="page-body">
         <div class="container-xl">
             <div class="row g-4">
+                {% if session.total_results > 0 %}
                 <div class="col-3">
                     <form action="" method="get">
                         <div class="subheader mb-2">Category</div>
@@ -119,6 +120,21 @@ Banter | Search Results
                     {% block search_content %}
                     {% endblock %}
                 </div>
+                {% else %}
+                <div class="col-lg-12 grid-item px-2 py-2">
+                    <div class="row align-items-center">
+                        <div class="empty p-4">
+                            <div class="empty-img"><img src="{{ url_for('static', filename='images/search.svg') }}"
+                                    height="128" alt="">
+                            </div>
+                            <p class="empty-title">No results for your query</p>
+                            <p class="empty-subtitle text-muted">
+                                Try a different search term to broaden your search results.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
