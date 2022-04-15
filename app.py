@@ -902,6 +902,8 @@ def search_page():
     students = set(students_1 + students_2)
     session['num_students'] = len(students)
 
+    session['total_results'] = len(products) + len(events) + len(posts) + len(clubs) + len(students)
+
     if len(products) == 0:
             return redirect(url_for('search_page_event'))
 
