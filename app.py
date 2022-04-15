@@ -922,7 +922,8 @@ def search_page_billboard():
         return redirect(url_for('login_page'))
     posts_1 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(BillboardPost.title.ilike('%' + session.get('search_term') + '%' )).all()
     posts_2 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(BillboardPost.content.ilike('%' + session.get('search_term') + '%' )).all()
-    posts = set(posts_1 + posts_2)
+    posts = list(set(posts_1 + posts_2))
+    posts = [p.format() for p in posts]
     session['num_posts'] = len(posts)
     if len(posts) == 0:
         return redirect(url_for('search_page_club'))
