@@ -1,0 +1,107 @@
+{% extends 'search/search_base.html' %}
+{% set result = "product" %}
+{% block search_content %}
+<div class="grid">
+    {% if products|length > 0 %}
+    {% for product in products %}
+    {% if product.tag == 'ad' %}
+    <div class="col-lg-3 col-md-6 col-12 grid-item p-2">
+        <div class="card card-link card-link-pop">
+            <div class="card-img-top img-responsive img-responsive-21x9"
+                style="background-image: url({{ product.img_url }})">
+            </div>
+            <div class="ribbon bg-blue">Sponsored</div>
+            <div class="card-body">
+                <h3 class="card-title">
+                    <a href="{{ product.ext_link }}" target="_blank">
+                        {{ product.title }}
+                    </a>
+                </h3>
+                <p class="text-muted">{{ product.description }}</p>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-sm-4 col-lg-4 grid-item p-2">
+        <div class="card card-sm">
+            <a href="#" class="d-block"><img src="{{ product.img_url }}" alt="{{ product.name }}"
+                    class="card-img-top"></a>
+            <div class="card-body">
+                <div class="d-flex flex-row justify-content-between align-items-center">
+                    <h3 class="card-title">{{ product.name }}</h3>
+                    <a href="/shop/category/{{ product.category.id }}" class="badge bg-blue-lt mb-auto"
+                        data-bs-toggle="tooltip" data-bs-placement="left"
+                        title="Product Category">{{ product.category.name }}</a>
+                </div>
+                <div class="d-flex flex-column">
+                    <p>{{ product.description }}</p>
+                    <div class="d-flex flex-row align-items-center justify-content-between">
+                        <h1>${{ product.price }}</h1>
+                        <div class="ms-auto">
+                            {% if product.id not in session['cart'] %}
+                            <a href="/add-to-cart/{{ product.id }}" class="ms-3" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Add to Cart">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="icon icon-tabler icon-tabler-shopping-cart-plus" width="24"
+                                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <circle cx="6" cy="19" r="2"></circle>
+                                    <circle cx="17" cy="19" r="2"></circle>
+                                    <path d="M17 17h-11v-14h-2"></path>
+                                    <path d="M6 5l6.005 .429m7.138 6.573l-.143 .998h-13"></path>
+                                    <path d="M15 6h6m-3 -3v6"></path>
+                                </svg>
+                            </a>
+                            {% else %}
+                            <a href="#" class="ms-3 text-success" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="Already in cart!">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="icon icon-tabler icon-tabler-check" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M5 12l5 5l10 -10"></path>
+                                </svg>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-flex flex-row" data-bs-toggle="tooltip" data-bs-placement="left"
+                title="Seller">
+                <span class="avatar me-3 rounded"
+                    style="background-image: url({{ product.seller.dp }})"></span>
+                <div>
+                    <a class="text-black"
+                        href="/student/{{ product.seller.id }}">{{ product.seller.name }}</a>
+                    <div class="text-muted">{{ product.created_at|humanize }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    <div class="col-lg-12 grid-item px-2 py-2">
+        <div class="row align-items-center">
+            <div class="empty p-4">
+                <div class="empty-img"><img src="{{ url_for('static', filename='images/empty_cart.svg') }}"
+                        height="128" alt="">
+                </div>
+                <p class="empty-title">Nothing listed for sale in your school</p>
+                <p class="empty-subtitle text-muted">
+                    Use this space to list anything you want to sell.
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

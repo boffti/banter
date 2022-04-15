@@ -1,6 +1,5 @@
 import json
 import os
-from pyexpat.errors import messages
 import arrow
 from random import sample
 from functools import wraps
@@ -87,6 +86,20 @@ def get_events():
         e["time"] = e.get('date_time').strftime("%I:%M %p")
     return events
 
+def pop_search():
+    if 'search_term' in session:
+        session.pop('search_term')
+    if 'num_products' in session:
+        session.pop('num_products')
+    if 'num_clubs' in session:
+        session.pop('num_clubs')
+    if 'num_events' in session:
+        session.pop('num_events')
+    if 'num_users' in session:
+        session.pop('num_users')
+    if 'num_posts' in session:
+        session.pop('num_posts')
+
 @app.template_filter('is_member')
 def is_member(value):
     if ClubMembers.query.filter_by(student_id=session['user']['id'], club_id=value).first():
@@ -152,6 +165,7 @@ def home():
         return render_template('login/login.html')
     else:
         get_notifications()
+        pop_search()
         if 'cart' not in session:
             session['cart'] = []
         clubs = get_clubs(no_ad=True)
@@ -850,11 +864,106 @@ def delete_broadcast(broadcast_id):
 # ----------------------------------------------------------------------------
 
 # Search Routes --------------------------------------------------------------
-@app.route('/search')
+@app.route('/search', methods=['GET','POST'])
 def search_page():
     if 'user' not in session:
         return redirect(url_for('login_page'))
-    return render_template('search/search_results.html')
+    if request.method == 'GET':
+        if 'search_term' not in session:
+            return redirect(url_for('home'))
+    search_term = request.form.get('search_term')
+    if search_term == '':
+        flash('Please enter a search term.')
+        return redirect(request.referrer)
+    session['search_term'] = search_term
+
+    products_1 = Product.query.filter_by(school_id=session['user']['school_id']).filter(Product.name.ilike('%' + session.get('search_term') + '%' )).all()
+    products_2 = Product.query.filter_by(school_id=session['user']['school_id']).filter(Product.description.ilike('%' + session.get('search_term') + '%' )).all()
+    products = set(products_1 + products_2)
+    session['num_products'] = len(products)
+
+    events_1 = Event.query.filter_by(school_id=session['user']['school_id']).filter(Event.name.ilike('%' + session.get('search_term') + '%' )).all()
+    events_2 = Event.query.filter_by(school_id=session['user']['school_id']).filter(Event.description.ilike('%' + session.get('search_term') + '%' )).all()
+    events = set(events_1 + events_2)
+    session['num_events'] = len(events)
+
+    posts_1 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(BillboardPost.title.ilike('%' + session.get('search_term') + '%' )).all()
+    posts_2 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(BillboardPost.content.ilike('%' + session.get('search_term') + '%' )).all()
+    posts = set(posts_1 + posts_2)
+    session['num_posts'] = len(posts)
+
+    clubs_1 = Club.query.filter_by(school_id=session['user']['school_id']).filter(Club.name.ilike('%' + session.get('search_term') + '%' )).all()
+    clubs_2 = Club.query.filter_by(school_id=session['user']['school_id']).filter(Club.description.ilike('%' + session.get('search_term') + '%' )).all()
+    clubs = set(clubs_1 + clubs_2)
+    session['num_clubs'] = len(clubs)
+
+    students_1 = Student.query.filter_by(school_id=session['user']['school_id']).filter(Student.name.ilike('%' + session.get('search_term') + '%' )).all()
+    students_2 = Student.query.filter_by(school_id=session['user']['school_id']).filter(Student.id.ilike('%' + session.get('search_term') + '%' )).all()
+    students = set(students_1 + students_2)
+    session['num_students'] = len(students)
+
+    if len(products) == 0:
+            return redirect(url_for('search_page_event'))
+
+    return render_template('search/product_results.html', products=products)
+
+@app.route('/search/billboard')
+def search_page_billboard():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    posts_1 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(BillboardPost.title.ilike('%' + session.get('search_term') + '%' )).all()
+    posts_2 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(BillboardPost.content.ilike('%' + session.get('search_term') + '%' )).all()
+    posts = set(posts_1 + posts_2)
+    session['num_posts'] = len(posts)
+    if len(posts) == 0:
+        return redirect(url_for('search_page_billboard'))
+    return render_template('search/billboard_results.html', posts=posts)
+
+@app.route('/search/clubs')
+def search_page_club():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    clubs_1 = Club.query.filter_by(school_id=session['user']['school_id']).filter(Club.name.ilike('%' + session.get('search_term') + '%' )).all()
+    clubs_2 = Club.query.filter_by(school_id=session['user']['school_id']).filter(Club.description.ilike('%' + session.get('search_term') + '%' )).all()
+    clubs = set(clubs_1 + clubs_2)
+    session['num_clubs'] = len(clubs)
+    if len(clubs) == 0:
+        return redirect(url_for('search_page_users'))
+    return render_template('search/clubs_results.html', clubs=clubs)
+
+@app.route('/search/events')
+def search_page_event():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    events_1 = Event.query.filter_by(school_id=session['user']['school_id']).filter(Event.name.ilike('%' + session.get('search_term') + '%' )).all()
+    events_2 = Event.query.filter_by(school_id=session['user']['school_id']).filter(Event.description.ilike('%' + session.get('search_term') + '%' )).all()
+    events = set(events_1 + events_2)
+    session['num_events'] = len(events)
+    if len(events) == 0:
+        return redirect(url_for('search_page_club'))
+    return render_template('search/events_results.html', events=events)
+
+@app.route('/search/products')
+def search_page_product():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    products_1 = Product.query.filter(Product.name.ilike('%' + session.get('search_term') + '%' )).all()
+    products_2 = Product.query.filter(Product.description.ilike('%' + session.get('search_term') + '%' )).all()
+    products = set(products_1 + products_2)
+    session['num_products'] = len(products)
+    if len(products) == 0:
+        return redirect(url_for('search_page_event'))
+    return render_template('search/product_results.html', products=products)
+
+@app.route('/search/users')
+def search_page_users():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    students_1 = Student.query.filter_by(school_id=session['user']['school_id']).filter(Student.name.ilike('%' + session.get('search_term') + '%' )).all()
+    students_2 = Student.query.filter_by(school_id=session['user']['school_id']).filter(Student.id.ilike('%' + session.get('search_term') + '%' )).all()
+    students = set(students_1 + students_2)
+    session['num_students'] = len(students)
+    return render_template('search/users_results.html', students=students)
 # ----------------------------------------------------------------------------
 
 # Schools dropdown route

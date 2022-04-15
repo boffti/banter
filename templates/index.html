@@ -48,12 +48,12 @@ Banter | Home
                                 <h3>You are at {{ session.user.school.name }}</h3>
                             </div>
                             <div class="mt-3">
-                                <form>
+                                <form action="/search" method="post">
                                     <div class="d-flex flex-row justify-content-center align-items-center"
                                         style="gap: 12px;">
                                         <div class="input-icon">
                                             <input style="width: 500px" type="text" value="" class="form-control"
-                                                placeholder="Search…">
+                                                placeholder="Search…" name="search_term">
                                             <span class="input-icon-addon">
                                                 <!-- Download SVG icon from http://tabler-icons.io/i/search -->
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
