@@ -918,7 +918,7 @@ def search_page_billboard():
     posts = set(posts_1 + posts_2)
     session['num_posts'] = len(posts)
     if len(posts) == 0:
-        return redirect(url_for('search_page_billboard'))
+        return redirect(url_for('search_page_club'))
     return render_template('search/billboard_results.html', posts=posts)
 
 @app.route('/search/clubs')
@@ -942,7 +942,7 @@ def search_page_event():
     events = set(events_1 + events_2)
     session['num_events'] = len(events)
     if len(events) == 0:
-        return redirect(url_for('search_page_club'))
+        return redirect(url_for('search_page_billboard'))
     return render_template('search/events_results.html', events=events)
 
 @app.route('/search/products')
