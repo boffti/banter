@@ -178,6 +178,7 @@ Banter | Admin
                                     data-bs-target="#modal-adcamp">New</button>
                             </div>
                             <div class="list-group list-group-flush list-group-hoverable">
+                                {% if ads|length > 0 %}
                                 {% for ad in ads %}
                                 <div class="list-group-item">
                                     <div class="row align-items-center">
@@ -210,6 +211,22 @@ Banter | Admin
                                     </div>
                                 </div>
                                 {% endfor %}
+                                {% else %}
+                                <div class="list-group-item">
+                                    <div class="row align-items-center">
+                                        <div class="empty p-4 pb-0">
+                                            <div class="empty-img"><img
+                                                    src="{{ url_for('static', filename='images/ad.svg') }}"
+                                                    height="128" alt="">
+                                            </div>
+                                            <p class="empty-title">No Ad Campaigns yet</p>
+                                            <p class="empty-subtitle text-muted">
+                                                Create an ad campaign using the button above
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -253,8 +270,8 @@ Banter | Admin
                                     <div class="row align-items-center">
                                         <div class="empty p-4 pb-0">
                                             <div class="empty-img"><img
-                                                    src="{{ url_for('static', filename='images/broadcast.svg') }}" height="128"
-                                                    alt="">
+                                                    src="{{ url_for('static', filename='images/broadcast.svg') }}"
+                                                    height="128" alt="">
                                             </div>
                                             <p class="empty-title">No Broadcasts Yet</p>
                                             <p class="empty-subtitle text-muted">
