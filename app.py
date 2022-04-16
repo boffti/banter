@@ -837,6 +837,7 @@ def create_broadcast():
             return redirect(request.referrer)
         message = BroadcastMessage(title=data['title'], content=data['content'], school_id=session['user']['school_id'], created_at = datetime.now())
         message.insert()
+        get_notifications()
         flash('Broadcast created successfully!')
         return redirect(request.referrer)
     except Exception as e:
@@ -854,6 +855,7 @@ def delete_broadcast(broadcast_id):
             flash('You are not authorized to delete this broadcast!')
             return redirect(request.referrer)
         broadcast.delete()
+        get_notifications()
         flash('Broadcast deleted successfully!')
         return redirect(request.referrer)
     except Exception as e:
@@ -914,7 +916,6 @@ def search_page():
         print(e)
         flash('Something went wrong!')
         return redirect(request.referrer)
-
 
 @app.route('/search/billboard')
 def search_page_billboard():
