@@ -46,6 +46,7 @@ class Student(db.Model):
     user_roles = db.relationship('UserRoles', back_populates='student')
     clubs = db.relationship('Club', secondary='club_members', backref='clubs')
     products = db.relationship('Product', back_populates='seller')
+    payment_methods = db.relationship('PaymentMethod', back_populates='student')
 
     def insert(self):
         db.session.add(self)
@@ -521,4 +522,35 @@ class BroadcastMessage(db.Model):
             'content': self.content,
             'school_id': self.school_id,
             'created_at': arrow.Arrow.fromdatetime(self.created_at).humanize()
+        }
+
+class PaymentMethod(db.Model):
+    __tablename__ = 'payment_methods'
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.String, db.ForeignKey('student.id'))
+    card_number = db.Column(db.String)
+    name_on_card = db.Column(db.String)
+    valid_through = db.Column(db.DateTime)
+    cvv = db.Column(db.Integer)
+    zip_code = db.Column(db.Integer)
+
+    student = db.relationship('Student', back_populates='payment_methods')
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'school_id': self.school_id,
         }

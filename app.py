@@ -13,7 +13,8 @@ from datetime import datetime
 import math
 
 from models import (Admin, BillboardPost, Club, ClubPost, Event, ProductCategory, School,
-                    Student, UserRoles, ClubMembers, Product, Order, Advertisement, BroadcastMessage, db_init)
+                    Student, UserRoles, ClubMembers, Product, Order, Advertisement, BroadcastMessage, 
+                    PaymentMethod, db_init)
 
 load_dotenv()
 
@@ -105,6 +106,34 @@ def is_member(value):
     if ClubMembers.query.filter_by(student_id=session['user']['id'], club_id=value).first():
         return True
     return False
+
+@app.template_filter('card_type')
+def card_type(value):
+    number = str(value)
+    cardtype = ""
+    if len(number) == 15:
+        if number[:2] == "34" or number[:2] == "37":
+            cardtype = "americanexpress"
+    if len(number) == 13:
+        if number[:1] == "4":
+            cardtype = "visa"
+    if len(number) == 16:
+        if number[:4] == "6011":
+            cardtype = "discover"
+        if int(number[:2]) >= 51 and int(number[:2]) <= 55:
+            cardtype = "mastercard"
+        if number[:1] == "4":
+            cardtype = "visa"
+        if number[:4] == "3528" or number[:4] == "3529":
+            cardtype = "jcb"
+        if int(number[:3]) >= 353 and int(number[:3]) <= 359:
+            cardtype = "jcb"
+    if len(number) == 14:
+        if number[:2] == "36":
+            cardtype = "dinersclub"
+        if int(number[:3]) >= 300 and int(number[:3]) <= 305:
+            cardtype = "dinersclub"
+    return cardtype
 
 @app.template_filter('humanize')
 def humanize(value):
@@ -512,7 +541,8 @@ def cart_page():
     if len(session.get('cart')) == 0:
         flash('Your cart is empty!')
         return redirect(url_for('get_shop_page'))
-    return render_template('/shop/cart.html')
+    student = Student.query.filter_by(id=session['user']['id']).first()
+    return render_template('/shop/cart.html', student=student)
 
 @app.route('/add-to-cart/<product_id>')
 def add_to_cart(product_id):
