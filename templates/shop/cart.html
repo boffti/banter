@@ -58,8 +58,8 @@ Banter | Cart
                                                 data-bs-placement="left"
                                                 title="Product Category"
                                                 style="display: block;">{{ product.category.name }}</a> -->
-                                            <a href="/student/{{ product.seller.id }}" class="text-muted" data-bs-toggle="tooltip" data-bs-placement="right"
-                                            title="Seller">
+                                            <a href="/student/{{ product.seller.id }}" class="text-muted"
+                                                data-bs-toggle="tooltip" data-bs-placement="right" title="Seller">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                     class="icon icon-tabler icon-tabler-packge-export me-1" width="24"
                                                     height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -141,7 +141,8 @@ Banter | Cart
                                                 <span class="form-selectgroup-check"></span>
                                             </div>
                                             <div>
-                                                <span class="payment payment-provider-{{ card.card_number|card_type }} payment-xs me-2"></span>
+                                                <span
+                                                    class="payment payment-provider-{{ card.card_number|card_type }} payment-xs me-2"></span>
                                                 ending in <strong>{{ card.card_number[-1:-5:-1] }}</strong>
                                             </div>
                                         </div>
@@ -166,7 +167,8 @@ Banter | Cart
                         <div class="card-footer">
                             <div class="d-flex">
                                 <!-- <a href="#" class="btn btn-link">Cancel</a> -->
-                                <a href="#" class="btn btn-pill ms-auto">
+                                <a href="#" class="btn btn-pill ms-auto" data-bs-toggle="modal"
+                                    data-bs-target="#modal-payment-method">
                                     Add new payment method
                                 </a>
                             </div>
@@ -210,52 +212,83 @@ Banter | Cart
         </div>
     </div>
 
-    <!-- Create Club Modal -->
-    <div class="modal modal-blur fade" id="modal-product" tabindex="-1" style="display: none;" aria-hidden="true">
+    <!-- Add Card Modal -->
+    <div class="modal modal-blur fade" id="modal-payment-method" tabindex="-1" style="display: none;"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <form class="modal-content" action="/add-product" method="post" enctype="multipart/form-data">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add new Product</h5>
+                    <h5 class="modal-title">Add New Payment Method</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-label">Card number</div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-text p-0 px-1">
+                                    <span id="card_icon" class="payment payment-xs"></span>
+                                </div>
+                                <input id="card_number" type="text" name="input-mask" class="form-control"
+                                    data-mask="0000 0000 0000 0000" data-mask-visible="true" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <div class="form-label">Name on Card</div>
+                                <input type="text" class="form-control h-100">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="mb-3">
+                                <label class="form-label">Expiration date</label>
+                                <div class="row g-2">
+                                    <div class="col">
+                                        <select class="form-select">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <select class="form-select">
+                                            <option value="2020">2020</option>
+                                            <option value="2021">2021</option>
+                                            <option value="2022">2022</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2024">2024</option>
+                                            <option value="2025">2025</option>
+                                            <option value="2026">2026</option>
+                                            <option value="2027">2027</option>
+                                            <option value="2028">2028</option>
+                                            <option value="2029">2029</option>
+                                            <option value="2030">2030</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <div class="form-label">CVV</div>
+                                <input type="number" class="form-control">
+                            </div>
+                        </div>
+                    </div>
                     <div class="mb-3">
-                        <label class="form-label">Name</label>
-                        <input type="text" class="form-control" name="name" placeholder="Type here...">
-                    </div>
-                    <div class="col-lg-12">
-                        <label class="form-label">Description</label>
-                        <textarea name="description" class="form-control" rows="3"
-                            placeholder="Type here..."></textarea>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6 mt-3">
-                            <label class="form-label">Price</label>
-                            <div class="input-group mb-2">
-                                <span class="input-group-text">
-                                    $
-                                </span>
-                                <input name="price" type="text" class="form-control" placeholder="price"
-                                    autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mt-3">
-                            <label class="form-label">Category</label>
-                            <div class="d-flex flex-row">
-                                <select name="category" class="form-select">
-                                    <option value="0" disabled selected>Select one</option>
-                                    {% for cat in categories %}
-                                    <option value="{{ cat.id }}">{{ cat.name }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="form-label">Product Image</div>
-                        <input name="file" type="file" class="form-control">
+                        <div class="form-label">Zip Code</div>
+                        <input type="text" class="form-control">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -271,7 +304,7 @@ Banter | Cart
                             <line x1="12" y1="5" x2="12" y2="19"></line>
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                         </svg>
-                        Add Product
+                        Add Payment Method
                     </button>
                 </div>
             </form>
