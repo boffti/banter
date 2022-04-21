@@ -4,7 +4,6 @@ jQuery(function ($) {
         var number = $(this).val();
         var number = number.replace(/\D/g, '');
         var number = number.replace('_', '');
-        console.log(getCardType(number));
         $("#card_icon").addClass("payment-provider-" + getCardType(number));
     });
 
