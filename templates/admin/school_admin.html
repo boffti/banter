@@ -43,7 +43,7 @@ Banter | Admin
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
-                                <div class="subheader">Sales</div>
+                                <div class="subheader">Revenue</div>
                                 <div class="ms-auto lh-1">
                                     <div class="dropdown">
                                         <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown"
@@ -56,7 +56,7 @@ Banter | Admin
                                     </div>
                                 </div>
                             </div>
-                            <div class="h1 mb-3">27361</div>
+                            <div class="h1 mb-3">$564</div>
                         </div>
                     </div>
                 </div>
@@ -77,7 +77,7 @@ Banter | Admin
                                     </div>
                                 </div>
                             </div>
-                            <div class="h1 mb-3">553</div>
+                            <div class="h1 mb-3">{{ students|length }}</div>
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@ Banter | Admin
                                     </div>
                                 </div>
                             </div>
-                            <div class="h1 mb-3">1364</div>
+                            <div class="h1 mb-3">{{ posts|length }}</div>
                         </div>
                     </div>
                 </div>
@@ -119,7 +119,7 @@ Banter | Admin
                                     </div>
                                 </div>
                             </div>
-                            <div class="h1 mb-3">230</div>
+                            <div class="h1 mb-3">{{ events|length }}</div>
                         </div>
                     </div>
                 </div>
@@ -130,7 +130,7 @@ Banter | Admin
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Most Active Students</h3>
+                                <h3 class="card-title">Students</h3>
                             </div>
                             <div class="card-body">
                                 <div class="row g-3">
@@ -139,13 +139,13 @@ Banter | Admin
                                     <div class="col-6">
                                         <div class="row g-3 align-items-center">
                                             <a href="#" class="col-auto">
-                                                <span class="avatar"
-                                                    style="background-image: url({{ student.dp }})">
+                                                <span class="avatar" style="background-image: url({{ student.dp }})">
                                                     <!-- <span class="badge bg-red"></span></span> -->
                                             </a>
                                             <div class="col text-truncate">
-                                                <a href="/student/{{ student.id }}" class="text-reset d-block text-truncate">{{ student.name }}</a>
-                                                <div class="text-muted text-truncate mt-n1">2 days ago</div>
+                                                <a href="/student/{{ student.id }}"
+                                                    class="text-reset d-block text-truncate">{{ student.name }}</a>
+                                                <!-- <div class="text-muted text-truncate mt-n1">2 days ago</div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -154,8 +154,8 @@ Banter | Admin
                                     <div class="row g-3 align-items-center">
                                         <div class="empty p-0">
                                             <div class="empty-img"><img
-                                                    src="{{ url_for('static', filename='images/student.svg') }}" height="128"
-                                                    alt="">
+                                                    src="{{ url_for('static', filename='images/student.svg') }}"
+                                                    height="128" alt="">
                                             </div>
                                             <p class="empty-title">No Students</p>
                                             <p class="empty-subtitle text-muted">
@@ -174,41 +174,113 @@ Banter | Admin
                         <div class="card">
                             <div class="card-header d-flex flex-row justify-content-between">
                                 <h3 class="card-title">Ad Campaigns</h3>
-                                <button class="btn btn-outline-primary">New</button>
+                                <button class="btn btn-outline-primary" data-bs-toggle="modal"
+                                    data-bs-target="#modal-adcamp">New</button>
                             </div>
                             <div class="list-group list-group-flush list-group-hoverable">
+                                {% if ads|length > 0 %}
+                                {% for ad in ads %}
                                 <div class="list-group-item">
                                     <div class="row align-items-center">
                                         <div class="col-auto">
                                             <a href="#">
                                                 <span class="avatar"
-                                                    style="background-image: url(./static/avatars/000m.jpg)"></span>
+                                                    style="background-image: url({{ ad.img_url }})"></span>
                                             </a>
                                         </div>
                                         <div class="col">
-                                            <a href="#" class="text-reset d-block">Ad Title</a>
-                                            <div class="d-block text-muted mt-n1">Lorem ipsum dolor sit
-                                                amet consectetur adipisicing elit. Voluptate similique laborum, nostrum
-                                                fugiat facilis quidem sapiente veritatis, eligendi odit tenetur
-                                                voluptatum maiores reiciendis et vel ipsam exercitationem sequi!
-                                                Sapiente, molestiae.</div>
+                                            <a href="{{ ad.ext_link }}" class="text-reset d-block">{{ ad.title }}</a>
+                                            <div class="d-block text-muted mt-n1">{{ ad.description }}</div>
                                         </div>
                                         <div class="col-auto">
-                                            <a href="#" class="list-group-item-actions">
+                                            <a href="/delete-ad/{{ ad.id }}" class="list-group-item-actions">
                                                 <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted"
-                                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                    stroke="currentColor" fill="none" stroke-linecap="round"
-                                                    stroke-linejoin="round">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="icon icon-tabler icon-tabler-trash" width="24" height="24"
+                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                    <path
-                                                        d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
-                                                    </path>
+                                                    <line x1="4" y1="7" x2="20" y2="7"></line>
+                                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
                                                 </svg>
                                             </a>
                                         </div>
                                     </div>
                                 </div>
+                                {% endfor %}
+                                {% else %}
+                                <div class="list-group-item">
+                                    <div class="row align-items-center">
+                                        <div class="empty p-4 pb-0">
+                                            <div class="empty-img"><img
+                                                    src="{{ url_for('static', filename='images/ad.svg') }}"
+                                                    height="128" alt="">
+                                            </div>
+                                            <p class="empty-title">No Ad Campaigns yet</p>
+                                            <p class="empty-subtitle text-muted">
+                                                Create an ad campaign using the button above
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <div class="card">
+                            <div class="card-header d-flex flex-row justify-content-between">
+                                <h3 class="card-title">Broadcast</h3>
+                                <button class="btn btn-outline-primary" data-bs-toggle="modal"
+                                    data-bs-target="#modal-broadcast">New</button>
+                            </div>
+                            <div class="list-group list-group-flush list-group-hoverable">
+                                {% if broadcast_messages|length > 0 %}
+                                {% for msg in broadcast_messages %}
+                                <div class="list-group-item">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <a href="#" class="text-reset d-block">{{ msg.title }}</a>
+                                            <div class="d-block text-muted mt-n1">{{ msg.content }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a href="/delete-broadcast/{{ msg.id }}" class="list-group-item-actions">
+                                                <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="icon icon-tabler icon-tabler-trash" width="24" height="24"
+                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <line x1="4" y1="7" x2="20" y2="7"></line>
+                                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% else %}
+                                <div class="list-group-item">
+                                    <div class="row align-items-center">
+                                        <div class="empty p-4 pb-0">
+                                            <div class="empty-img"><img
+                                                    src="{{ url_for('static', filename='images/broadcast.svg') }}"
+                                                    height="128" alt="">
+                                            </div>
+                                            <p class="empty-title">No Broadcasts Yet</p>
+                                            <p class="empty-subtitle text-muted">
+                                                You can send a broadcast message to the students using the button above.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -217,11 +289,96 @@ Banter | Admin
 
 
 
-
         </div>
     </div>
 </div>
+
+<!-- Create Ad Modal -->
+<div class="modal modal-blur fade" id="modal-adcamp" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <form class="modal-content" action="/create-ad" method="post" enctype="multipart/form-data">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Ad Campaign</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-control" name="title" placeholder="Type here...">
+                </div>
+                <div class="col-lg-12">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" class="form-control" rows="3" placeholder="Type here..."></textarea>
+                </div>
+                <div class="mt-3">
+                    <label class="form-label">External Redirect Link</label>
+                    <input type="text" class="form-control" name="ext_link" placeholder="Type here...">
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-label">Ad Image</div>
+                    <input name="file" type="file" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Create Campaign
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
+
+<!-- Create Broadcast Modal -->
+<div class="modal modal-blur fade" id="modal-broadcast" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <form class="modal-content" action="/create-broadcast" method="post" enctype="multipart/form-data">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Broadcast</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-control" name="title" placeholder="Type here...">
+                </div>
+                <div class="col-lg-12">
+                    <label class="form-label">Message</label>
+                    <textarea name="content" class="form-control" rows="3" placeholder="Type here..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Send Broadcast
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}

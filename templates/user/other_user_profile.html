@@ -250,7 +250,7 @@ Banter | {{ student.name }}
                     </div>
                     <div class="card-body">
                         <div class="row g-3">
-                            {% if student.products|length > 0 %}
+                            {% if not student.products|get_sold_count %}
                             {% for product in student.products %}
                             {% if not product.purchased %}
                             <div class="col-lg-4 col-12 d-flex justify-content-between align-items-center list-item">

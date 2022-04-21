@@ -71,6 +71,24 @@ Banter | Clubs
             <div class="grid">
                 {% if clubs|length > 0 %}
                 {% for club in clubs %}
+                {% if club.tag =='ad' %}
+                <div class="col-lg-4 col-md-6 col-12 grid-item p-2">
+                    <div class="card card-link card-link-pop">
+                        <div class="card-img-top img-responsive img-responsive-21x9"
+                            style="background-image: url({{ club.img_url }})">
+                        </div>
+                        <div class="ribbon bg-blue">Sponsored</div>
+                        <div class="card-body">
+                            <h3 class="card-title">
+                                <a href="{{ club.ext_link }}" target="_blank">
+                                    {{ club.title }}
+                                </a>
+                            </h3>
+                            <p class="text-muted text-truncate">{{ club.description }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
                 <div class="col-lg-4 col-md-6 col-12 grid-item p-2">
                     <div class="card card-link card-link-pop">
                         <div class="card-img-top img-responsive img-responsive-21x9"
@@ -86,6 +104,7 @@ Banter | Clubs
                         </div>
                     </div>
                 </div>
+                {% endif %}
                 {% endfor %}
                 {% else %}
                 <div class="col-lg-12 grid-item px-2 py-2">

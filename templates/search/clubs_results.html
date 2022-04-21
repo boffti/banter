@@ -1,0 +1,63 @@
+{% extends 'search/search_base.html' %}
+{% set result = "club" %}
+{% block search_content %}
+<div class="row row-cards">
+    {% if clubs|length > 0 %}
+    {% for club in clubs %}
+    {% if club.tag =='ad' %}
+    <div class="col-lg-4 col-md-6 col-12 grid-item p-2">
+        <div class="card card-link card-link-pop">
+            <div class="card-img-top img-responsive img-responsive-21x9"
+                style="background-image: url({{ club.img_url }})">
+            </div>
+            <div class="ribbon bg-blue">Sponsored</div>
+            <div class="card-body">
+                <h3 class="card-title">
+                    <a href="{{ club.ext_link }}" target="_blank">
+                        {{ club.title }}
+                    </a>
+                </h3>
+                <p class="text-muted text-truncate">{{ club.description }}</p>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-lg-4 col-md-6 col-12">
+        <div class="card card-link card-link-pop">
+            <div class="card-img-top img-responsive img-responsive-21x9"
+                style="background-image: url({{ club.img_url }})">
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">
+                    <a href="/clubs/{{ club.id }}">
+                        {{ club.name }}
+                    </a>
+                </h3>
+                <p class="text-muted text-truncate">{{ club.description }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    <div class="col-lg-12 grid-item px-2 py-2">
+        <div class="row align-items-center">
+            <div class="empty p-4">
+                <div class="empty-img"><img src="{{ url_for('static', filename='images/empty_3.svg') }}" height="128"
+                        alt="">
+                </div>
+                <p class="empty-title">No clubs have been added yet</p>
+                <p class="empty-subtitle text-muted">
+                    Start your own club today!
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/litepicker/dist/bundle.js"></script>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}
