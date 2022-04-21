@@ -605,6 +605,26 @@ def add_product():
         flash('Something went wrong!')
         return redirect(request.referrer)
 
+@app.route('/add-payment', methods=['POST'])
+def add_payment():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        data = request.form.to_dict()
+        if data['card_number'] == '' or data['name_on_card'] == '' or data['cvv'] == '' or data['zip_code'] == '':
+            flash('Please fill in all the fields.')
+            return redirect(request.referrer)
+        date_str = f'{data["exp_month"]}/01/{data["exp_year"]}'
+        expiry_date = datetime.strptime(date_str, '%m/%d/%Y')
+        payment = PaymentMethod(student_id=session['user']['id'], card_number=data['card_number'].replace(" ", ""), name_on_card=data['name_on_card'], cvv=data['cvv'], zip_code=data['zip_code'], valid_through=expiry_date)
+        payment.insert()
+        flash('Payment created successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
 @app.route('/checkout')
 def checkout():
     if 'user' not in session:
