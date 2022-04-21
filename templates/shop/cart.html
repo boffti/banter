@@ -143,7 +143,7 @@ Banter | Cart
                                             <div>
                                                 <span
                                                     class="payment payment-provider-{{ card.card_number|card_type }} payment-xs me-2"></span>
-                                                ending in <strong>{{ card.card_number[-1:-5:-1] }}</strong>
+                                                ending in <strong>{{ card.card_number[-4:] }}</strong>
                                             </div>
                                         </div>
                                     </label>

@@ -191,7 +191,7 @@ Banter | Profile
                                         class="payment payment-provider-{{ card.card_number|card_type }} payment me-2"></span>
                                 </div>
                                 <div class="col">
-                                    ending in <strong>{{ card.card_number[-1:-5:-1] }}</strong>
+                                    ending in <strong>{{ card.card_number[-4:] }}</strong>
                                 </div>
                                 <div class="col-auto">
                                     <a href="/delete-payment/{{ card.id }}" class="list-group-item-actions">
