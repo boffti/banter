@@ -61,7 +61,9 @@ Banter | Profile
                 <div class="card">
                     <div class="card-header d-flex flex-row justify-content-between">
                         <h3 class="card-title">My Deets</h3>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-edit-profile">
+                        <a class="d-flex flex-row align-items-center" href="#" data-bs-toggle="modal"
+                            data-bs-target="#modal-edit-profile">
+                            <span class="me-1">Edit Profile</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24"
                                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                 stroke-linecap="round" stroke-linejoin="round">
@@ -165,6 +167,19 @@ Banter | Profile
                 <div class="card">
                     <div class="card-header d-flex flex-row justify-content-between">
                         <h3 class="card-title">Payment Methods</h3>
+                        <a class="d-flex flex-row align-items-center" href="#" data-bs-toggle="modal"
+                            data-bs-target="#modal-payment-method">
+                            <span class="me-1">Add New</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-credit-card"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <rect x="3" y="5" width="18" height="14" rx="3"></rect>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                                <line x1="7" y1="15" x2="7.01" y2="15"></line>
+                                <line x1="11" y1="15" x2="13" y2="15"></line>
+                            </svg>
+                        </a>
                     </div>
                     <div class="list-group list-group-flush list-group-hoverable">
                         {% if student.payment_methods|length > 0 %}
@@ -720,6 +735,102 @@ Banter | Profile
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
                     Update Profile
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Add Card Modal -->
+<div class="modal modal-blur fade" id="modal-payment-method" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <form class="modal-content" action="/add-payment" method="post">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Payment Method</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-label">Card number</div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-text p-0 px-1">
+                                <span id="card_icon" class="payment payment-xs"></span>
+                            </div>
+                            <input id="card_number" type="text" name="card_number" class="form-control"
+                                data-mask="0000 0000 0000 0000" data-mask-visible="true" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <div class="form-label">Name on Card</div>
+                            <input name="name_on_card" type="text" class="form-control h-100">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="mb-3">
+                            <label class="form-label">Expiration date</label>
+                            <div class="row g-2">
+                                <div class="col">
+                                    <select name="exp_month" class="form-select">
+                                        <option value="01">1</option>
+                                        <option value="02">2</option>
+                                        <option value="03">3</option>
+                                        <option value="04">4</option>
+                                        <option value="05">5</option>
+                                        <option value="06">6</option>
+                                        <option value="07">7</option>
+                                        <option value="08">8</option>
+                                        <option value="09">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <select name="exp_year" class="form-select">
+                                        <option value="2022">2022</option>
+                                        <option value="2023">2023</option>
+                                        <option value="2024">2024</option>
+                                        <option value="2025">2025</option>
+                                        <option value="2026">2026</option>
+                                        <option value="2027">2027</option>
+                                        <option value="2028">2028</option>
+                                        <option value="2029">2029</option>
+                                        <option value="2030">2030</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <div class="form-label">CVV</div>
+                            <input data-mask="000" name="cvv" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="form-label">Zip Code</div>
+                    <input name="zip_code" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Add Payment Method
                 </button>
             </div>
         </form>
