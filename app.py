@@ -625,6 +625,23 @@ def add_payment():
         flash('Something went wrong!')
         return redirect(request.referrer)
 
+@app.route('/delete-payment/<int:payment_id>')
+def delete_paymenr(payment_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        payment = PaymentMethod.query.filter_by(id=payment_id).first()
+        if payment.student_id != session['user']['id']:
+            flash('You cannot delete this payment!')
+            return redirect(request.referrer)
+        payment.delete()
+        flash('Payment deleted successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
 @app.route('/checkout')
 def checkout():
     if 'user' not in session:
