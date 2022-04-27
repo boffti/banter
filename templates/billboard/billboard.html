@@ -26,21 +26,46 @@ Banter | Billboard
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">
-                        Billboard
+                        Billboard {% if 'billboard_category' in session %}{{ session.billboard_category }}{% endif %}
                     </h2>
                     <div class="text-muted mt-1">Here's what the students in your school are saying</div>
                 </div>
                 <!-- Page title actions -->
                 <div class="col-12 col-md-auto ms-auto d-print-none">
                     <div class="d-flex">
-                        <div class="me-3">
-                            <select class="form-select">
-                                <option disabled selected>Categories</option>
-                                <option value="2">News</option>
-                                <option value="3">Job</option>
-                                <option value="3">Room-mate</option>
-                                <option value="3">General</option>
-                            </select>
+                        <a href="#" class="card card-link nav-link d-flex lh-1 text-reset p-2 me-3"
+                            data-bs-toggle="dropdown" aria-label="Open user menu" aria-expanded="false">
+                            <div class="d-flex flex-row align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-books me-2 text-blue"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <rect x="5" y="4" width="4" height="16" rx="1"></rect>
+                                    <rect x="9" y="4" width="4" height="16" rx="1"></rect>
+                                    <path d="M5 8h4"></path>
+                                    <path d="M9 16h4"></path>
+                                    <g transform="rotate(-13 27.054 -55.827)">
+                                        <rect width="4" height="16" rx="1"></rect>
+                                        <path d="M0 4h4"></path>
+                                        <path d="M0 12h4"></path>
+                                    </g>
+                                </svg>
+                                <div class="text-muted">Categories</div>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="icon icon-tabler icon-tabler-chevron-down ms-2 text-muted" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <!-- <a href="#" class="dropdown-item">Set status</a> -->
+                            <a href="/billboard/category/0" class="dropdown-item">All</a>
+                            {% for cat in categories %}
+                            <a href="/billboard/category/{{ cat.id }}" class="dropdown-item">{{ cat.name }}</a>
+                            {% endfor %}
                         </div>
                         <div class="me-3">
                             <div class="input-icon">

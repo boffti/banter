@@ -14,7 +14,7 @@ import math
 
 from models import (Admin, BillboardPost, Club, ClubPost, Event, ProductCategory, School,
                     Student, UserRoles, ClubMembers, Product, Order, Advertisement, BroadcastMessage, 
-                    PaymentMethod, db_init)
+                    PaymentMethod, BillboardCategories, db_init)
 
 load_dotenv()
 
@@ -377,8 +377,11 @@ def update_profile():
 def billboard_page():
     if 'user' not in session:
         return redirect(url_for('login_page'))
+    if 'billboard_category' in session:
+        session.pop('billboard_category')
     billboard_posts = get_billboard_posts('all')
-    return render_template('billboard/billboard.html', billboard=billboard_posts)
+    categories = BillboardCategories.query.all()
+    return render_template('billboard/billboard.html', billboard=billboard_posts, categories=categories)
 
 @app.route('/billboard/post', methods=['POST'])
 def add_billboard_post():
@@ -386,10 +389,22 @@ def add_billboard_post():
     return redirect(request.referrer)
 
 
-@app.route('/billboard/post/<post_id>', methods=['DELETE'])
+@app.route('/billboard/post/delete/<post_id>', methods=['DELETE'])
 def delete_billboard_post(post_id):
     # TODO - Delete billboard post
     return redirect(request.referrer)
+
+@app.route('/billboard/category/<int:category_id>')
+def get_billboard_by_category(category_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    if category_id == 0:
+        return redirect(url_for('billboard_page'))
+    session['billboard_category'] = BillboardCategories.query.filter_by(id=category_id).first().name
+    billboard_posts = BillboardPost.query.filter_by(
+    school_id=session['user']['school_id']).filter_by(tag_id=category_id).order_by(BillboardPost.created_at.desc()).all()
+    categories = BillboardCategories.query.all()
+    return render_template('billboard/billboard.html', billboard=billboard_posts, categories=categories)
 # ------------------------------------------------------------------------------
 
 # Club Routes ----------------------------------------------------------------------
