@@ -1011,8 +1011,94 @@ def contact():
 def admin_page():
     schools = School.query.all()
     user_roles = UserRoles.query.filter_by(role_id=2).all()
-    return render_template('admin/admin.html', schools=schools, school_admins=user_roles)
+    queries=Contact.query.all()
+    students = Student.query.all()
+    posts = BillboardPost.query.all()
+    events = Event.query.all()
+    ads = Advertisement.query.all()
+    broadcast_messages = BroadcastMessage.query.all()
+    return render_template('admin/admin.html', schools=schools, school_admins=user_roles, queries=queries, students=students, posts=posts, events=events, ads=ads, broadcast_messages=broadcast_messages)
 
+@app.route('/admin/delete-query/<int:query_id>')
+def delete_query(query_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        query = Contact.query.filter_by(id=query_id).first()
+        query.delete()
+        flash('Query deleted successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
+@app.route('/admin/add-school', methods=['POST'])
+def add_schoor():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    data = request.form.to_dict()
+    if data['name'] == '' or data['state'] == '' or data['city'] == '' or data['country'] == '':
+        flash('Please fill in all the fields.')
+        return redirect(request.referrer)
+    try:
+        school = School(name=data['name'], state=data['state'], city=data['city'], country=data['country'])
+        school.insert()
+        flash('School added successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
+@app.route('/admin/add-school-admin', methods=['POST'])
+def add_school_admin():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    data = request.form.to_dict()
+    if data['student_id'] == '':
+        flash('Please fill in all the fields.')
+        return redirect(request.referrer)
+    try:
+        if Student.query.filter_by(id=data['student_id']).count() == 0:
+            flash('No students in this school!')
+            return redirect(request.referrer)
+        school_admin = UserRoles(student_id=data['student_id'], role_id=2)
+        school_admin.insert()
+        flash('School admin added successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
+@app.route('/admin/delete-school-admin/<user_id>')
+def delete_school_admin(user_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        school_admin = UserRoles.query.filter_by(student_id=user_id, role_id=2).first()
+        school_admin.delete()
+        flash('School admin deleted successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
+@app.route('/admin/delete-school/<int:school_id>')
+def delete_school(school_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        school = School.query.filter_by(id=school_id).first()
+        school.delete()
+        flash('School deleted successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 
 @app.route('/school_admin')
 @requires_auth

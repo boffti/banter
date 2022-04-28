@@ -563,8 +563,6 @@ class Contact(db.Model):
     long_desc = db.Column(db.String)
     student_id = db.Column(db.String, db.ForeignKey('student.id'))
 
-    
-
     def insert(self):
         db.session.add(self)
         db.session.commit()
