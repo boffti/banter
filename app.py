@@ -85,10 +85,10 @@ def get_clubs(n=6, no_ad=False):
 def get_billboard_posts(n=6):
     if n == 'all':
         posts = BillboardPost.query.filter_by(
-            school_id=session['user']['school_id']).all()
+            school_id=session['user']['school_id']).order_by(BillboardPost.created_at.desc()).all()
     else:
         posts = BillboardPost.query.filter_by(
-            school_id=session['user']['school_id']).limit(n).all()
+            school_id=session['user']['school_id']).order_by(BillboardPost.created_at.desc()).limit(n).all()
     posts = [p.format() for p in posts]
     return inject_ads(posts)
 
