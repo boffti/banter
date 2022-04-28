@@ -273,7 +273,7 @@
                 <div class="col-lg-auto ms-lg-auto">
                     <ul class="list-inline list-inline-dots mb-0">
                         <li class="list-inline-item"><a href="/about" class="link-secondary">About</a></li>
-                        <li class="list-inline-item"><a href="#" class="link-secondary">Contact</a></li>
+                        <li class="list-inline-item"><a href="#" class="link-secondary" data-bs-toggle="modal" data-bs-target="#modal-contact">Contact</a></li>
                         <li class="list-inline-item"><a href="/faq" class="link-secondary">FAQ</a></li>
                         <!-- <li class="list-inline-item"><a href="#" target="_blank"
                                 class="link-secondary" rel="noopener">Source code</a></li> -->
@@ -303,6 +303,45 @@
                         </li>
                     </ul>
                 </div>
+            </div>
+        </div>
+
+        <div class="modal modal-blur fade" id="modal-contact" tabindex="-1" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <form action="/contact" method="post" class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Submit Your Query</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="text" class="form-control" name="email" placeholder="Type here...">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Subject</label>
+                            <input type="text" class="form-control" name="subject" placeholder="Type here...">
+                        </div>
+                        <div class="col-lg-12">
+                            <div>
+                                <label class="form-label"> Query</label>
+                                <textarea name="query" class="form-control" rows="3"
+                                    placeholder="Type here..."></textarea>
+                            </div>
+                        </div>
+    
+                    </div>
+                    
+                    
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                            Submit Query
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </footer>

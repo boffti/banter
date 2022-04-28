@@ -14,7 +14,7 @@ import math
 
 from models import (Admin, BillboardPost, Club, ClubPost, Event, ProductCategory, School,
                     Student, UserRoles, ClubMembers, Product, Order, Advertisement, BroadcastMessage, 
-                    PaymentMethod, db_init)
+                    PaymentMethod, BillboardCategories, db_init, Contact)
 
 load_dotenv()
 
@@ -25,6 +25,7 @@ db = db_init(app)
 INIT_DP = "https://res.cloudinary.com/dtvhyzofv/image/upload/v1647144583/banter/dp/user_awjxuf.png"
 CLUB_IMG_PATH = 'banter/clubs/'
 PRODUCT_IMG_PATH = 'banter/product/'
+BILLBOARD_IMG_PATH = 'banter/billboard/'
 AD_IMG_PATH = 'banter/advertisement/'
 DP_IMG_PATH = 'banter/dp/'
 ALLOWED_TYPES = ['image/jpeg', 'image/png']
@@ -36,12 +37,17 @@ cloudinary.config(
 )
 
 # UTIL Functions --------------------------------------------------------------
+
+
 def get_ads():
-    ads = Advertisement.query.filter_by(school_id=session['user']['school_id']).all()
+    ads = Advertisement.query.filter_by(
+        school_id=session['user']['school_id']).all()
     ads = [a.format() for a in ads]
     return ads
 
 # Inject Ads Algorithm
+
+
 def inject_ads(data):
     if len(data) == 0:
         return data
@@ -54,29 +60,38 @@ def inject_ads(data):
         k, m = k+1, m+1
     return data
 
+
 def get_notifications():
-    notifications = BroadcastMessage.query.filter_by(school_id=session['user']['school_id']).all()
+    notifications = BroadcastMessage.query.filter_by(
+        school_id=session['user']['school_id']).all()
     notifications = [n.format() for n in notifications]
     session['broadcast_messages'] = notifications
 
+
 def get_clubs(n=6, no_ad=False):
     if no_ad:
-        return  Club.query.filter_by(school_id=session['user']['school_id']).all()
+        return Club.query.filter_by(school_id=session['user']['school_id']).all()
     else:
         if n == 'all':
-            clubs = Club.query.filter_by(school_id=session['user']['school_id']).all()
+            clubs = Club.query.filter_by(
+                school_id=session['user']['school_id']).all()
         else:
-            clubs = Club.query.filter_by(school_id=session['user']['school_id']).limit(n).all()
+            clubs = Club.query.filter_by(
+                school_id=session['user']['school_id']).limit(n).all()
         clubs = [p.format() for p in clubs]
         return inject_ads(clubs)
 
+
 def get_billboard_posts(n=6):
     if n == 'all':
-        posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).all()
+        posts = BillboardPost.query.filter_by(
+            school_id=session['user']['school_id']).all()
     else:
-        posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).limit(n).all()
+        posts = BillboardPost.query.filter_by(
+            school_id=session['user']['school_id']).limit(n).all()
     posts = [p.format() for p in posts]
     return inject_ads(posts)
+
 
 def get_events():
     events = Event.query.filter_by(
@@ -86,6 +101,7 @@ def get_events():
         e["date"] = e.get('date_time').strftime("%b %d")
         e["time"] = e.get('date_time').strftime("%I:%M %p")
     return events
+
 
 def pop_search():
     if 'search_term' in session:
@@ -101,11 +117,13 @@ def pop_search():
     if 'num_posts' in session:
         session.pop('num_posts')
 
+
 @app.template_filter('is_member')
 def is_member(value):
     if ClubMembers.query.filter_by(student_id=session['user']['id'], club_id=value).first():
         return True
     return False
+
 
 @app.template_filter('card_type')
 def card_type(value):
@@ -135,13 +153,16 @@ def card_type(value):
             cardtype = "dinersclub"
     return cardtype
 
+
 @app.template_filter('humanize')
 def humanize(value):
     return arrow.Arrow.fromdatetime(value).humanize()
 
+
 @app.template_filter('get_product')
 def get_product(value):
     return Product.query.filter_by(id=value).first()
+
 
 @app.template_filter('get_total')
 def get_total(value):
@@ -151,10 +172,12 @@ def get_total(value):
         total += product.price
     return total
 
+
 @app.template_filter('get_sale_count')
 def get_sale_count(value):
     order = Order.query.filter_by(seller_id=value.get('id')).all()
     return len(order)
+
 
 @app.template_filter('no_purchases')
 def no_purchase(value):
@@ -163,9 +186,11 @@ def no_purchase(value):
             return False
     return True
 
+
 @app.template_filter('precision_2')
 def precision_2(value):
     return "{:.2f}".format(value)
+
 
 @app.template_filter('get_sold_count')
 def get_sold_count(value):
@@ -177,6 +202,8 @@ def get_sold_count(value):
 # -----------------------------------------------------------------------------
 
 # Admin Auth Decorator
+
+
 def requires_auth(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -188,6 +215,8 @@ def requires_auth(f):
     return decorated_function
 
 # Home Route --------------------------------------------------------------------
+
+
 @app.route('/')
 def home():
     if 'user' not in session:
@@ -202,11 +231,14 @@ def home():
         events = get_events()
         sample_size = min(len(events), 6)
         events = sample(events, sample_size) if len(events) > 0 else []
-        return render_template('index.html', billboard=get_billboard_posts(), events=events, clubs=clubs)
+        categories = BillboardCategories.query.all()
+        return render_template('index.html', billboard=get_billboard_posts(), events=events, clubs=clubs, categories=categories)
 # -----------------------------------------------------------------------------
 
 # Login & Register Routes --------------------------------------------------------------
 # Register Route GET
+
+
 @app.route('/register')
 def register():
     if 'user' not in session:
@@ -216,6 +248,8 @@ def register():
         return redirect(url_for('home'))
 
 # Register Route POST
+
+
 @app.route('/register', methods=['POST'])
 def register_user():
     if 'user' not in session:
@@ -249,6 +283,8 @@ def register_user():
         return redirect(url_for('home'))
 
 # Login Route GET
+
+
 @app.route('/login')
 def login_page():
     if 'user' not in session:
@@ -257,6 +293,8 @@ def login_page():
         return redirect(url_for('home'))
 
 # Login Route POST
+
+
 @app.route('/login', methods=['POST'])
 def login_user():
     login_creds = request.form.to_dict()
@@ -278,6 +316,8 @@ def login_user():
             return redirect(url_for('login_page'))
 
 # Logout Route
+
+
 @app.route('/logout')
 def logout():
     # Remove the user from session
@@ -291,6 +331,8 @@ def logout():
 # -----------------------------------------------------------------------------------
 
 # Profile Routes ---------------------------------------------------------------
+
+
 @app.route('/profile')
 def profile():
     if 'user' not in session:
@@ -313,6 +355,7 @@ def profile():
             e["time"] = e.get('date_time').strftime("%I:%M %p")
         return render_template('user/profile.html', student=student, billboard_posts=billboard_posts, club_posts=club_posts, events=events, owned_clubs=owned_clubs)
 
+
 @app.route('/student/<id>')
 def other_profile(id):
     if 'user' not in session:
@@ -330,6 +373,7 @@ def other_profile(id):
         e["date"] = e.get('date_time').strftime("%b %d")
         e["time"] = e.get('date_time').strftime("%I:%M %p")
     return render_template('user/other_user_profile.html', student=student, billboard_posts=billboard_posts, club_posts=club_posts, events=events, owned_clubs=owned_clubs)
+
 
 @app.route('/update-dp', methods=['POST'])
 def update_dp():
@@ -354,6 +398,7 @@ def update_dp():
     else:
         return '0'
 
+
 @app.route('/update-profile', methods=['POST'])
 def update_profile():
     if 'user' not in session:
@@ -373,31 +418,109 @@ def update_profile():
 # ------------------------------------------------------------------------------
 
 # BillBoard Routes ------------------------------------------------------------
+
+
 @app.route('/billboard')
 def billboard_page():
     if 'user' not in session:
         return redirect(url_for('login_page'))
+    if 'billboard_category' in session:
+        session.pop('billboard_category')
     billboard_posts = get_billboard_posts('all')
-    return render_template('billboard/billboard.html', billboard=billboard_posts)
+    categories = BillboardCategories.query.all()
+    return render_template('billboard/billboard.html', billboard=billboard_posts, categories=categories)
+
 
 @app.route('/billboard/post', methods=['POST'])
 def add_billboard_post():
-    # TODO - Create a billboard post
-    return redirect(request.referrer)
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        data = request.form.to_dict()
+        file = request.files['file']
+        if data['content'] == '':
+            flash('Please fill in the content field')
+            return redirect(request.referrer)
+        if file.filename != '':
+            if file.content_type not in ALLOWED_TYPES:
+                flash("Invalid image type. Please upload a jpeg or png image.")
+                return redirect(request.referrer)
+            res = _cu.upload(file, folder=BILLBOARD_IMG_PATH)
+        else:
+            res = {'secure_url': ''}
+        post = BillboardPost(title=data.get('title', ''), content=data['content'], img_url=res['secure_url'], tag_id=data['category'],
+                          school_id=session['user']['school_id'], created_at=datetime.now(), student_id=session['user']['id'])
+        post.insert()
+        flash('Post created successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(f"Error ==> {e}")
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 
 
-@app.route('/billboard/post/<post_id>', methods=['DELETE'])
+@app.route('/billboard/post/delete/<post_id>')
 def delete_billboard_post(post_id):
-    # TODO - Delete billboard post
-    return redirect(request.referrer)
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        post = BillboardPost.query.filter_by(id=post_id).first()
+        if post.student_id != session['user']['id']:
+            flash('You are not authorized to delete this post!')
+            return redirect(request.referrer)
+        post.delete()
+        flash('Post deleted successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(f"Error ==> {e}")
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
+
+@app.route('/billboard/category/<int:category_id>')
+def get_billboard_by_category(category_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    if category_id == 0:
+        return redirect(url_for('billboard_page'))
+    session['billboard_category'] = BillboardCategories.query.filter_by(
+        id=category_id).first().name
+    billboard_posts = BillboardPost.query.filter_by(
+        school_id=session['user']['school_id']).filter_by(tag_id=category_id).order_by(BillboardPost.created_at.desc()).all()
+    categories = BillboardCategories.query.all()
+    return render_template('billboard/billboard.html', billboard=billboard_posts, categories=categories)
+
+
+@app.route('/billboard/search', methods=['GET', 'POST'])
+def billboard_search():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        if 'billboard_category' in session:
+            session.pop('billboard_category')
+        search_term = request.form.get('searchTerm', '')
+        posts_1 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(
+            BillboardPost.title.ilike('%' + search_term + '%')).all()
+        posts_2 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(
+            BillboardPost.content.ilike('%' + search_term + '%')).all()
+        posts = list(set(posts_1 + posts_2))
+        categories = ProductCategory.query.all()
+        return render_template('billboard/billboard.html', billboard=posts, categories=categories)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 # ------------------------------------------------------------------------------
 
 # Club Routes ----------------------------------------------------------------------
+
+
 @app.route('/clubs')
 def club():
     if 'user' not in session:
         return redirect(url_for('login_page'))
     return render_template('club/clubs.html', clubs=get_clubs('all'))
+
 
 @app.route('/clubs/<club_id>')
 def club_details(club_id):
@@ -408,6 +531,7 @@ def club_details(club_id):
         club_posts = ClubPost.query.filter_by(club_id=club_id).all()
         club_posts = [post.format() for post in club_posts]
         return render_template('club/club_detail.html', club=club, club_posts=club_posts)
+
 
 @app.route('/create-club', methods=['POST'])
 def create_club():
@@ -437,6 +561,7 @@ def create_club():
         flash('Something went wrong!')
         return redirect(url_for('home'))
 
+
 @app.route('/club-post/<club_id>', methods=['POST'])
 def add_club_post(club_id):
     if 'user' not in session:
@@ -455,6 +580,7 @@ def add_club_post(club_id):
         flash('Something went wrong!')
         return redirect(request.referrer)
 
+
 @app.route('/join-club/<club_id>')
 def join_club(club_id):
     if 'user' not in session:
@@ -465,6 +591,7 @@ def join_club(club_id):
     flash('You have joined the club!')
     return redirect(request.referrer)
 
+
 @app.route('/exit-club/<club_id>')
 def exit_club(club_id):
     if 'user' not in session:
@@ -474,6 +601,7 @@ def exit_club(club_id):
     club_member.delete()
     flash('You have successfully exited the club!')
     return redirect(request.referrer)
+
 
 @app.route('/delete-club-post/<post_id>')
 def delete_club_post(post_id):
@@ -488,6 +616,7 @@ def delete_club_post(post_id):
         print(f'Error ==> {e}')
         flash('Something went wrong')
         return redirect(request.referrer)
+
 
 @app.route('/delete-club/<club_id>')
 def delete_club(club_id):
@@ -510,13 +639,16 @@ def delete_club(club_id):
         return redirect(request.referrer)
 
 # Search Clubs
-@app.route('/clubs/search', methods=['GET','POST'])
+
+
+@app.route('/clubs/search', methods=['GET', 'POST'])
 def clubs_search():
     if 'user' not in session:
         return redirect(url_for('login_page'))
     try:
         search_term = request.form.get('searchTerm', '')
-        clubs = Club.query.filter_by(school_id=session['user']['school_id']).filter(Club.name.ilike(f'%{search_term}%')).all()
+        clubs = Club.query.filter_by(school_id=session['user']['school_id']).filter(
+            Club.name.ilike(f'%{search_term}%')).all()
         return render_template('club/clubs.html', clubs=clubs)
     except Exception as e:
         print(e)
@@ -525,6 +657,8 @@ def clubs_search():
 # ----------------------------------------------------------------------------
 
 # Shop Routes ---------------------------------------------------------------
+
+
 @app.route('/shop')
 def get_shop_page():
     if 'user' not in session:
@@ -536,6 +670,7 @@ def get_shop_page():
     categories = ProductCategory.query.all()
     return render_template('shop/shop.html', products=inject_ads(products), categories=categories)
 
+
 @app.route('/cart')
 def cart_page():
     if len(session.get('cart')) == 0:
@@ -543,6 +678,7 @@ def cart_page():
         return redirect(url_for('get_shop_page'))
     student = Student.query.filter_by(id=session['user']['id']).first()
     return render_template('/shop/cart.html', student=student)
+
 
 @app.route('/add-to-cart/<product_id>')
 def add_to_cart(product_id):
@@ -563,6 +699,7 @@ def add_to_cart(product_id):
         flash('Something went wrong!')
         return redirect(request.referrer)
 
+
 @app.route('/delete-from-cart/<int:product_id>')
 def delete_from_cart(product_id):
     if 'user' not in session:
@@ -577,6 +714,7 @@ def delete_from_cart(product_id):
         print(e)
         flash('Something went wrong!')
         return redirect(request.referrer)
+
 
 @app.route('/add-product', methods=['POST'])
 def add_product():
@@ -605,6 +743,7 @@ def add_product():
         flash('Something went wrong!')
         return redirect(request.referrer)
 
+
 @app.route('/add-payment', methods=['POST'])
 def add_payment():
     if 'user' not in session:
@@ -616,7 +755,8 @@ def add_payment():
             return redirect(request.referrer)
         date_str = f'{data["exp_month"]}/01/{data["exp_year"]}'
         expiry_date = datetime.strptime(date_str, '%m/%d/%Y')
-        payment = PaymentMethod(student_id=session['user']['id'], card_number=data['card_number'].replace(" ", ""), name_on_card=data['name_on_card'], cvv=data['cvv'], zip_code=data['zip_code'], valid_through=expiry_date)
+        payment = PaymentMethod(student_id=session['user']['id'], card_number=data['card_number'].replace(
+            " ", ""), name_on_card=data['name_on_card'], cvv=data['cvv'], zip_code=data['zip_code'], valid_through=expiry_date)
         payment.insert()
         flash('Payment created successfully!')
         return redirect(request.referrer)
@@ -624,6 +764,7 @@ def add_payment():
         print(e)
         flash('Something went wrong!')
         return redirect(request.referrer)
+
 
 @app.route('/delete-payment/<int:payment_id>')
 def delete_paymenr(payment_id):
@@ -641,6 +782,7 @@ def delete_paymenr(payment_id):
         print(e)
         flash('Something went wrong!')
         return redirect(request.referrer)
+
 
 @app.route('/checkout')
 def checkout():
@@ -670,6 +812,7 @@ def checkout():
         flash('Something went wrong!')
         return redirect(request.referrer)
 
+
 @app.route('/my-products')
 def my_products():
     if 'user' not in session:
@@ -685,6 +828,7 @@ def my_products():
         else:
             product.buyer = None
     return render_template('user/products.html', products=products, categories=categories)
+
 
 @app.route('/my-purchases')
 def my_purchases():
@@ -711,7 +855,8 @@ def cancel_order(order_id):
         flash('Something went wrong!')
         return redirect(request.referrer)
 
-@app.route('/shop/search', methods=['GET','POST'])
+
+@app.route('/shop/search', methods=['GET', 'POST'])
 def shop_search():
     if 'user' not in session:
         return redirect(url_for('login_page'))
@@ -728,17 +873,20 @@ def shop_search():
         flash('Something went wrong!')
         return redirect(request.referrer)
 
+
 @app.route('/shop/category/<int:category_id>')
 def get_shop_by_category(category_id):
     if 'user' not in session:
         return redirect(url_for('login_page'))
     if category_id == 0:
         return redirect(url_for('get_shop_page'))
-    session['shop_category'] = ProductCategory.query.filter_by(id=category_id).first().name
+    session['shop_category'] = ProductCategory.query.filter_by(
+        id=category_id).first().name
     products = Product.query.filter_by(
-    school_id=session['user']['school_id']).filter_by(purchased=False).filter_by(category_id=category_id).order_by(Product.created_at.desc()).all()
+        school_id=session['user']['school_id']).filter_by(purchased=False).filter_by(category_id=category_id).order_by(Product.created_at.desc()).all()
     categories = ProductCategory.query.all()
     return render_template('shop/shop.html', products=products, categories=categories)
+
 
 @app.route('/shop/delete-product/<int:product_id>')
 def delete_product(product_id):
@@ -759,12 +907,15 @@ def delete_product(product_id):
 # ----------------------------------------------------------------------------
 
 # Event routes ---------------------------------------------------------------
+
+
 @app.route('/events')
 def events():
     if 'user' not in session:
         return redirect(url_for('login_page'))
     events = get_events()
     return render_template('events/events.html', events=inject_ads(events))
+
 
 @app.route('/events', methods=['POST'])
 def insertEvent():
@@ -788,6 +939,7 @@ def insertEvent():
         flash('Something went wrong!')
         return redirect(request.referrer)
 
+
 @app.route('/delete-event/<event_id>')
 def delete_event(event_id):
     if 'user' not in session:
@@ -802,13 +954,16 @@ def delete_event(event_id):
         return redirect(request.referrer)
 
 # Search Events
-@app.route('/events/search', methods=['GET','POST'])
+
+
+@app.route('/events/search', methods=['GET', 'POST'])
 def events_search():
     if 'user' not in session:
         return redirect(url_for('login_page'))
     try:
         search_term = request.form.get('searchTerm', '')
-        events = Event.query.filter_by(school_id=session['user']['school_id']).filter(Event.name.ilike(f'%{search_term}%')).all()
+        events = Event.query.filter_by(school_id=session['user']['school_id']).filter(
+            Event.name.ilike(f'%{search_term}%')).all()
         events = [e.format() for e in events]
         for e in events:
             e["date"] = e.get('date_time').strftime("%b %d")
@@ -820,21 +975,130 @@ def events_search():
         return redirect(request.referrer)
 # ----------------------------------------------------------------------------
 
+
 @app.route('/about')
 def about_page():
     return render_template('other/about.html')
+
 
 @app.route('/faq')
 def faq_page():
     return render_template('other/faq.html')
 
+@app.route('/contact', methods=['POST'])
+def contact():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    data = request.form.to_dict()
+    if data['email'] == '' or data['subject'] == '' or data['query'] == '':
+        flash('Please fill in all the fields.')
+        return redirect(request.referrer)
+    try:
+        contact = Contact(email=data['email'], short_desc=data['subject'], long_desc=data['query'],student_id=session['user']['id'])
+        contact.insert()
+        flash('Query Submitted')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
 # Admin Routes ---------------------------------------------------------------
+
+
 @app.route('/admin')
 @requires_auth
 def admin_page():
     schools = School.query.all()
     user_roles = UserRoles.query.filter_by(role_id=2).all()
-    return render_template('admin/admin.html', schools=schools, school_admins=user_roles)
+    queries=Contact.query.all()
+    students = Student.query.all()
+    posts = BillboardPost.query.all()
+    events = Event.query.all()
+    ads = Advertisement.query.all()
+    broadcast_messages = BroadcastMessage.query.all()
+    return render_template('admin/admin.html', schools=schools, school_admins=user_roles, queries=queries, students=students, posts=posts, events=events, ads=ads, broadcast_messages=broadcast_messages)
+
+@app.route('/admin/delete-query/<int:query_id>')
+def delete_query(query_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        query = Contact.query.filter_by(id=query_id).first()
+        query.delete()
+        flash('Query deleted successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
+@app.route('/admin/add-school', methods=['POST'])
+def add_schoor():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    data = request.form.to_dict()
+    if data['name'] == '' or data['state'] == '' or data['city'] == '' or data['country'] == '':
+        flash('Please fill in all the fields.')
+        return redirect(request.referrer)
+    try:
+        school = School(name=data['name'], state=data['state'], city=data['city'], country=data['country'])
+        school.insert()
+        flash('School added successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
+@app.route('/admin/add-school-admin', methods=['POST'])
+def add_school_admin():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    data = request.form.to_dict()
+    if data['student_id'] == '':
+        flash('Please fill in all the fields.')
+        return redirect(request.referrer)
+    try:
+        if Student.query.filter_by(id=data['student_id']).count() == 0:
+            flash('No students in this school!')
+            return redirect(request.referrer)
+        school_admin = UserRoles(student_id=data['student_id'], role_id=2)
+        school_admin.insert()
+        flash('School admin added successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
+@app.route('/admin/delete-school-admin/<user_id>')
+def delete_school_admin(user_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        school_admin = UserRoles.query.filter_by(student_id=user_id, role_id=2).first()
+        school_admin.delete()
+        flash('School admin deleted successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
+
+@app.route('/admin/delete-school/<int:school_id>')
+def delete_school(school_id):
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        school = School.query.filter_by(id=school_id).first()
+        school.delete()
+        flash('School deleted successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 
 @app.route('/school_admin')
 @requires_auth
@@ -843,12 +1107,14 @@ def school_admin():
         school_id=session['user']['school_id']).all()
     posts = BillboardPost.query.filter_by(
         school_id=session['user']['school_id']).all()
-    events = Event.query.filter_by(school_id=session['user']['school_id']).all()
+    events = Event.query.filter_by(
+        school_id=session['user']['school_id']).all()
     ads = Advertisement.query.filter_by(
         school_id=session['user']['school_id']).all()
     broadcast_messages = BroadcastMessage.query.filter_by(
         school_id=session['user']['school_id']).all()
     return render_template('admin/school_admin.html', students=students, posts=posts, events=events, ads=ads, broadcast_messages=broadcast_messages)
+
 
 @app.route('/create-ad', methods=['POST'])
 def create_ad():
@@ -867,7 +1133,8 @@ def create_ad():
             flash("Invalid image type. Please upload a jpeg or png image.")
             return redirect(request.referrer)
         res = _cu.upload(file, folder=AD_IMG_PATH)
-        ad = Advertisement(title=data['title'], description=data['description'], ext_link=data['ext_link'], img_url=res['secure_url'], school_id=session['user']['school_id'], admin_id=session['user']['id'])
+        ad = Advertisement(title=data['title'], description=data['description'], ext_link=data['ext_link'],
+                           img_url=res['secure_url'], school_id=session['user']['school_id'], admin_id=session['user']['id'])
         ad.insert()
         flash('Ad created successfully!')
         return redirect(request.referrer)
@@ -875,6 +1142,7 @@ def create_ad():
         print(e)
         flash('Something went wrong!')
         return redirect(request.referrer)
+
 
 @app.route('/delete-ad/<int:ad_id>')
 def delete_ad(ad_id):
@@ -893,6 +1161,7 @@ def delete_ad(ad_id):
         flash('Something went wrong!')
         return redirect(request.referrer)
 
+
 @app.route('/create-broadcast', methods=['POST'])
 def create_broadcast():
     if 'user' not in session:
@@ -902,7 +1171,8 @@ def create_broadcast():
         if data['title'] == '' or data['content'] == '':
             flash('Please fill in all the fields.')
             return redirect(request.referrer)
-        message = BroadcastMessage(title=data['title'], content=data['content'], school_id=session['user']['school_id'], created_at = datetime.now())
+        message = BroadcastMessage(title=data['title'], content=data['content'],
+                                   school_id=session['user']['school_id'], created_at=datetime.now())
         message.insert()
         get_notifications()
         flash('Broadcast created successfully!')
@@ -911,6 +1181,7 @@ def create_broadcast():
         print(e)
         flash('Something went wrong!')
         return redirect(request.referrer)
+
 
 @app.route('/delete-broadcast/<int:broadcast_id>')
 def delete_broadcast(broadcast_id):
@@ -932,7 +1203,9 @@ def delete_broadcast(broadcast_id):
 # ----------------------------------------------------------------------------
 
 # Search Routes --------------------------------------------------------------
-@app.route('/search', methods=['GET','POST'])
+
+
+@app.route('/search', methods=['GET', 'POST'])
 def search_page():
     if 'user' not in session:
         return redirect(url_for('login_page'))
@@ -948,35 +1221,46 @@ def search_page():
                 return redirect(request.referrer)
             session['search_term'] = search_term
 
-        products_1 = Product.query.filter_by(school_id=session['user']['school_id']).filter(Product.name.ilike('%' + session.get('search_term') + '%' )).all()
-        products_2 = Product.query.filter_by(school_id=session['user']['school_id']).filter(Product.description.ilike('%' + session.get('search_term') + '%' )).all()
+        products_1 = Product.query.filter_by(school_id=session['user']['school_id']).filter(
+            Product.name.ilike('%' + session.get('search_term') + '%')).all()
+        products_2 = Product.query.filter_by(school_id=session['user']['school_id']).filter(
+            Product.description.ilike('%' + session.get('search_term') + '%')).all()
         products = set(products_1 + products_2)
         session['num_products'] = len(products)
 
-        events_1 = Event.query.filter_by(school_id=session['user']['school_id']).filter(Event.name.ilike('%' + session.get('search_term') + '%' )).all()
-        events_2 = Event.query.filter_by(school_id=session['user']['school_id']).filter(Event.description.ilike('%' + session.get('search_term') + '%' )).all()
+        events_1 = Event.query.filter_by(school_id=session['user']['school_id']).filter(
+            Event.name.ilike('%' + session.get('search_term') + '%')).all()
+        events_2 = Event.query.filter_by(school_id=session['user']['school_id']).filter(
+            Event.description.ilike('%' + session.get('search_term') + '%')).all()
         events = set(events_1 + events_2)
         session['num_events'] = len(events)
 
-        posts_1 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(BillboardPost.title.ilike('%' + session.get('search_term') + '%' )).all()
-        posts_2 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(BillboardPost.content.ilike('%' + session.get('search_term') + '%' )).all()
+        posts_1 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(
+            BillboardPost.title.ilike('%' + session.get('search_term') + '%')).all()
+        posts_2 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(
+            BillboardPost.content.ilike('%' + session.get('search_term') + '%')).all()
         posts = set(posts_1 + posts_2)
         session['num_posts'] = len(posts)
 
-        clubs_1 = Club.query.filter_by(school_id=session['user']['school_id']).filter(Club.name.ilike('%' + session.get('search_term') + '%' )).all()
-        clubs_2 = Club.query.filter_by(school_id=session['user']['school_id']).filter(Club.description.ilike('%' + session.get('search_term') + '%' )).all()
+        clubs_1 = Club.query.filter_by(school_id=session['user']['school_id']).filter(
+            Club.name.ilike('%' + session.get('search_term') + '%')).all()
+        clubs_2 = Club.query.filter_by(school_id=session['user']['school_id']).filter(
+            Club.description.ilike('%' + session.get('search_term') + '%')).all()
         clubs = set(clubs_1 + clubs_2)
         session['num_clubs'] = len(clubs)
 
-        students_1 = Student.query.filter_by(school_id=session['user']['school_id']).filter(Student.name.ilike('%' + session.get('search_term') + '%' )).all()
-        students_2 = Student.query.filter_by(school_id=session['user']['school_id']).filter(Student.id.ilike('%' + session.get('search_term') + '%' )).all()
+        students_1 = Student.query.filter_by(school_id=session['user']['school_id']).filter(
+            Student.name.ilike('%' + session.get('search_term') + '%')).all()
+        students_2 = Student.query.filter_by(school_id=session['user']['school_id']).filter(
+            Student.id.ilike('%' + session.get('search_term') + '%')).all()
         students = set(students_1 + students_2)
         session['num_students'] = len(students)
 
-        session['total_results'] = len(products) + len(events) + len(posts) + len(clubs) + len(students)
+        session['total_results'] = len(
+            products) + len(events) + len(posts) + len(clubs) + len(students)
 
         if len(products) == 0:
-                return redirect(url_for('search_page_event'))
+            return redirect(url_for('search_page_event'))
 
         return render_template('search/product_results.html', products=products)
     except Exception as e:
@@ -984,12 +1268,15 @@ def search_page():
         flash('Something went wrong!')
         return redirect(request.referrer)
 
+
 @app.route('/search/billboard')
 def search_page_billboard():
     if 'user' not in session:
         return redirect(url_for('login_page'))
-    posts_1 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(BillboardPost.title.ilike('%' + session.get('search_term') + '%' )).all()
-    posts_2 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(BillboardPost.content.ilike('%' + session.get('search_term') + '%' )).all()
+    posts_1 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(
+        BillboardPost.title.ilike('%' + session.get('search_term') + '%')).all()
+    posts_2 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(
+        BillboardPost.content.ilike('%' + session.get('search_term') + '%')).all()
     posts = list(set(posts_1 + posts_2))
     posts = [p.format() for p in posts]
     session['num_posts'] = len(posts)
@@ -997,24 +1284,30 @@ def search_page_billboard():
         return redirect(url_for('search_page_club'))
     return render_template('search/billboard_results.html', posts=posts)
 
+
 @app.route('/search/clubs')
 def search_page_club():
     if 'user' not in session:
         return redirect(url_for('login_page'))
-    clubs_1 = Club.query.filter_by(school_id=session['user']['school_id']).filter(Club.name.ilike('%' + session.get('search_term') + '%' )).all()
-    clubs_2 = Club.query.filter_by(school_id=session['user']['school_id']).filter(Club.description.ilike('%' + session.get('search_term') + '%' )).all()
+    clubs_1 = Club.query.filter_by(school_id=session['user']['school_id']).filter(
+        Club.name.ilike('%' + session.get('search_term') + '%')).all()
+    clubs_2 = Club.query.filter_by(school_id=session['user']['school_id']).filter(
+        Club.description.ilike('%' + session.get('search_term') + '%')).all()
     clubs = set(clubs_1 + clubs_2)
     session['num_clubs'] = len(clubs)
     if len(clubs) == 0:
         return redirect(url_for('search_page_users'))
     return render_template('search/clubs_results.html', clubs=clubs)
 
+
 @app.route('/search/events')
 def search_page_event():
     if 'user' not in session:
         return redirect(url_for('login_page'))
-    events_1 = Event.query.filter_by(school_id=session['user']['school_id']).filter(Event.name.ilike('%' + session.get('search_term') + '%' )).all()
-    events_2 = Event.query.filter_by(school_id=session['user']['school_id']).filter(Event.description.ilike('%' + session.get('search_term') + '%' )).all()
+    events_1 = Event.query.filter_by(school_id=session['user']['school_id']).filter(
+        Event.name.ilike('%' + session.get('search_term') + '%')).all()
+    events_2 = Event.query.filter_by(school_id=session['user']['school_id']).filter(
+        Event.description.ilike('%' + session.get('search_term') + '%')).all()
     events = list(set(events_1 + events_2))
     events = [e.format() for e in events]
     for e in events:
@@ -1025,35 +1318,44 @@ def search_page_event():
         return redirect(url_for('search_page_billboard'))
     return render_template('search/events_results.html', events=events)
 
+
 @app.route('/search/products')
 def search_page_product():
     if 'user' not in session:
         return redirect(url_for('login_page'))
-    products_1 = Product.query.filter(Product.name.ilike('%' + session.get('search_term') + '%' )).all()
-    products_2 = Product.query.filter(Product.description.ilike('%' + session.get('search_term') + '%' )).all()
+    products_1 = Product.query.filter(Product.name.ilike(
+        '%' + session.get('search_term') + '%')).all()
+    products_2 = Product.query.filter(Product.description.ilike(
+        '%' + session.get('search_term') + '%')).all()
     products = set(products_1 + products_2)
     session['num_products'] = len(products)
     if len(products) == 0:
         return redirect(url_for('search_page_event'))
     return render_template('search/product_results.html', products=products)
 
+
 @app.route('/search/users')
 def search_page_users():
     if 'user' not in session:
         return redirect(url_for('login_page'))
-    students_1 = Student.query.filter_by(school_id=session['user']['school_id']).filter(Student.name.ilike('%' + session.get('search_term') + '%' )).all()
-    students_2 = Student.query.filter_by(school_id=session['user']['school_id']).filter(Student.id.ilike('%' + session.get('search_term') + '%' )).all()
+    students_1 = Student.query.filter_by(school_id=session['user']['school_id']).filter(
+        Student.name.ilike('%' + session.get('search_term') + '%')).all()
+    students_2 = Student.query.filter_by(school_id=session['user']['school_id']).filter(
+        Student.id.ilike('%' + session.get('search_term') + '%')).all()
     students = set(students_1 + students_2)
     session['num_students'] = len(students)
     return render_template('search/users_results.html', students=students)
 # ----------------------------------------------------------------------------
 
 # Schools dropdown route
+
+
 @app.route('/schools')
 def getSchools():
     schools = School.query.all()
     schoolsResponse = [school.format() for school in schools]
     return json.dumps(schoolsResponse)
+
 
 @app.route('/test')
 def test():
@@ -1061,9 +1363,11 @@ def test():
     studentResponse = [student.format() for student in students]
     return json.dumps(studentResponse)
 
+
 @app.route('/session')
 def get_session():
     return jsonify(session)
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8000, debug=True)
