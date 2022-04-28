@@ -13,7 +13,7 @@ from datetime import datetime
 import math
 
 from models import (Admin, BillboardPost, Club, ClubPost, Event, ProductCategory, School,
-                    Student, UserRoles, ClubMembers, Product, Order, Advertisement, BroadcastMessage, 
+                    Student, UserRoles, ClubMembers, Product, Order, Advertisement, BroadcastMessage,
                     PaymentMethod, BillboardCategories, db_init)
 
 load_dotenv()
@@ -36,12 +36,17 @@ cloudinary.config(
 )
 
 # UTIL Functions --------------------------------------------------------------
+
+
 def get_ads():
-    ads = Advertisement.query.filter_by(school_id=session['user']['school_id']).all()
+    ads = Advertisement.query.filter_by(
+        school_id=session['user']['school_id']).all()
     ads = [a.format() for a in ads]
     return ads
 
 # Inject Ads Algorithm
+
+
 def inject_ads(data):
     if len(data) == 0:
         return data
@@ -54,29 +59,38 @@ def inject_ads(data):
         k, m = k+1, m+1
     return data
 
+
 def get_notifications():
-    notifications = BroadcastMessage.query.filter_by(school_id=session['user']['school_id']).all()
+    notifications = BroadcastMessage.query.filter_by(
+        school_id=session['user']['school_id']).all()
     notifications = [n.format() for n in notifications]
     session['broadcast_messages'] = notifications
 
+
 def get_clubs(n=6, no_ad=False):
     if no_ad:
-        return  Club.query.filter_by(school_id=session['user']['school_id']).all()
+        return Club.query.filter_by(school_id=session['user']['school_id']).all()
     else:
         if n == 'all':
-            clubs = Club.query.filter_by(school_id=session['user']['school_id']).all()
+            clubs = Club.query.filter_by(
+                school_id=session['user']['school_id']).all()
         else:
-            clubs = Club.query.filter_by(school_id=session['user']['school_id']).limit(n).all()
+            clubs = Club.query.filter_by(
+                school_id=session['user']['school_id']).limit(n).all()
         clubs = [p.format() for p in clubs]
         return inject_ads(clubs)
 
+
 def get_billboard_posts(n=6):
     if n == 'all':
-        posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).all()
+        posts = BillboardPost.query.filter_by(
+            school_id=session['user']['school_id']).all()
     else:
-        posts = BillboardPost.query.filter_by(school_id=session['user']['school_id']).limit(n).all()
+        posts = BillboardPost.query.filter_by(
+            school_id=session['user']['school_id']).limit(n).all()
     posts = [p.format() for p in posts]
     return inject_ads(posts)
+
 
 def get_events():
     events = Event.query.filter_by(
@@ -86,6 +100,7 @@ def get_events():
         e["date"] = e.get('date_time').strftime("%b %d")
         e["time"] = e.get('date_time').strftime("%I:%M %p")
     return events
+
 
 def pop_search():
     if 'search_term' in session:
@@ -101,11 +116,13 @@ def pop_search():
     if 'num_posts' in session:
         session.pop('num_posts')
 
+
 @app.template_filter('is_member')
 def is_member(value):
     if ClubMembers.query.filter_by(student_id=session['user']['id'], club_id=value).first():
         return True
     return False
+
 
 @app.template_filter('card_type')
 def card_type(value):
@@ -135,13 +152,16 @@ def card_type(value):
             cardtype = "dinersclub"
     return cardtype
 
+
 @app.template_filter('humanize')
 def humanize(value):
     return arrow.Arrow.fromdatetime(value).humanize()
 
+
 @app.template_filter('get_product')
 def get_product(value):
     return Product.query.filter_by(id=value).first()
+
 
 @app.template_filter('get_total')
 def get_total(value):
@@ -151,10 +171,12 @@ def get_total(value):
         total += product.price
     return total
 
+
 @app.template_filter('get_sale_count')
 def get_sale_count(value):
     order = Order.query.filter_by(seller_id=value.get('id')).all()
     return len(order)
+
 
 @app.template_filter('no_purchases')
 def no_purchase(value):
@@ -163,9 +185,11 @@ def no_purchase(value):
             return False
     return True
 
+
 @app.template_filter('precision_2')
 def precision_2(value):
     return "{:.2f}".format(value)
+
 
 @app.template_filter('get_sold_count')
 def get_sold_count(value):
@@ -177,6 +201,8 @@ def get_sold_count(value):
 # -----------------------------------------------------------------------------
 
 # Admin Auth Decorator
+
+
 def requires_auth(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -188,6 +214,8 @@ def requires_auth(f):
     return decorated_function
 
 # Home Route --------------------------------------------------------------------
+
+
 @app.route('/')
 def home():
     if 'user' not in session:
@@ -207,6 +235,8 @@ def home():
 
 # Login & Register Routes --------------------------------------------------------------
 # Register Route GET
+
+
 @app.route('/register')
 def register():
     if 'user' not in session:
@@ -216,6 +246,8 @@ def register():
         return redirect(url_for('home'))
 
 # Register Route POST
+
+
 @app.route('/register', methods=['POST'])
 def register_user():
     if 'user' not in session:
@@ -249,6 +281,8 @@ def register_user():
         return redirect(url_for('home'))
 
 # Login Route GET
+
+
 @app.route('/login')
 def login_page():
     if 'user' not in session:
@@ -257,6 +291,8 @@ def login_page():
         return redirect(url_for('home'))
 
 # Login Route POST
+
+
 @app.route('/login', methods=['POST'])
 def login_user():
     login_creds = request.form.to_dict()
@@ -278,6 +314,8 @@ def login_user():
             return redirect(url_for('login_page'))
 
 # Logout Route
+
+
 @app.route('/logout')
 def logout():
     # Remove the user from session
@@ -291,6 +329,8 @@ def logout():
 # -----------------------------------------------------------------------------------
 
 # Profile Routes ---------------------------------------------------------------
+
+
 @app.route('/profile')
 def profile():
     if 'user' not in session:
@@ -313,6 +353,7 @@ def profile():
             e["time"] = e.get('date_time').strftime("%I:%M %p")
         return render_template('user/profile.html', student=student, billboard_posts=billboard_posts, club_posts=club_posts, events=events, owned_clubs=owned_clubs)
 
+
 @app.route('/student/<id>')
 def other_profile(id):
     if 'user' not in session:
@@ -330,6 +371,7 @@ def other_profile(id):
         e["date"] = e.get('date_time').strftime("%b %d")
         e["time"] = e.get('date_time').strftime("%I:%M %p")
     return render_template('user/other_user_profile.html', student=student, billboard_posts=billboard_posts, club_posts=club_posts, events=events, owned_clubs=owned_clubs)
+
 
 @app.route('/update-dp', methods=['POST'])
 def update_dp():
@@ -354,6 +396,7 @@ def update_dp():
     else:
         return '0'
 
+
 @app.route('/update-profile', methods=['POST'])
 def update_profile():
     if 'user' not in session:
@@ -373,6 +416,8 @@ def update_profile():
 # ------------------------------------------------------------------------------
 
 # BillBoard Routes ------------------------------------------------------------
+
+
 @app.route('/billboard')
 def billboard_page():
     if 'user' not in session:
@@ -382,6 +427,7 @@ def billboard_page():
     billboard_posts = get_billboard_posts('all')
     categories = BillboardCategories.query.all()
     return render_template('billboard/billboard.html', billboard=billboard_posts, categories=categories)
+
 
 @app.route('/billboard/post', methods=['POST'])
 def add_billboard_post():
@@ -394,17 +440,38 @@ def delete_billboard_post(post_id):
     # TODO - Delete billboard post
     return redirect(request.referrer)
 
+
 @app.route('/billboard/category/<int:category_id>')
 def get_billboard_by_category(category_id):
     if 'user' not in session:
         return redirect(url_for('login_page'))
     if category_id == 0:
         return redirect(url_for('billboard_page'))
-    session['billboard_category'] = BillboardCategories.query.filter_by(id=category_id).first().name
+    session['billboard_category'] = BillboardCategories.query.filter_by(
+        id=category_id).first().name
     billboard_posts = BillboardPost.query.filter_by(
     school_id=session['user']['school_id']).filter_by(tag_id=category_id).order_by(BillboardPost.created_at.desc()).all()
     categories = BillboardCategories.query.all()
     return render_template('billboard/billboard.html', billboard=billboard_posts, categories=categories)
+
+
+@app.route('/billboard/search', methods=['GET', 'POST'])
+def billboard_search():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        if 'billboard_category' in session:
+            session.pop('billboard_category')
+        search_term = request.form.get('searchTerm', '')
+        posts_1 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(BillboardPost.title.ilike('%' + search_term + '%' )).all()
+        posts_2 = BillboardPost.query.filter_by(school_id=session['user']['school_id']).filter(BillboardPost.content.ilike('%' + search_term + '%' )).all()
+        posts = list(set(posts_1 + posts_2))
+        categories = ProductCategory.query.all()
+        return render_template('billboard/billboard.html', billboard=posts, categories=categories)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 # ------------------------------------------------------------------------------
 
 # Club Routes ----------------------------------------------------------------------
