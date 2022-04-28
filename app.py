@@ -231,7 +231,8 @@ def home():
         events = get_events()
         sample_size = min(len(events), 6)
         events = sample(events, sample_size) if len(events) > 0 else []
-        return render_template('index.html', billboard=get_billboard_posts(), events=events, clubs=clubs)
+        categories = BillboardCategories.query.all()
+        return render_template('index.html', billboard=get_billboard_posts(), events=events, clubs=clubs, categories=categories)
 # -----------------------------------------------------------------------------
 
 # Login & Register Routes --------------------------------------------------------------
