@@ -458,10 +458,22 @@ def add_billboard_post():
         return redirect(request.referrer)
 
 
-@app.route('/billboard/post/delete/<post_id>', methods=['DELETE'])
+@app.route('/billboard/post/delete/<post_id>')
 def delete_billboard_post(post_id):
-    # TODO - Delete billboard post
-    return redirect(request.referrer)
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    try:
+        post = BillboardPost.query.filter_by(id=post_id).first()
+        if post.student_id != session['user']['id']:
+            flash('You are not authorized to delete this post!')
+            return redirect(request.referrer)
+        post.delete()
+        flash('Post deleted successfully!')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(f"Error ==> {e}")
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 
 
 @app.route('/billboard/category/<int:category_id>')
