@@ -554,3 +554,33 @@ class PaymentMethod(db.Model):
             'description': self.description,
             'school_id': self.school_id,
         }
+
+class Contact(db.Model):
+    __tablename__ = 'queries'
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String)
+    short_desc = db.Column(db.String)
+    long_desc = db.Column(db.String)
+    student_id = db.Column(db.String, db.ForeignKey('student.id'))
+
+    
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'email': self.email,
+            'short_desc': self.short_desc,
+            'long_desc': self.long_desc,
+            'student_id': self.student_id
+        }

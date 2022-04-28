@@ -13,8 +13,8 @@ from datetime import datetime
 import math
 
 from models import (Admin, BillboardPost, Club, ClubPost, Event, ProductCategory, School,
-                    Student, UserRoles, ClubMembers, Product, Order, Advertisement, BroadcastMessage,
-                    PaymentMethod, BillboardCategories, db_init)
+                    Student, UserRoles, ClubMembers, Product, Order, Advertisement, BroadcastMessage, 
+                    PaymentMethod, BillboardCategories, db_init, Contact)
 
 load_dotenv()
 
@@ -984,6 +984,24 @@ def about_page():
 @app.route('/faq')
 def faq_page():
     return render_template('other/faq.html')
+
+@app.route('/contact', methods=['POST'])
+def contact():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    data = request.form.to_dict()
+    if data['email'] == '' or data['subject'] == '' or data['query'] == '':
+        flash('Please fill in all the fields.')
+        return redirect(request.referrer)
+    try:
+        contact = Contact(email=data['email'], short_desc=data['subject'], long_desc=data['query'],student_id=session['user']['id'])
+        contact.insert()
+        flash('Query Submitted')
+        return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+        flash('Something went wrong!')
+        return redirect(request.referrer)
 
 # Admin Routes ---------------------------------------------------------------
 
