@@ -5,7 +5,7 @@ services:
     ports:
       - 5050:5000
   db:
-    image: mariadb
+    image: mariadb:10.9.2
     restart: always
     ports:
       - 3306:3306
@@ -14,6 +14,11 @@ services:
       - MARIADB_DATABASE=${MARIADB_DATABASE}
     volumes:
       - banter-db-data:/var/lib/mysql
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8085:8080
 volumes:
   banter-db-data:
-    driver: overlay2
+    driver: local
