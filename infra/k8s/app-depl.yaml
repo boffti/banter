@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+  labels:
+    app: banter
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: banter
+  template:
+    metadata:
+      labels:
+        app: banter
+    spec:
+      containers:
+        - name: banter
+          image: docker.io/library/banter-web
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-credentials
+                  key: MARIADB_ROOT_PASSWORD
+            - name: MARIADB_DATABASE
+              value: banter
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: banter
+  type: LoadBalancer
