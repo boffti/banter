@@ -21,10 +21,11 @@ spec:
           imagePullPolicy: Always
           env:
             - name: MARIADB_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mariadb-credentials
-                  key: MARIADB_ROOT_PASSWORD
+              value: admin
+              # valueFrom:
+              #   secretKeyRef:
+              #     name: mariadb-credentials
+              #     key: MARIADB_ROOT_PASSWORD
             - name: MARIADB_DATABASE
               value: banter
           ports:
@@ -33,6 +34,11 @@ spec:
           volumeMounts:
               - name: maria-persistent-storage
                 mountPath: /var/lib/mysql
+        - name: adminer
+          image: adminer
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
       volumes:
         - name: maria-persistent-storage
           persistentVolumeClaim:
@@ -41,7 +47,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: maria-db
+  name: banter-db-svc
   labels:
     app: db
 spec:

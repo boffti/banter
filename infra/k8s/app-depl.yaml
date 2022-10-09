@@ -22,18 +22,15 @@ spec:
           ports:
             - containerPort: 5000
           env:
-            - name: MARIADB_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mariadb-credentials
-                  key: MARIADB_ROOT_PASSWORD
-            - name: MARIADB_DATABASE
-              value: banter
+            - name: DATABASE_PATH
+              value: "mysql+pymysql://root:admin@banter-db-svc/banter"
+            - name: SECRET_KEY
+              value: "secret"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-service
+  name: banter-app-svc
 spec:
   ports:
   - port: 5000
