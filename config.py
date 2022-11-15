@@ -1,5 +1,10 @@
 import os
+from dotenv import load_dotenv, find_dotenv
 
+load_dotenv(find_dotenv())
+debug = True
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_PATH")
 
 # Determine the folder of the top-level directory of this project
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
